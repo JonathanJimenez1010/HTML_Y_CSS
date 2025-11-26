@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>Guía completa: Unidades de medida en CSS</title>
+     <style>
+          :root {
+               --bg: #0f1724;
+               --card: #0b1220;
+               --muted: #9aa4b2;
+               --accent: #60a5fa;
+               --glass: rgba(255, 255, 255, 0.03);
+          }
+
+          html,
+          body {
+               height: 100%;
+          }
+
+          body {
+               margin: 0;
+               font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+               background: linear-gradient(180deg, #071029 0%, #07182a 100%);
+               color: #e6eef6;
+               padding: 28px;
+               line-height: 1.5;
+          }
+
+          .wrap {
+               max-width: 1100px;
+               margin: 0 auto;
+          }
+
+          header {
+               display: flex;
+               align-items: center;
+               gap: 16px;
+               margin-bottom: 18px
+          }
+
+          header h1 {
+               font-size: 1.5rem;
+               margin: 0
+          }
+
+          .meta {
+               color: var(--muted);
+               font-size: 0.9rem
+          }
+
+          .grid {
+               display: grid;
+               grid-template-columns: 1fr;
+               gap: 18px
+          }
+
+          .card {
+               background: var(--card);
+               border-radius: 12px;
+               padding: 18px;
+               box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+          }
+
+          h2 {
+               margin-top: 0;
+               color: #fff
+          }
+
+          pre {
+               background: var(--glass);
+               padding: 12px;
+               border-radius: 8px;
+               overflow: auto;
+               color: #dbeafe
+          }
+
+          code {
+               font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+               font-size: 0.95rem
+          }
+
+          table {
+               width: 100%;
+               border-collapse: collapse;
+               margin-top: 8px
+          }
+
+          th,
+          td {
+               padding: 8px 10px;
+               border-top: 1px solid rgba(255, 255, 255, 0.03);
+               text-align: left
+          }
+
+          th {
+               color: var(--accent);
+               font-weight: 600
+          }
+
+          .example {
+               margin-top: 12px;
+               padding: 12px;
+               border-radius: 8px;
+               background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+          }
+
+          .tip {
+               background: linear-gradient(90deg, rgba(96, 165, 250, 0.08), rgba(96, 165, 250, 0.04));
+               padding: 10px;
+               border-radius: 8px;
+               color: #dbeafe
+          }
+
+          .small {
+               font-size: 0.9rem;
+               color: var(--muted)
+          }
+     </style>
+</head>
+
+<body>
+     <div class="wrap">
+          <header>
+               <div>
+                    <h1>Guía completa: <span style="color:var(--accent)">Unidades de medida en CSS</span></h1>
+                    <div class="meta">Explicación, ejemplos, buenas prácticas y trucos — ordenado exactamente como
+                         pediste</div>
+               </div>
+          </header>
+
+          <section class="grid">
+               <article class="card">
+                    <h2>Introducción</h2>
+                    <p class="small">CSS ofrece varias unidades para medir tamaños (tipografías, boxes, márgenes, media
+                         queries, imágenes, etc.). Elegir la unidad correcta mejora la accesibilidad, el rendimiento y
+                         la adaptabilidad del diseño.</p>
+                    <p class="small">A continuación verás cada grupo <strong>en este orden</strong>: <em>Absolutas:
+                              <code>px</code></em>, <em>Relativas al contenedor: <code>%</code></em>, <em>Relativas a
+                              tipografía: <code>em</code>, <code>rem</code></em>, <em>Relativas a la ventana:
+                              <code>vw</code>, <code>vh</code>, <code>vmin</code>, <code>vmax</code></em>, y
+                         <em>Funciones: <code>clamp()</code>, <code>min()</code>, <code>max()</code></em>.</p>
+               </article>
+
+               <article class="card">
+                    <h2>1) Absolutas: <code>px</code></h2>
+                    <p><strong>Qué es:</strong> <code>px</code> (píxeles) mide en píxeles de referencia del dispositivo
+                         (unidad más usada para controles precisos).</p>
+                    <h3>Características</h3>
+                    <ul>
+                         <li>Valor absoluto en el contexto de la pantalla — resultado consistente pixel a pixel.</li>
+                         <li>Ideal para bordes, iconos y layouts donde se requiere precisión.</li>
+                         <li>No escala automáticamente según la tipografía raíz del usuario (salvo zoom del navegador o
+                              ajustes de OS).</li>
+                    </ul>
+                    <h3>Ejemplos</h3>
+                    <pre><code>/* tamaño fijo */
+.box { width: 300px; height: 200px; }
+.text { font-size: 16px; }</code></pre>
+                    <div class="tip">Usa <code>px</code> cuando necesites control pixel-perfect; evita usar sólo
+                         <code>px</code> para tipografías en diseños responsivos y cuando quieras respetar la
+                         preferencia de tamaño del usuario.</div>
+
+                    <h3>Problemas/Pitfalls</h3>
+                    <ul>
+                         <li>Puede romper la accesibilidad: usuarios con configuraciones de texto más grande pueden no
+                              ver cambios si todo está en <code>px</code>.</li>
+                         <li>En pantallas de alta densidad (retina) hay más píxeles físicos, pero CSS sigue manejando
+                              <code>px</code> de forma consistente.</li>
+                    </ul>
+               </article>
+
+               <article class="card">
+                    <h2>2) Relativas al contenedor: <code>%</code></h2>
+                    <p><strong>Qué es:</strong> Porcentaje relativo a un contenedor (normalmente el elemento padre) o a
+                         la referencia de la propiedad especificada.</p>
+                    <h3>Características</h3>
+                    <ul>
+                         <li>Muy útil para layouts fluidos: ancho, padding vertical/horizontal (en ciertos casos),
+                              imágenes y posicionamiento.</li>
+                         <li>El valor depende del contexto: <code>width:50%</code> en un hijo = 50% del ancho del padre.
+                         </li>
+                    </ul>
+                    <h3>Ejemplos</h3>
+                    <pre><code>.card { width: 80%; max-width: 1200px; margin: 0 auto; }
+.child { width: 50%; }
+.img { width: 100%; height: auto; /* imagen responsive */ }</code></pre>
+                    <div class="tip">En reglas de altura, los porcentajes se calculan respecto al <em>height</em> del
+                         padre si éste tiene una altura establecida; si no, puede dar resultados inesperados.</div>
+
+                    <h3>Problemas/Pitfalls</h3>
+                    <ul>
+                         <li>Si el padre no tiene una dimensión explícita para la propiedad, el porcentaje puede no
+                              funcionar como esperas (ej. porcentaje de altura sin altura padre definida).</li>
+                         <li>El flujo y la herencia pueden afectar el cálculo; es contextual.</li>
+                    </ul>
+               </article>
+
+               <article class="card">
+                    <h2>3) Relativas a la tipografía: <code>em</code> y <code>rem</code></h2>
+                    <p><strong>Concepto clave:</strong> ambas dependen del tamaño de fuente, pero de diferente
+                         referencia.</p>
+
+                    <h3><code>em</code></h3>
+                    <p><strong>Referencia:</strong> el tamaño de fuente del elemento en cuestión (o su elemento padre en
+                         propiedades que heredan).</p>
+                    <p><strong>Comportamiento:</strong> es compuesta — se multiplica por la cadena de tamaños de fuente
+                         hasta la raíz si hay cambios intermedios.</p>
+                    <h4>Ejemplo y explosión</h4>
+                    <pre><code>html { font-size: 16px; }
+.container { font-size: 1.25em; /* 1.25 * 16 = 20px */ }
+.container p { font-size: 0.8em; /* 0.8 * 20 = 16px */ }</code></pre>
+                    <p class="small">Nota: atención con el efecto acumulativo (anidado). Esto lo hace poderoso, pero a
+                         veces impredecible.</p>
+
+                    <h3><code>rem</code></h3>
+                    <p><strong>Referencia:</strong> el tamaño de fuente de la raíz (<code>html</code>), es decir,
+                         <code>root em</code>.</p>
+                    <h4>Ejemplo</h4>
+                    <pre><code>html { font-size: 16px; }
+h1 { font-size: 2rem; /* 32px */ }
+.small { font-size: 0.875rem; /* 14px */ }</code></pre>
+                    <p class="tip"><strong>Regla práctica:</strong> usa <code>rem</code> para tamaños globales
+                         (tipografías base, paddings globales) y <code>em</code> para elementos que deban escalar
+                         respecto a su propio contexto (por ejemplo control de componente).</p>
+
+                    <h3>Accesibilidad</h3>
+                    <ul>
+                         <li>Si un usuario cambia el tamaño base del navegador (por ejemplo 18px), <code>rem</code>
+                              respeta esa preferencia; es bueno para accesibilidad.</li>
+                         <li><code>em</code> también respeta, pero puede comportarse diferente si hay anidamientos y
+                              cambios intermedios.</li>
+                    </ul>
+
+                    <h3>Problemas/Pitfalls</h3>
+                    <ul>
+                         <li>Confusión por anidamiento con <code>em</code>. Mantén reglas simples o documenta las
+                              dependencias.</li>
+                         <li>Si cambias <code>html{font-size}</code> con porcentajes, afectará todo el sistema si usas
+                              <code>rem</code>.</li>
+                    </ul>
+               </article>
+
+               <article class="card">
+                    <h2>4) Relativas a la ventana (viewport): <code>vw</code>, <code>vh</code>, <code>vmin</code>,
+                         <code>vmax</code></h2>
+                    <p>Estas unidades se basan en el tamaño de la ventana gráfica (viewport). Son excelentes para
+                         diseños fluidos y efectos que relacionan tamaño con la ventana del usuario.</p>
+
+                    <h3><code>vw</code> y <code>vh</code></h3>
+                    <ul>
+                         <li><code>1vw</code> = 1% del ancho del viewport.</li>
+                         <li><code>1vh</code> = 1% de la altura del viewport.</li>
+                    </ul>
+                    <pre><code>.hero { height: 100vh; /* ocupa toda la altura visible */ }
+.big-title { font-size: 8vw; /* tamaño proporcional al ancho de la ventana */ }</code></pre>
+
+                    <h3><code>vmin</code> y <code>vmax</code></h3>
+                    <ul>
+                         <li><code>vmin</code> = 1% del <strong>menor</strong> lado del viewport (ancho o alto).</li>
+                         <li><code>vmax</code> = 1% del <strong>mayor</strong> lado del viewport.</li>
+                    </ul>
+                    <pre><code>/* usa vmin si quieres que algo escale según el lado más pequeño (útil para mantener proporción) */
+.box { width: 50vmin; height: 50vmin; }</code></pre>
+
+                    <h3>Problemas/Pitfalls</h3>
+                    <ul>
+                         <li>En móviles, la UI del navegador (barra de direcciones) puede aparecer/ocultar y cambiar el
+                              valor de <code>vh</code>; esto puede causar saltos visuales si dependes de 100vh. Existen
+                              técnicas y variables CSS modernas para mitigar esto (ej. usar <code>height: 100svh</code>
+                              cuando está disponible o calcular con JS).</li>
+                         <li>Remarca que <code>vw/vh</code> no tienen en cuenta la escala de la tipografía establecida
+                              por el usuario (pero sí cambian en zoom de página).</li>
+                    </ul>
+               </article>
+
+               <article class="card">
+                    <h2>5) Funciones: <code>clamp()</code>, <code>min()</code>, <code>max()</code></h2>
+                    <p>Estas funciones permiten expresar valores adaptativos combinando unidades. Son poderosas para
+                         crear tipografías y layouts fluidos sin necesidad de media queries.</p>
+
+                    <h3><code>clamp(min, preferred, max)</code></h3>
+                    <p>Devuelve un valor entre <code>min</code> y <code>max</code> que intenta usar
+                         <code>preferred</code> si está dentro del rango. Muy útil para tipografías fluidas.</p>
+                    <pre><code>/* Ejemplo: título que escala con el ancho, pero tiene límites */
+h1 { font-size: clamp(1.2rem, 2vw + 1rem, 3rem); }
+/* mínimo 1.2rem, preferible (2vw + 1rem), máximo 3rem */</code></pre>
+
+                    <h3><code>min()</code> y <code>max()</code></h3>
+                    <p>Seleccionan el menor o mayor valor entre los argumentos.</p>
+                    <pre><code>.box { width: min(80%, 900px); /* ancho será el menor entre 80% del contenedor o 900px */ }
+.container { padding: max(1rem, 2vw); /* padding será el mayor entre 1rem o 2vw */ }</code></pre>
+
+                    <h3>Casos de uso y ventajas</h3>
+                    <ul>
+                         <li><code>clamp()</code> es ideal para tipografías fluidas, paddings y gaps que deben crecer
+                              hasta un tope.</li>
+                         <li><code>min()/max()</code> combinadas con <code>vw/rem</code> permiten reglas simples que
+                              reaccionan al viewport sin media queries.</li>
+                    </ul>
+
+                    <h3>Compatibilidad</h3>
+                    <p class="small">Estas funciones tienen buena compatibilidad en navegadores modernos. Revisa caniuse
+                         si necesitas soporte para navegadores muy antiguos.</p>
+               </article>
+
+               <article class="card">
+                    <h2>Comparaciones rápidas</h2>
+                    <table>
+                         <thead>
+                              <tr>
+                                   <th>Unidad</th>
+                                   <th>Referencia</th>
+                                   <th>Mejor uso</th>
+                                   <th>Limitaciones</th>
+                              </tr>
+                         </thead>
+                         <tbody>
+                              <tr>
+                                   <td><code>px</code></td>
+                                   <td>pixeles de dispositivo</td>
+                                   <td>Bordes, iconos, precisión</td>
+                                   <td>No escala con la preferencia tipográfica del usuario</td>
+                              </tr>
+                              <tr>
+                                   <td><code>%</code></td>
+                                   <td>contenedor (padre)</td>
+                                   <td>anchos fluidos, imágenes responsive</td>
+                                   <td>Depende del padre; cuidado con alturas</td>
+                              </tr>
+                              <tr>
+                                   <td><code>em</code></td>
+                                   <td>tamaño del elemento</td>
+                                   <td>componentes que escalen por contexto</td>
+                                   <td>Anidamiento puede causar acumulación</td>
+                              </tr>
+                              <tr>
+                                   <td><code>rem</code></td>
+                                   <td>tamaño raíz (<code>html</code>)</td>
+                                   <td>sistemas de tipografía y espaciado global</td>
+                                   <td>afecta todo si cambias la raíz</td>
+                              </tr>
+                              <tr>
+                                   <td><code>vw/vh/vmin/vmax</code></td>
+                                   <td>viewport</td>
+                                   <td>layouts dependientes del viewport, hero full-screen</td>
+                                   <td>Móviles: UI del navegador afecta <code>vh</code></td>
+                              </tr>
+                              <tr>
+                                   <td><code>clamp/min/max</code></td>
+                                   <td>funciones combinadas</td>
+                                   <td>tipografía y espacios fluidos sin media queries</td>
+                                   <td>requiere navegadores modernos</td>
+                              </tr>
+                         </tbody>
+                    </table>
+               </article>
+
+               <article class="card">
+                    <h2>Buenas prácticas y recomendaciones</h2>
+                    <ol>
+                         <li><strong>Adopta <code>rem</code> para la base tipográfica</strong>: define
+                              <code>html{font-size}</code> y usa <code>rem</code> para tamaños globales (headers, body
+                              base, paddings globales).</li>
+                         <li><strong>Usa <code>em</code> para componentes</strong> (por ejemplo controles que deben
+                              escalar según su contexto).</li>
+                         <li><strong>Evita mezclar demasiado <code>px</code> para tipografías</strong> si te importa la
+                              accesibilidad; reserva <code>px</code> para elementos UI fijos.</li>
+                         <li><strong>Combina <code>clamp()</code> + <code>vw</code>/<code>rem</code></strong> para crear
+                              tipografías fluidas y controladas.</li>
+                         <li><strong>Para ancho de layout</strong>, prefiere porcentajes con <code>max-width</code> y
+                              límites en <code>px</code> o <code>rem</code>.</li>
+                         <li><strong>Ten en cuenta móviles</strong>: evita usar exactamente <code>100vh</code> para
+                              secciones que deben ocupar la pantalla completa en móviles — considera alternativas
+                              (<code>min-height</code>, <code>svh</code> cuando esté disponible).</li>
+                    </ol>
+               </article>
+
+               <article class="card">
+                    <h2>Ejemplos prácticos (plantillas)</h2>
+                    <p class="small">Copia y prueba estos fragmentos.</p>
+                    <div class="example">
+                         <strong>Tipografía fluida con clamp()</strong>
+                         <pre><code>html { font-size: 16px; }
+h1 { font-size: clamp(1.5rem, 4vw, 3rem); }
+body { font-size: 1rem; line-height: 1.6; }</code></pre>
+                    </div>
+
+                    <div class="example">
+                         <strong>Layout con % y max-width</strong>
+                         <pre><code>.container { width: 90%; max-width: 1200px; margin: 0 auto; }
+.sidebar { width: 30%; }
+.content { width: 70%; }</code></pre>
+                    </div>
+
+                    <div class="example">
+                         <strong>Componente que usa em para escalar localmente</strong>
+                         <pre><code>.card { font-size: 1rem; /* base local */ padding: 1.25em; }
+.card h3 { font-size: 1.25em; /* relativo a la card */ }</code></pre>
+                    </div>
+
+                    <div class="example">
+                         <strong>Hero full-screen con vh (cuidado en móviles)</strong>
+                         <pre><code>.hero { height: 100vh; display:flex; align-items:center; justify-content:center; }
+/* alternativa segura: min-height: 100vh; fallback con JS para móviles. */</code></pre>
+                    </div>
+               </article>
+
+               <article class="card">
+                    <h2>Trucos y tips avanzados</h2>
+                    <ul>
+                         <li>Si usas <code>clamp()</code> con <code>vw</code>, puedes evitar media queries para tamaños
+                              intermedios.</li>
+                         <li>Combina <code>min()</code> con <code>100%</code> y <code>px</code> para evitar que un
+                              elemento crezca más allá de cierto tope: <code>width: min(100%, 1200px)</code>.</li>
+                         <li>Para el problema de <code>100vh</code> en móviles, hoy existen unidades dinámicas como
+                              <code>svh</code>, <code>lvh</code>, <code>dvh</code> — úsalas si el navegador lo soporta,
+                              y deja fallback con <code>vh</code>.</li>
+                         <li>Cuando calcules transformaciones y subpíxeles, ten en cuenta el antialiasing y el redondeo
+                              del motor de render del navegador; a veces es preferible usar valores pares o escalas con
+                              <code>transform</code> para evitar bordes borrosos.</li>
+                    </ul>
+               </article>
+
+               <article class="card">
+                    <h2>Referencia rápida de conversión (orientativa)</h2>
+                    <p class="small">Conversión aproximada si <code>html{font-size:16px}</code>:</p>
+                    <table>
+                         <thead>
+                              <tr>
+                                   <th>Unidad</th>
+                                   <th>Equivalencia (aprox.)</th>
+                              </tr>
+                         </thead>
+                         <tbody>
+                              <tr>
+                                   <td><code>1rem</code></td>
+                                   <td>16px</td>
+                              </tr>
+                              <tr>
+                                   <td><code>0.875rem</code></td>
+                                   <td>14px</td>
+                              </tr>
+                              <tr>
+                                   <td><code>1em</code></td>
+                                   <td>depende del contexto (ej. si el elemento es 20px, 1em = 20px)</td>
+                              </tr>
+                              <tr>
+                                   <td><code>1vw</code></td>
+                                   <td>1% del ancho de la ventana (ej. ancho 1200px → 1vw = 12px)</td>
+                              </tr>
+                              <tr>
+                                   <td><code>1vh</code></td>
+                                   <td>1% de la altura del ventana</td>
+                              </tr>
+                         </tbody>
+                    </table>
+               </article>
+
+               <article class="card">
+                    <h2>Recursos y siguiente paso</h2>
+                    <ul>
+                         <li>Prueba interactiva: abre DevTools y cambia <code>html{font-size}</code> y verás cómo
+                              <code>rem</code> y <code>em</code> reaccionan.</li>
+                         <li>Recomendación: crea un pequeño proyecto (landing + hero + responsive) y aplica todas las
+                              unidades para ver diferencias en la práctica.</li>
+                         <li>Si quieres, te convierto esto en un PDF o en una plantilla práctica lista para probar —
+                              dime cuál prefieres.</li>
+                    </ul>
+               </article>
+
+          </section>
+     </div>
+</body>
+
+</html>

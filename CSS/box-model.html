@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>Guía Completa: Box Model y display en CSS</title>
+     <style>
+          /* Estilos generales para la guía */
+          :root {
+               --bg: #0f1724;
+               --card: #0b1220;
+               --accent: #06b6d4;
+               --muted: #94a3b8;
+               --white: #e6eef6
+          }
+
+          html,
+          body {
+               height: 100%;
+               margin: 0;
+               font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+               background: linear-gradient(180deg, #071029 0%, #071a2b 100%);
+               color: var(--white);
+          }
+
+          .wrap {
+               max-width: 1100px;
+               margin: 28px auto;
+               padding: 24px
+          }
+
+          header h1 {
+               margin: 0;
+               font-size: 28px
+          }
+
+          header p {
+               color: var(--muted);
+               margin-top: 6px
+          }
+
+          section.card {
+               background: rgba(255, 255, 255, 0.03);
+               border-radius: 12px;
+               padding: 18px;
+               margin-top: 18px;
+               box-shadow: 0 6px 20px rgba(2, 6, 23, 0.6)
+          }
+
+          h2 {
+               color: var(--accent);
+               margin-top: 0
+          }
+
+          pre {
+               background: #021224;
+               padding: 12px;
+               border-radius: 8px;
+               overflow: auto;
+               color: #dbeafe
+          }
+
+          /* Demo area styles */
+          .demo-row {
+               display: flex;
+               gap: 12px;
+               flex-wrap: wrap
+          }
+
+          .box {
+               background: #07223a;
+               padding: 10px;
+               border-radius: 8px;
+               color: var(--white);
+               min-width: 60px;
+               text-align: center
+          }
+
+          /* Visual helpers for the box-model demo */
+          .demo-frame {
+               background: #08131b;
+               padding: 18px;
+               border-radius: 12px;
+               display: flex;
+               gap: 18px;
+               align-items: flex-start
+          }
+
+          .target {
+               background: #0b2a3f;
+               border: 3px dashed rgba(255, 255, 255, 0.06);
+               padding: 0
+          }
+
+          .target .content {
+               background: #072238;
+               padding: 12px
+          }
+
+          .layer {
+               font-size: 12px;
+               padding: 6px;
+               border-radius: 6px;
+               opacity: 0.9
+          }
+
+          .layer.margin {
+               background: linear-gradient(90deg, #023047, #03506f)
+          }
+
+          .layer.border {
+               background: linear-gradient(90deg, #2a7a7b, #5aa6a8)
+          }
+
+          .layer.padding {
+               background: linear-gradient(90deg, #6ee7b7, #3ad29f)
+          }
+
+          .layer.content {
+               background: linear-gradient(90deg, #ffd166, #ffb703);
+               color: #022c2a
+          }
+
+          /* Display demos */
+          .display-demo {
+               background: #041423;
+               padding: 12px;
+               border-radius: 8px
+          }
+
+          .d-block {
+               display: block;
+               background: #0b3d5b;
+               padding: 10px;
+               margin-bottom: 8px
+          }
+
+          .d-inline {
+               display: inline;
+               background: #0b3d5b;
+               padding: 10px
+          }
+
+          .d-inline-block {
+               display: inline-block;
+               background: #144a6b;
+               padding: 10px;
+               width: 160px
+          }
+
+          .d-flex {
+               display: flex;
+               background: #06283d;
+               padding: 10px;
+               gap: 8px
+          }
+
+          .d-grid {
+               display: grid;
+               grid-template-columns: repeat(3, 1fr);
+               gap: 8px;
+               padding: 10px;
+               background: #06283d
+          }
+
+          /* Table for quick reference */
+          table {
+               width: 100%;
+               border-collapse: collapse;
+               margin-top: 12px
+          }
+
+          th,
+          td {
+               padding: 8px;
+               border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+               text-align: left
+          }
+
+          th {
+               color: var(--accent);
+          }
+
+          footer {
+               margin-top: 18px;
+               color: var(--muted);
+               font-size: 13px
+          }
+
+          /* Responsive small */
+          @media (max-width:700px) {
+               .demo-row {
+                    flex-direction: column
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <div class="wrap">
+          <header>
+               <h1>Guía completa del <em>Box Model</em> y valores importantes de <code>display</code> (HTML/CSS)</h1>
+               <p>Explicación detallada, ejemplos visuales y notas prácticas — todo en un solo archivo HTML para
+                    experimentar.</p>
+          </header>
+
+          <section class="card" id="introduccion">
+               <h2>Introducción rápida</h2>
+               <p>En CSS cada elemento se representa como una caja (box). El <strong>Box Model</strong> define cómo se
+                    calculan el tamaño y el espacio alrededor de esa caja. Entenderlo es crucial para controlar diseños,
+                    evitar problemas de colapso y crear interfaces consistentes.</p>
+          </section>
+
+          <section class="card" id="componentes">
+               <h2>Componentes del Box Model</h2>
+               <ol>
+                    <li><strong>content</strong> — el área donde va el texto o contenido.</li>
+                    <li><strong>padding</strong> — espacio entre el contenido y el borde (interior).</li>
+                    <li><strong>border</strong> — borde alrededor del padding (puede tener grosor, estilo y color).</li>
+                    <li><strong>margin</strong> — espacio exterior que separa la caja de otras cajas.</li>
+               </ol>
+
+               <div class="demo-frame">
+                    <div style="flex:1">
+                         <p style="color:var(--muted)">Demostración visual (lee las etiquetas):</p>
+                         <div style="padding:14px;background:#021828;border-radius:10px">
+                              <div class="layer margin">margin (externo)</div>
+                              <div style="margin-top:8px;padding:8px;background:transparent;border-radius:6px">
+                                   <div class="layer border">border (p. ej. 8px solid)</div>
+                                   <div style="margin-top:8px;padding:8px;background:transparent">
+                                        <div class="layer padding">padding (interior)</div>
+                                        <div style="margin-top:8px">
+                                             <div class="layer content">content (texto, imagen, etc.)</div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+
+                    <div style="width:420px">
+                         <p style="color:var(--muted)">Ejemplo práctico con una caja:</p>
+                         <div style="background:#021824;padding:12px;border-radius:10px">
+                              <div class="target" style="margin:18px;">
+                                   <div class="layer margin">margin: 18px</div>
+                                   <div style="border:6px solid rgba(90,170,180,0.6)">
+                                        <div class="layer border">border: 6px solid</div>
+                                        <div style="padding:16px">
+                                             <div class="layer padding">padding: 16px</div>
+                                             <div style="margin-top:8px">
+                                                  <div class="layer content">content: width & height</div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+               <h3>Clave: ¿Qué mide <code>width</code> y <code>height</code>?</h3>
+               <p>Por defecto (<code>box-sizing: content-box</code>) <strong>width/height</strong> se aplican solo al
+                    <em>content</em>. El <code>padding</code> y <code>border</code> se suman al tamaño total. Con
+                    <code>box-sizing: border-box</code> el <code>width</code> incluye content + padding + border (pero
+                    no margin).</p>
+
+               <pre><code>&lt;div class="caja" style="width:200px;height:100px;padding:20px;border:4px solid"&gt;
+  /* content = 200x100 */
+&lt;/div&gt;
+
+/* si box-sizing: content-box */
+/* tamaño total = width + 2*padding + 2*border = 200 + 40 + 8 = 248px ancho */
+
+/* si box-sizing: border-box */
+/* content ya reducido para encajar en 200x100 incluyendo padding/border */
+</code></pre>
+          </section>
+
+          <section class="card" id="box-sizing">
+               <h2><code>box-sizing</code></h2>
+               <p>Valores principales:</p>
+               <ul>
+                    <li><code>content-box</code> (por defecto): <code>width</code> y <code>height</code> aplican solo al
+                         contenido.</li>
+                    <li><code>border-box</code>: incluye padding y border dentro del <code>width</code> /
+                         <code>height</code>. Muy usado porque facilita layouts.</li>
+                    <li><code>padding-box</code> (soporte limitado): incluye padding, pero no border.</li>
+               </ul>
+
+               <p>Sugerencia práctica (reset común):</p>
+               <pre><code>:root, * { box-sizing: border-box; }</code></pre>
+
+               <p>Ejemplo visual rápido:</p>
+               <div class="demo-row">
+                    <div style="flex:1">
+                         <p style="color:var(--muted)">content-box (por defecto)</p>
+                         <div style="background:#021724;padding:12px;border-radius:8px">
+                              <div style="width:200px;padding:20px;border:6px solid #2a7a7b">Caja</div>
+                              <p style="color:var(--muted);font-size:13px;margin-top:8px">El ancho real = 200 + 40 + 12
+                              </p>
+                         </div>
+                    </div>
+                    <div style="flex:1">
+                         <p style="color:var(--muted)">border-box</p>
+                         <div style="background:#021724;padding:12px;border-radius:8px">
+                              <div style="box-sizing:border-box;width:200px;padding:20px;border:6px solid #2a7a7b">Caja
+                              </div>
+                              <p style="color:var(--muted);font-size:13px;margin-top:8px">El ancho total = 200px</p>
+                         </div>
+                    </div>
+               </div>
+          </section>
+
+          <section class="card" id="display">
+               <h2>El valor <code>display</code> y el flujo visual</h2>
+               <p>El comportamiento de una caja en el contexto del documento depende de <code>display</code>. Aquí
+                    cubrimos los más importantes y sus efectos:</p>
+
+               <table>
+                    <thead>
+                         <tr>
+                              <th>Valor</th>
+                              <th>Descripción</th>
+                              <th>Notas prácticas</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                         <tr>
+                              <td><code>block</code></td>
+                              <td>Ocupa toda la línea horizontal. Comienza en nueva línea.</td>
+                              <td>Anchura por defecto: 100% del contenedor (si no se especifica width).</td>
+                         </tr>
+                         <tr>
+                              <td><code>inline</code></td>
+                              <td>Fluye en línea con texto. Solo acepta margen horizontal y padding horizontal de forma
+                                   predecible.</td>
+                              <td>No respeta <code>width/height</code> en la mayoría de casos; respeta
+                                   <code>line-height</code>.</td>
+                         </tr>
+                         <tr>
+                              <td><code>inline-block</code></td>
+                              <td>Combinación: se comporta como inline en el flujo, pero acepta width/height.</td>
+                              <td>Útil para botones o elementos que deben alinearse en línea y tener tamaño.</td>
+                         </tr>
+                         <tr>
+                              <td><code>none</code></td>
+                              <td>No se representa (oculto), no ocupa espacio.</td>
+                              <td>Usado para ocultar elementos sin eliminarlos del DOM.</td>
+                         </tr>
+                         <tr>
+                              <td><code>flex</code></td>
+                              <td>Crea un flex formatting context. Control poderoso de alineación y distribución en un
+                                   eje.</td>
+                              <td>Es el estándar para estructuras unidireccionales (filas/columnas).</td>
+                         </tr>
+                         <tr>
+                              <td><code>grid</code></td>
+                              <td>Layouts bidimensionales (filas + columnas) controlados por la propia caja.</td>
+                              <td>Excelente para layouts complejos y áreas macro.</td>
+                         </tr>
+                         <tr>
+                              <td><code>table / table-row / table-cell</code></td>
+                              <td>Valores que imitan el comportamiento de tablas HTML.</td>
+                              <td>Útil para alineación tipo tabla sin usar &lt;table&gt;.</td>
+                         </tr>
+                    </tbody>
+               </table>
+
+               <h3>Ejemplos visuales</h3>
+               <div class="display-demo">
+                    <p style="color:var(--muted)">block (cada elemento en nueva línea)</p>
+                    <div class="d-block">Elemento A (block)</div>
+                    <div class="d-block">Elemento B (block)</div>
+
+                    <p style="color:var(--muted);margin-top:12px">inline (fluyen en la misma línea)</p>
+                    <div class="d-inline">inline 1</div>
+                    <div class="d-inline">inline 2</div>
+
+                    <p style="color:var(--muted);margin-top:12px">inline-block (alineados en línea, con tamaño)</p>
+                    <div class="d-inline-block">inline-block ancho fijo</div>
+                    <div class="d-inline-block">inline-block ancho fijo</div>
+
+                    <p style="color:var(--muted);margin-top:12px">flex (control en eje)</p>
+                    <div class="d-flex">
+                         <div class="box">Item 1</div>
+                         <div class="box">Item 2</div>
+                         <div class="box">Item 3</div>
+                    </div>
+
+                    <p style="color:var(--muted);margin-top:12px">grid (rejilla)</p>
+                    <div class="d-grid">
+                         <div class="box">1</div>
+                         <div class="box">2</div>
+                         <div class="box">3</div>
+                         <div class="box">4</div>
+                         <div class="box">5</div>
+                         <div class="box">6</div>
+                    </div>
+               </div>
+
+               <h3>Detalles y consideraciones</h3>
+               <ul>
+                    <li><strong>Block formatting context (BFC):</strong> ciertos valores (<code>overflow</code> distinto
+                         de visible, <code>display:flex/grid</code>, <code>float</code>) crean un BFC que aísla márgenes
+                         colapsantes y contiene floats.</li>
+                    <li><strong>Márgenes colapsantes:</strong> dos márgenes verticales adyacentes (padre-hijo o
+                         hermanos) pueden colapsar al mayor de los dos en lugar de sumarse — entender esto evita
+                         sorpresas.</li>
+                    <li><strong>Replaced elements:</strong> &lt;img&gt;, &lt;video&gt;, &lt;input&gt; son "replaced" y
+                         su comportamiento con ancho/alto puede diferir.</li>
+                    <li><strong>Vertical-align:</strong> afecta elementos inline/inline-block; no es lo mismo que flex
+                         alignment.</li>
+                    <li><strong>Whitespace:</strong> los elementos inline/inline-block interpretan espacios en el HTML —
+                         a veces hay que eliminarlos con comentarios o CSS.</li>
+               </ul>
+          </section>
+
+          <section class="card" id="resumen">
+               <h2>Resumen práctico / Cheatsheet</h2>
+               <table>
+                    <tr>
+                         <th>Propiedad</th>
+                         <th>Qué hace</th>
+                    </tr>
+                    <tr>
+                         <td><code>width, height</code></td>
+                         <td>Definen tamaño del content (a menos que box-sizing sea border-box).</td>
+                    </tr>
+                    <tr>
+                         <td><code>padding</code></td>
+                         <td>Espacio interior; aumenta el tamaño si box-sizing: content-box.</td>
+                    </tr>
+                    <tr>
+                         <td><code>border</code></td>
+                         <td>Contorno. También aumenta tamaño con content-box.</td>
+                    </tr>
+                    <tr>
+                         <td><code>margin</code></td>
+                         <td>Espacio exterior. Puede colapsar verticalmente con otros márgenes.</td>
+                    </tr>
+                    <tr>
+                         <td><code>box-sizing</code></td>
+                         <td>Controla si width incluye padding/border.</td>
+                    </tr>
+                    <tr>
+                         <td><code>display</code></td>
+                         <td>Determina flujo y reglas de formateo (block, inline, inline-block, flex, grid, none...)
+                         </td>
+                    </tr>
+               </table>
+
+               <p style="color:var(--muted);margin-top:8px">Consejo: aplica
+                    <code>*, *::before, *::after { box-sizing: border-box; }</code> al comienzo de tu CSS para evitar
+                    cálculos mentales y ahorrar bugs de tamaño.</p>
+          </section>
+
+          <footer>
+               <p>Archivo creado para aprender y experimentar. Puedes copiar este HTML a un archivo
+                    <code>box-model.html</code> y abrirlo localmente para ver y modificar los ejemplos.</p>
+          </footer>
+     </div>
+</body>
+
+</html>

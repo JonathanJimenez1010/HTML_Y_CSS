@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Selectores y Especificidad en CSS</title>
+     <style>
+          body {
+               font-family: Arial, sans-serif;
+               line-height: 1.7;
+               padding: 30px;
+               background: #f7f7f7;
+          }
+
+          h1,
+          h2,
+          h3 {
+               color: #333;
+          }
+
+          code {
+               background: #e8e8e8;
+               padding: 2px 5px;
+               border-radius: 5px;
+          }
+
+          pre {
+               background: #222;
+               color: #00ff95;
+               padding: 15px;
+               border-radius: 10px;
+               overflow-x: auto;
+          }
+
+          .section {
+               background: white;
+               padding: 20px;
+               margin-bottom: 25px;
+               border-radius: 10px;
+               box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+          }
+     </style>
+</head>
+
+<body>
+
+     <h1>CSS: Selectores, Especificidad, Cascada y Herencia</h1>
+
+     <!-- SELECTORES AVANZADOS -->
+     <div class="section">
+          <h2>1. Selectores avanzados</h2>
+          <p>Los selectores avanzados permiten seleccionar elementos con relaciones más específicas.</p>
+
+          <h3>Selector universal: <code>*</code></h3>
+          <p>Selecciona todos los elementos del documento.</p>
+          <pre>* { margin: 0; padding: 0; }</pre>
+
+          <h3>Selector descendiente: <code>div p</code></h3>
+          <p>Selecciona todos los <code>&lt;p&gt;</code> que están dentro de un <code>&lt;div&gt;</code>, sin importar
+               cuán profundos.</p>
+          <pre>div p { color: blue; }</pre>
+
+          <h3>Selector de hijo directo: <code>div > p</code></h3>
+          <p>Selecciona solo los párrafos que son hijos inmediatos del div.</p>
+          <pre>div > p { font-weight: bold; }</pre>
+
+          <h3>Selector de hermano adyacente: <code>div + p</code></h3>
+          <p>Selecciona el primer <code>&lt;p&gt;</code> que aparece justo después de un <code>&lt;div&gt;</code>.</p>
+          <pre>div + p { color: red; }</pre>
+
+          <h3>Selector de hermanos generales: <code>div ~ p</code></h3>
+          <p>Selecciona todos los <code>&lt;p&gt;</code> que son hermanos posteriores del div.</p>
+          <pre>div ~ p { color: green; }</pre>
+     </div>
+
+
+     <!-- PSEUDOCLASES -->
+     <div class="section">
+          <h2>2. Pseudoclases</h2>
+          <p>Se aplican a ciertos estados de los elementos.</p>
+
+          <h3><code>:hover</code></h3>
+          <p>Cuando el ratón pasa por encima.</p>
+          <pre>a:hover { color: orange; }</pre>
+
+          <h3><code>:active</code></h3>
+          <p>Cuando el elemento está siendo presionado.</p>
+          <pre>a:active { color: red; }</pre>
+
+          <h3><code>:focus</code></h3>
+          <p>Cuando el elemento está enfocado (inputs, botones, etc).</p>
+          <pre>input:focus { border-color: blue; }</pre>
+
+          <h3><code>:nth-child(n)</code></h3>
+          <p>Selecciona el hijo número <code>n</code> de su contenedor.</p>
+          <pre>li:nth-child(2) { background: yellow; }</pre>
+     </div>
+
+
+     <!-- PSEUDOELEMENTOS -->
+     <div class="section">
+          <h2>3. Pseudoelementos</h2>
+          <p>Crean o seleccionan partes específicas de un elemento.</p>
+
+          <h3><code>::before</code></h3>
+          <p>Inserta contenido antes del elemento.</p>
+          <pre>p::before { content: "👉 "; }</pre>
+
+          <h3><code>::after</code></h3>
+          <p>Inserta contenido después del elemento.</p>
+          <pre>p::after { content: " ✔"; }</pre>
+     </div>
+
+
+     <!-- ESPECIFICIDAD -->
+     <div class="section">
+          <h2>4. Especificidad en CSS</h2>
+          <p>Define qué regla tiene más peso cuando dos estilos afectan al mismo elemento.</p>
+
+          <h3>Valores de especificidad:</h3>
+          <ul>
+               <li><strong>Estilos inline:</strong> 1000</li>
+               <li><strong>IDs (#id):</strong> 100</li>
+               <li><strong>Clases (.class), pseudoclases:</strong> 10</li>
+               <li><strong>Elementos (p, div), pseudoelementos:</strong> 1</li>
+               <li><strong>*</strong> → 0 (no suma especificidad)</li>
+          </ul>
+
+          <h3>Ejemplo:</h3>
+          <pre>
+p { color: blue; }       → especificidad 1
+.texto { color: red; }    → especificidad 10
+#principal { color: green; } → especificidad 100
+        </pre>
+
+          <p>Resultado final: el color será <strong>verde</strong>.</p>
+     </div>
+
+
+     <!-- CASCADA -->
+     <div class="section">
+          <h2>5. La cascada</h2>
+          <p>CSS aplica las reglas siguiendo este orden:</p>
+          <ol>
+               <li>Importancia (user-agent, usuario, autor)</li>
+               <li>Especificidad</li>
+               <li>Orden de aparición (la última regla gana)</li>
+          </ol>
+
+          <pre>
+p { color: blue; }
+p { color: red; }  ← gana porque está última
+        </pre>
+     </div>
+
+
+     <!-- HERENCIA -->
+     <div class="section">
+          <h2>6. Herencia (Inheritance)</h2>
+          <p>Algunas propiedades se heredan automáticamente a los hijos.</p>
+
+          <h3>Propiedades que sí se heredan:</h3>
+          <ul>
+               <li>color</li>
+               <li>font-family</li>
+               <li>line-height</li>
+               <li>text-align</li>
+          </ul>
+
+          <h3>Propiedades que NO se heredan:</h3>
+          <ul>
+               <li>margin</li>
+               <li>padding</li>
+               <li>border</li>
+               <li>width / height</li>
+          </ul>
+
+          <pre>
+body { color: blue; }
+p { /* será azul por herencia */ }
+        </pre>
+     </div>
+
+</body>
+
+</html>

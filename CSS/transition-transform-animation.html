@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>Transiciones, Transformaciones y Animaciones CSS — Guía y Demo</title>
+     <style>
+          /* -------------------------
+       Estilos generales
+       ------------------------- */
+          :root {
+               --bg: #0f1724;
+               --card: #0b1220;
+               --accent: #60a5fa;
+               --muted: #94a3b8;
+               --glass: rgba(255, 255, 255, 0.03);
+               --radius: 14px;
+               --pad: 18px;
+          }
+
+          * {
+               box-sizing: border-box
+          }
+
+          body {
+               font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+               margin: 0;
+               padding: 32px;
+               background: linear-gradient(180deg, #071027 0%, #07131b 100%);
+               color: #e6eef8;
+               -webkit-font-smoothing: antialiased;
+               -moz-osx-font-smoothing: grayscale;
+          }
+
+          h1,
+          h2 {
+               margin: 0 0 12px 0
+          }
+
+          .wrap {
+               max-width: 1100px;
+               margin: 0 auto;
+               display: grid;
+               grid-template-columns: 1fr 420px;
+               gap: 24px
+          }
+
+          .card {
+               background: var(--card);
+               border-radius: var(--radius);
+               padding: var(--pad);
+               box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6)
+          }
+
+          p.lead {
+               color: var(--muted);
+               margin-top: 6px
+          }
+
+          /* -------------------------
+       Panel izquierdo: explicaciones y snippets
+       ------------------------- */
+          .content {
+               overflow: auto;
+               padding-right: 8px
+          }
+
+          pre {
+               background: rgba(0, 0, 0, 0.15);
+               padding: 12px;
+               border-radius: 10px;
+               overflow: auto;
+               font-size: 13px
+          }
+
+          code {
+               font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace
+          }
+
+          section {
+               margin-bottom: 22px
+          }
+
+          /* -------------------------
+       Demo (panel derecho)
+       ------------------------- */
+          .demo-col {
+               position: sticky;
+               top: 30px
+          }
+
+          .demo-grid {
+               display: grid;
+               gap: 12px
+          }
+
+          .box {
+               background: var(--glass);
+               border-radius: 12px;
+               padding: 18px;
+               min-height: 84px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               color: var(--accent);
+               font-weight: 700
+          }
+
+          /* Example: Transitions */
+          .trans-demo {
+               display: flex;
+               gap: 12px;
+               align-items: center
+          }
+
+          .trans-square {
+               width: 88px;
+               height: 88px;
+               background: linear-gradient(135deg, #60a5fa, #7c3aed);
+               border-radius: 10px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               color: white;
+               transition: transform 300ms ease, box-shadow 250ms ease, border-radius 200ms ease;
+               will-change: transform;
+          }
+
+          .trans-square:hover {
+               transform: translateY(-10px) scale(1.06);
+               box-shadow: 0 18px 40px rgba(96, 165, 250, 0.14);
+               border-radius: 18px
+          }
+
+          /* Example: Transform functions */
+          .xform-wrap {
+               display: flex;
+               gap: 12px;
+               align-items: center;
+               flex-wrap: wrap
+          }
+
+          .xform-card {
+               width: 120px;
+               height: 120px;
+               background: #0b1228;
+               border-radius: 12px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               color: #e6eef8
+          }
+
+          /* Example: Animation demos */
+          .spin {
+               width: 84px;
+               height: 84px;
+               border-radius: 50%;
+               border: 6px solid rgba(255, 255, 255, 0.06);
+               border-top-color: var(--accent);
+               animation: spin 1s linear infinite
+          }
+
+          .bounce {
+               width: 84px;
+               height: 84px;
+               background: linear-gradient(135deg, #fda4af, #fb7185);
+               border-radius: 12px;
+               animation: bounce 900ms cubic-bezier(.2, .9, .3, 1) infinite
+          }
+
+          .slide-in {
+               min-width: 180px;
+               padding: 12px 16px;
+               border-radius: 10px;
+               background: linear-gradient(90deg, #06b6d4, #3b82f6);
+               color: white;
+               animation: slideIn 650ms cubic-bezier(.2, .8, .2, 1) both
+          }
+
+          /* Keyframes (más abajo también se documentan) */
+          @keyframes spin {
+               to {
+                    transform: rotate(360deg)
+               }
+          }
+
+          @keyframes bounce {
+               0% {
+                    transform: translateY(0)
+               }
+
+               50% {
+                    transform: translateY(-18px)
+               }
+
+               100% {
+                    transform: translateY(0)
+               }
+          }
+
+          @keyframes slideIn {
+               from {
+                    opacity: 0;
+                    transform: translateY(10px)
+               }
+
+               to {
+                    opacity: 1;
+                    transform: none
+               }
+          }
+
+          /* Controls area */
+          .controls {
+               display: flex;
+               gap: 8px;
+               flex-wrap: wrap;
+               align-items: center
+          }
+
+          label {
+               font-size: 13px;
+               color: var(--muted)
+          }
+
+          select,
+          input[type=range] {
+               background: transparent;
+               border: 1px solid rgba(255, 255, 255, 0.06);
+               color: inherit;
+               padding: 8px;
+               border-radius: 8px
+          }
+
+          /* Accessibility: respect reduced motion */
+          @media (prefers-reduced-motion: reduce) {
+
+               .trans-square,
+               .spin,
+               .bounce,
+               .slide-in {
+                    transition: none !important;
+                    animation: none !important
+               }
+          }
+
+          /* Small screens */
+          @media (max-width:980px) {
+               .wrap {
+                    grid-template-columns: 1fr;
+               }
+
+               .demo-col {
+                    position: static
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <div class="wrap">
+          <div class="card content">
+               <h1>Transiciones, Transformaciones y Animaciones en CSS</h1>
+               <p class="lead">Esta página recoge una referencia completa, ejemplos prácticos y buenas prácticas sobre
+                    <strong>transition</strong>, <strong>transform</strong> (scale, rotate, translate...) y
+                    <strong>animation / @keyframes</strong>. Incluye demos interactivos y recomendaciones de
+                    accesibilidad y rendimiento.</p>
+
+               <!-- =================== TRANSITIONS =================== -->
+               <section>
+                    <h2>1) <code>transition</code> — transiciones suaves</h2>
+                    <p>Las transiciones permiten interpolar cambios entre un estado inicial y otro de propiedades CSS
+                         cuando estas cambian (por hover, foco, cambio de clase, JS...).</p>
+
+                    <h3>Sintaxis</h3>
+                    <pre><code>/* forma larga */
+transition-property: <em>property</em>;
+transition-duration: <em>time</em>;
+transition-timing-function: <em>timing-function</em>;
+transition-delay: <em>time</em>;
+
+/* shorthand */
+transition: <em>property</em> <em>duration</em> <em>timing-function</em> <em>delay</em>;
+</code></pre>
+
+                    <h3>Ejemplos útiles</h3>
+                    <pre><code>/* transición simple al cambiar transform y box-shadow */
+.trans-square{ transition: transform 300ms ease, box-shadow 200ms ease; }
+
+/* transición para cualquier propiedad modificada: */
+.btn{ transition: all 180ms cubic-bezier(.2,.8,.2,1); }
+</code></pre>
+
+                    <h3>Consejos</h3>
+                    <ul>
+                         <li>Prefiere declarar las propiedades que animarás en vez de usar <code>all</code> (mejor
+                              rendimiento).</li>
+                         <li>Usa <code>will-change</code> con moderación para avisar al navegador de próximas
+                              animaciones y lograr aceleración por GPU.</li>
+                         <li>Combina con <code>prefers-reduced-motion</code> para respetar la accesibilidad.</li>
+                    </ul>
+               </section>
+
+               <!-- =================== TRANSFORM =================== -->
+               <section>
+                    <h2>2) <code>transform</code> — scale, rotate, translate y combinaciones</h2>
+                    <p><code>transform</code> permite aplicar transformaciones 2D/3D al elemento. Las transformaciones
+                         no afectan el flujo del documento (el elemento se redibuja transformado).</p>
+
+                    <h3>Funciones principales</h3>
+                    <pre><code>scale(sx [, sy])       /* escala en X e Y */
+rotate(<angle>)          /* rotación en grados (deg) o rad */
+translate(tx [, ty])    /* movimiento en px, %, em, etc. */
+translateX(), translateY(), translateZ()
+
+/* 3D */
+rotateX(), rotateY(), rotateZ(), perspective(), translateZ()
+
+/* combinarlas: */
+transform: translateX(10px) rotate(12deg) scale(1.08);
+</code></pre>
+
+                    <h3>Ejemplos prácticos</h3>
+                    <pre><code>/* Scale (agrandar/reducir) */
+.card:hover{ transform: scale(1.05); }
+
+/* Rotate (girar) */
+.icon{ transform: rotate(45deg); }
+
+/* Translate (mover) */
+.toast{ transform: translateY(-8px); }
+
+/* Combinado */
+.btn:hover{ transform: translateY(-6px) rotate(-2deg) scale(1.03); }
+</code></pre>
+
+                    <h3><code>transform-origin</code></h3>
+                    <p>Controla el punto de referencia para rotaciones y escalados (por defecto: <code>50% 50%</code> —
+                         centro). Ejemplos:</p>
+                    <pre><code>transform-origin: center;
+transform-origin: 10% 90%; /* x y */
+</code></pre>
+
+                    <h3>Notas sobre 2D vs 3D y rendimiento</h3>
+                    <ul>
+                         <li>Transformaciones 3D (ej. <code>translateZ</code> o <code>rotateY</code>) pueden activar la
+                              GPU para un render más suave.</li>
+                         <li>Evita animar propiedades que disparen reflow (layout) como <code>width</code> o
+                              <code>left</code> si buscas suavidad; usa <code>transform</code> y <code>opacity</code>
+                              cuando sea posible.</li>
+                    </ul>
+               </section>
+
+               <!-- =================== ANIMATIONS =================== -->
+               <section>
+                    <h2>3) <code>animation</code> y <code>@keyframes</code></h2>
+                    <p>Las animaciones te permiten definir secuencias complejas cuadro-a-cuadro con
+                         <code>@keyframes</code> y aplicarlas mediante propiedades de animación.</p>
+
+                    <h3>Sintaxis y propiedades principales</h3>
+                    <pre><code>@keyframes nombre { 0% { ... } 50% { ... } 100% { ... } }
+
+/* propiedades */
+animation-name: nombre;
+animation-duration: 1s; /* obligatorio para que ocurra */
+animation-timing-function: ease|linear|steps()|cubic-bezier(...);
+animation-delay: 0s;
+animation-iteration-count: 1|infinite|n;
+animation-direction: normal|reverse|alternate|alternate-reverse;
+animation-fill-mode: none|forwards|backwards|both;
+animation-play-state: running|paused;
+
+/* shorthand */
+animation: <name> <duration> <timing-function> <delay> <iteration-count> <direction> <fill-mode>;
+</code></pre>
+
+                    <h3>Ejemplos de <code>@keyframes</code></h3>
+                    <pre><code>/* 1 - Giro continuo */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 2 - Rebote simple */
+@keyframes bounce { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-18px) } }
+
+/* 3 - Slide in */
+@keyframes slideIn { from { opacity:0; transform: translateY(10px) } to { opacity:1; transform:none } }
+
+/* 4 - "Typewriter" con steps() */
+@keyframes typing { from { width:0 } to { width: 16ch } }
+</code></pre>
+
+                    <h3>Propiedades importantes explicadas</h3>
+                    <ul>
+                         <li><strong>animation-duration</strong>: tiempo total de la animación.</li>
+                         <li><strong>animation-timing-function</strong>: controla la aceleración (p. ej.
+                              <code>cubic-bezier(.2,.9,.25,1)</code>, <code>steps(5, end)</code>).</li>
+                         <li><strong>animation-iteration-count</strong>: cuántas veces se ejecuta (o
+                              <code>infinite</code>).</li>
+                         <li><strong>animation-fill-mode</strong>: qué estilo mantiene el elemento antes o después de la
+                              animación (<code>forwards</code> hace que el elemento conserve el estado final).</li>
+                         <li><strong>animation-play-state</strong>: permite pausar/reanudar con JS.</li>
+                    </ul>
+
+                    <h3>Uso de <code>steps()</code> para animaciones tipo frame-by-frame</h3>
+                    <pre><code>/* útil para sprites o efecto máquina de escribir */
+.element{ animation: blink 1s steps(2, end) infinite }
+</code></pre>
+
+                    <h3>Combinar múltiples animaciones</h3>
+                    <pre><code>.el{ animation: spin 1s linear infinite, pulse 2s ease-in-out infinite; }
+</code></pre>
+
+                    <h3>Control desde JavaScript</h3>
+                    <pre><code>const el = document.querySelector('.box');
+el.style.animationPlayState = 'paused';
+el.style.animationPlayState = 'running';
+</code></pre>
+
+                    <h3>Accesibilidad</h3>
+                    <p>Respeta la preferencia del usuario con <code>@media (prefers-reduced-motion: reduce)</code> para
+                         desactivar o simplificar animaciones y evitar mareos o molestias.</p>
+
+               </section>
+
+               <!-- =================== MEJORES PRACTICAS =================== -->
+               <section>
+                    <h2>4) Mejores prácticas y rendimiento</h2>
+                    <ul>
+                         <li>Prioriza animar <code>transform</code> y <code>opacity</code> por rendimiento.</li>
+                         <li>Usa <code>will-change</code> solo en elementos que realmente lo necesiten y no de forma
+                              global: <code>will-change: transform;</code>.</li>
+                         <li>Evita usar demasiadas animaciones simultáneas en dispositivos con poca potencia.</li>
+                         <li>Proporciona controles para pausar animaciones intensas si el caso de uso lo requiere.</li>
+                         <li>Usa <code>animation-fill-mode: both</code> para animaciones de entrada si quieres mantener
+                              el estado final interactivamente.</li>
+                    </ul>
+
+                    <h3>Compatibilidad</h3>
+                    <p>Las propiedades principales están ampliamente soportadas. En casos muy antiguos podrías necesitar
+                         prefijos (-webkit-) para ciertos navegadores viejos, pero hoy en día en la mayoría de proyectos
+                         modernos no es necesario.</p>
+               </section>
+
+               <!-- =================== EJEMPLOS DE CÓDIGO LISTOS PARA COPIAR =================== -->
+               <section>
+                    <h2>5) Snippets listos para copiar</h2>
+                    <pre><code>/* Botón con transición y transform */
+.btn{ transition: transform 220ms cubic-bezier(.2,.9,.25,1), box-shadow 220ms; }
+.btn:hover{ transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 30px rgba(2,6,23,0.6); }
+
+/* Reproducción controlada desde JS */
+.el{ animation: fadeIn 600ms ease both; }
+.el.paused{ animation-play-state: paused; }
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce){ .btn, .el{ transition:none; animation:none } }
+</code></pre>
+               </section>
+
+          </div><!-- /content -->
+
+          <!-- =================== PANEL DEMO =================== -->
+          <aside class="demo-col">
+               <div class="card">
+                    <h2>Demo interactiva</h2>
+                    <p class="lead">Pasa el cursor sobre los bloques o cambia las opciones para ver cómo funcionan las
+                         propiedades.</p>
+
+                    <div class="demo-grid">
+                         <div>
+                              <h3>Transition (hover)</h3>
+                              <div class="trans-demo" style="margin-top:10px">
+                                   <div class="trans-square">hover</div>
+                                   <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+                                        <label>Ejemplo de <code>transform</code> + <code>box-shadow</code></label>
+                                        <small class="lead">transition: transform 300ms ease, box-shadow 250ms
+                                             ease</small>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <div>
+                              <h3>Transforms</h3>
+                              <div class="xform-wrap" style="margin-top:10px">
+                                   <div class="xform-card" style="transform:scale(1)">normal</div>
+                                   <div class="xform-card" style="transform:scale(1.12) rotate(6deg)">scale+rot</div>
+                                   <div class="xform-card" style="transform:translateY(-10px) rotate(-4deg)">trans+rot
+                                   </div>
+                              </div>
+                         </div>
+
+                         <div>
+                              <h3>Animations</h3>
+                              <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
+                                   <div class="spin" title="spin"></div>
+                                   <div class="bounce" title="bounce"></div>
+                                   <div class="slide-in" title="slide in">¡Hola!</div>
+                              </div>
+                         </div>
+
+                         <div>
+                              <h3>Controles</h3>
+                              <div class="controls" style="margin-top:10px">
+                                   <label for="speed">Velocidad spin</label>
+                                   <input id="speed" type="range" min="0.2" max="3" step="0.05" value="1">
+                                   <button id="pauseBtn" style="padding:8px;border-radius:8px">Pausar/Reanudar</button>
+                              </div>
+                         </div>
+
+                    </div>
+
+               </div>
+          </aside>
+     </div>
+
+     <script>
+          // Demo: controlar la velocidad del spin y pausar/reanudar
+          const spinEl = document.querySelector('.spin');
+          const speed = document.getElementById('speed');
+          const pauseBtn = document.getElementById('pauseBtn');
+
+          speed.addEventListener('input', (e) => {
+               const v = e.target.value;
+               spinEl.style.animationDuration = v + 's';
+          });
+
+          pauseBtn.addEventListener('click', () => {
+               const state = getComputedStyle(spinEl).animationPlayState;
+               spinEl.style.animationPlayState = (state === 'running') ? 'paused' : 'running';
+          });
+
+          // Accesibilidad: desactivar animaciones si prefers-reduced-motion está activo
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+               document.querySelectorAll('*').forEach(el => {
+                    el.style.animation = 'none';
+                    el.style.transition = 'none';
+               });
+          }
+     </script>
+
+     <!-- ===== Notas finales ===== -->
+     <!-- Esta página está pensada para servir como guía y como plantilla de ejemplos listos para copiar.
+       Si quieres, te puedo generar el mismo contenido pero separado en archivos (index.html + styles.css)
+       o un PDF con la guía resumida. -->
+</body>
+
+</html>

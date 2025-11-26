@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Variables y Funciones Modernas en CSS</title>
+     <style>
+          body {
+               font-family: Arial, sans-serif;
+               background: #f4f4f4;
+               padding: 20px;
+               line-height: 1.6;
+               color: #222;
+          }
+
+          h1,
+          h2,
+          h3 {
+               color: #333;
+          }
+
+          code {
+               background: #eee;
+               padding: 3px 6px;
+               border-radius: 4px;
+          }
+
+          pre {
+               background: #222;
+               color: #0f0;
+               padding: 15px;
+               border-radius: 6px;
+               overflow-x: auto;
+          }
+
+          .box {
+               background: white;
+               padding: 20px;
+               border-radius: 10px;
+               margin-bottom: 20px;
+               box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+          }
+     </style>
+</head>
+
+<body>
+
+     <h1>Variables y Funciones Modernas en CSS</h1>
+     <p>En esta página encontrarás TODO lo relacionado con variables CSS, la función <code>var()</code>, y las funciones
+          matemáticas modernas <code>calc()</code> y <code>clamp()</code>.</p>
+
+     <!-- VARIABLES -->
+     <div class="box">
+          <h2>1. ¿Qué son las Variables CSS?</h2>
+          <p>Las variables CSS, también llamadas *custom properties*, permiten almacenar valores reutilizables en tu
+               hoja de estilos.</p>
+          <p>Se definen con prefijo <code>--nombre</code> y se usan con <code>var()</code>.</p>
+
+          <h3>Ejemplo básico:</h3>
+          <pre>
+:root {
+    --color-primario: #3498db;
+    --tamano-texto: 18px;
+}
+
+body {
+    color: var(--color-primario);
+    font-size: var(--tamano-texto);
+}
+        </pre>
+
+          <h3>Ventajas</h3>
+          <ul>
+               <li>Reutilización de valores.</li>
+               <li>Cambios globales rápidos.</li>
+               <li>Permiten temas claros/oscuro.</li>
+               <li>Admiten cálculos dinámicos con <code>calc()</code> y <code>clamp()</code>.</li>
+               <li>Se pueden actualizar con JavaScript.</li>
+          </ul>
+     </div>
+
+     <!-- ROOT -->
+     <div class="box">
+          <h2>2. Uso de <code>:root</code></h2>
+          <p><code>:root</code> es el selector del nivel más alto del documento y es el mejor lugar para definir
+               variables globales.</p>
+
+          <h3>Ejemplo:</h3>
+          <pre>
+:root {
+    --fondo: #ffffff;
+    --texto: #222;
+    --espaciado: 20px;
+}
+        </pre>
+     </div>
+
+     <!-- VAR -->
+     <div class="box">
+          <h2>3. La función <code>var()</code></h2>
+          <p>Sirve para acceder al valor de una variable CSS.</p>
+
+          <pre>
+color: var(--texto);
+margin: var(--espaciado);
+        </pre>
+
+          <h3>Valor por defecto (fallback)</h3>
+          <p>Si una variable no está definida, puedes usar un valor alternativo:</p>
+
+          <pre>
+color: var(--color-secundario, red);
+        </pre>
+     </div>
+
+     <!-- CALC -->
+     <div class="box">
+          <h2>4. La función <code>calc()</code></h2>
+          <p>Permite realizar operaciones matemáticas directamente en CSS.</p>
+
+          <h3>Operaciones soportadas:</h3>
+          <ul>
+               <li>Suma: <code>+</code></li>
+               <li>Resta: <code>-</code></li>
+               <li>Multiplicación: <code>*</code></li>
+               <li>División: <code>/</code></li>
+          </ul>
+
+          <h3>Ejemplo:</h3>
+          <pre>
+div {
+    width: calc(100% - 40px);
+    font-size: calc(var(--tamano-texto) * 1.2);
+}
+        </pre>
+
+          <h3>Notas importantes:</h3>
+          <ul>
+               <li>Debe haber espacios entre operadores (<code>calc(100%-20px)</code> ❌).</li>
+               <li>Se puede mezclar unidades (px, %, rem, etc.).</li>
+          </ul>
+     </div>
+
+     <!-- CLAMP -->
+     <div class="box">
+          <h2>5. La función <code>clamp()</code></h2>
+          <p>Define un valor “fluido” con límites mínimo y máximo.</p>
+          <p>Formato:</p>
+
+          <pre>
+clamp(valor_mínimo, valor_preferido, valor_máximo)
+        </pre>
+
+          <h3>Ejemplo práctico (tipografía fluida):</h3>
+          <pre>
+h1 {
+    font-size: clamp(24px, 5vw, 48px);
+}
+        </pre>
+
+          <p>Esto significa:</p>
+          <ul>
+               <li>Nunca será más pequeño que <strong>24px</strong>.</li>
+               <li>Intentará ser igual al <strong>5vw</strong> (valor fluido).</li>
+               <li>No crecerá más de <strong>48px</strong>.</li>
+          </ul>
+
+          <h3>Ejemplo con variables:</h3>
+          <pre>
+:root {
+    --min: 300px;
+    --ideal: 50vw;
+    --max: 900px;
+}
+
+section {
+    width: clamp(var(--min), var(--ideal), var(--max));
+}
+        </pre>
+     </div>
+
+     <!-- CONCLUSION -->
+     <div class="box">
+          <h2>Conclusión</h2>
+          <p>Las variables y funciones modernas permiten un CSS más limpio, modular, escalable y fácil de mantener.
+               Son esenciales para diseño responsive, temas, sistemas de diseño y layouts avanzados.</p>
+     </div>
+
+</body>
+
+</html>

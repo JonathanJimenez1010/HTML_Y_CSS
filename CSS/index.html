@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>Guía: CSS — Conceptos básicos (Completa)</title>
+     <style>
+          :root {
+               font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+               line-height: 1.6;
+               color: #0b2545
+          }
+
+          body {
+               max-width: 1000px;
+               margin: 28px auto;
+               padding: 28px;
+               background: #fbfdff;
+               border-radius: 12px
+          }
+
+          header {
+               display: flex;
+               align-items: center;
+               gap: 16px
+          }
+
+          h1 {
+               font-size: 2rem;
+               margin: 0
+          }
+
+          h2 {
+               font-size: 1.2rem;
+               margin-top: 22px
+          }
+
+          p {
+               margin: 10px 0
+          }
+
+          nav {
+               background: #eef6ff;
+               padding: 12px;
+               border-radius: 8px;
+               margin: 18px 0
+          }
+
+          .toc {
+               column-count: 2;
+               padding: 8px
+          }
+
+          .note {
+               background: #fff7ed;
+               border-left: 4px solid #ffb020;
+               padding: 10px;
+               border-radius: 6px;
+               margin: 12px 0
+          }
+
+          .example {
+               background: #ffffff;
+               border: 1px solid #e6eef8;
+               padding: 12px;
+               border-radius: 8px;
+               margin: 12px 0
+          }
+
+          pre {
+               background: #0b1220;
+               color: #e6edf3;
+               padding: 12px;
+               border-radius: 8px;
+               overflow: auto
+          }
+
+          code {
+               font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace
+          }
+
+          .grid {
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               gap: 12px
+          }
+
+          ul {
+               margin: 8px 0 8px 20px
+          }
+
+          footer {
+               margin-top: 28px;
+               color: #334155;
+               font-size: 0.95rem
+          }
+     </style>
+</head>
+
+<body>
+     <header>
+          <div>
+               <h1>Guía: CSS — Conceptos básicos (versión completa)</h1>
+               <p class="muted">Explicaciones, ejemplos, buenas prácticas y ejercicios rápidos — todo en un solo HTML.
+               </p>
+          </div>
+     </header>
+
+     <nav>
+          <strong>Índice</strong>
+          <div class="toc">
+               1. ¿Qué es CSS?<br>
+               2. Formas de incluir CSS (inline, internal, external)<br>
+               3. Selectores básicos y cómo usarlos<br>
+               4. Sintaxis: propiedad — valor<br>
+               5. Especificidad y cascada (resumen práctico)
+               6. Herencia y herederos comunes<br>
+               7. Box model explicado (con ejemplos)
+               8. Consejos de estilo y buenas prácticas
+               9. Errores comunes y cómo resolverlos
+               10. Ejercicios recomendados y retos
+               11. Referencias rápidas y recursos
+          </div>
+     </nav>
+
+     <h2>1. ¿Qué es CSS?</h2>
+     <p>CSS (<strong>Cascading Style Sheets</strong>) es el lenguaje usado para describir la presentación de documentos
+          escritos en HTML (o XML). Mientras HTML define la estructura y el contenido (títulos, párrafos, listas,
+          imágenes), CSS define cómo se ven: colores, fuentes, tamaño, espaciados, disposición en la pantalla,
+          animaciones y efectos visuales.</p>
+     <p>El término <em>cascading</em> (en cascada) viene de la forma en que el navegador combina reglas desde distintas
+          fuentes (hojas externas, bloques &lt;style&gt;, estilos inline) y resuelve conflictos según un conjunto de
+          reglas (especificidad, orden y !important).</p>
+
+     <div class="note">
+          <strong>Tip:</strong> piensa en HTML como el esqueleto y el contenido; CSS como la ropa y la estética que lo
+          hace usable y atractivo.
+     </div>
+
+     <h2>2. Cómo se enlaza al HTML</h2>
+     <p>Hay tres formas de aplicar CSS a un documento HTML. Cada una tiene usos concretos:</p>
+
+     <h3>a) Inline</h3>
+     <p>Se aplica directamente en el atributo <code>style</code> del elemento HTML. Es útil para pruebas rápidas o para
+          sobrescribir un estilo muy concreto, pero dificulta el mantenimiento si se usa masivamente.</p>
+     <pre><code>&lt;!-- Inline: estilo directamente en la etiqueta --&gt;
+&lt;h1 style="color: #0b61ff; font-size: 28px;"&gt;Hola mundo&lt;/h1&gt;</code></pre>
+     <p class="note">Evita usar inline en proyectos grandes. Rompe la separación de responsabilidades.</p>
+
+     <h3>b) Internal (estilos en la misma página)</h3>
+     <p>Incluyes un bloque &lt;style&gt; en el &lt;head&gt;. Se usa para páginas únicas o demostraciones.</p>
+     <pre><code>&lt;head&gt;
+  &lt;style&gt;
+    body { font-family: Arial, sans-serif; }
+    .destacado { background: #fffae6; padding: 8px; }
+  &lt;/style&gt;
+&lt;/head&gt;</code></pre>
+
+     <h3>c) External (archivo .css separado)</h3>
+     <p>La práctica recomendada: separar CSS en archivos <code>.css</code> y enlazarlos con &lt;link rel="stylesheet"
+          href="styles.css"&gt;. Esto facilita mantenimiento, caché y reutilización entre páginas.</p>
+     <pre><code>&lt;!-- En el &lt;head&gt; --&gt;
+&lt;link rel="stylesheet" href="styles.css"&gt;
+
+/* styles.css */
+body { font-family: Arial, sans-serif; }</code></pre>
+
+     <h2>3. Selectores básicos</h2>
+     <p>Los selectores determinan qué elementos recibirán las reglas. Los tres más importantes al empezar son:</p>
+     <ul>
+          <li><strong>Selector de elemento</strong> (tag): aplica a todas las etiquetas del mismo tipo <code>p</code>,
+               <code>h1</code>, <code>ul</code>, etc.</li>
+          <li><strong>Selector de clase</strong> (.clase): reutilizable, aplica a cualquier elemento con esa clase.</li>
+          <li><strong>Selector de id</strong> (#id): único por página (debe usarse en un solo elemento).</li>
+     </ul>
+
+     <div class="grid">
+          <div class="example">
+               <strong>Elemento</strong>
+               <pre><code>p {
+  color: #334155;
+  font-size: 16px;
+}</code></pre>
+          </div>
+
+          <div class="example">
+               <strong>Clase</strong>
+               <pre><code>.boton {
+  background: #0ea5a5;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+}</code></pre>
+          </div>
+     </div>
+
+     <div class="example">
+          <strong>ID</strong>
+          <pre><code>#hero-title {
+  font-size: 32px;
+  font-weight: 700;
+}</code></pre>
+     </div>
+
+     <h3>Buenas prácticas con selectores</h3>
+     <ul>
+          <li>Usa <code>.clase</code> para estilos reutilizables y componentes.</li>
+          <li>Evita estilos con selectores demasiado específicos (por ejemplo, <code>div > ul li a.btn</code>) salvo que
+               sea necesario.</li>
+          <li>Usa IDs para comportamientos únicos (JS targeting), no como la primera opción para estilos.</li>
+          <li>Prefiere nombres semánticos: <code>.card</code>, <code>.nav-item</code>, <code>.btn-primary</code>.</li>
+     </ul>
+
+     <h2>4. Propiedad — valor y sintaxis</h2>
+     <p>La estructura de una regla CSS:</p>
+     <pre><code>selector {
+  propiedad: valor;
+  otra-propiedad: otro-valor;
+}</code></pre>
+
+     <p>Ejemplo:</p>
+     <pre><code>.card {
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+}
+</code></pre>
+
+     <h3>Algunas propiedades comunes</h3>
+     <ul>
+          <li><code>color</code> — color del texto</li>
+          <li><code>background</code> / <code>background-color</code> — color o imagen de fondo</li>
+          <li><code>font-size</code>, <code>font-family</code> — tipografía</li>
+          <li><code>padding</code>, <code>margin</code> — espaciamiento interno / externo</li>
+          <li><code>display</code>, <code>position</code> — control del layout</li>
+     </ul>
+
+     <h2>5. Especificidad y cascada (resumen práctico)</h2>
+     <p>Cuando varias reglas afectan a un mismo elemento, el navegador decide cuál aplicar usando
+          <strong>especificidad</strong> y orden. Regla simple:</p>
+     <ol>
+          <li>Estilos inline (atributo <code>style="..."</code>) tienen mayor peso.</li>
+          <li>IDs (<code>#id</code>) son más específicos que clases (<code>.clase</code>).</li>
+          <li>Clases, pseudoclases y atributos (<code>.clase</code>, <code>:hover</code>, <code>[type="text"]</code>)
+               comparten un nivel.</li>
+          <li>Selectores de elemento (<code>p</code>, <code>div</code>) tienen menor especificidad.</li>
+          <li>Si la especificidad es igual, gana la regla que aparece después en el CSS (última declarada).</li>
+     </ol>
+
+     <div class="note">
+          <strong>Ejemplo:</strong> Si tienes <code>p { color: blue; }</code> y <code>.lead { color: red; }</code> y el
+          párrafo tiene la clase <code>lead</code>, el color será rojo porque la clase es más específica que el selector
+          de elemento.
+     </div>
+
+     <h2>6. Herencia</h2>
+     <p>Algunas propiedades CSS se heredan por defecto a los hijos (por ejemplo <code>color</code>,
+          <code>font-family</code>), mientras que otras no (por ejemplo <code>margin</code>, <code>padding</code>). Esto
+          puede ser útil: establece estilos base en <code>body</code> y muchos elementos los heredarán.</p>
+     <pre><code>body { font-family: 'Inter', Arial, sans-serif; color: #111; }
+/* Los elementos de texto normalmente heredan font-family y color */</code></pre>
+
+     <h2>7. Box model explicado</h2>
+     <p>El <strong>box model</strong> describe cómo se calcula el tamaño de los elementos en CSS. Está compuesto por:
+     </p>
+     <ul>
+          <li><strong>Content</strong> — el contenido (texto, imagen)</li>
+          <li><strong>Padding</strong> — espacio interno alrededor del contenido</li>
+          <li><strong>Border</strong> — borde alrededor del padding</li>
+          <li><strong>Margin</strong> — espacio externo que separa con otros elementos</li>
+     </ul>
+
+     <pre><code>/* Ejemplo: caja con padding, borde y margen */
+.box {
+  width: 200px;           /* ancho del contenido */
+  padding: 16px;          /* espacio interno */
+  border: 2px solid #ccc; /* borde */
+  margin: 12px;           /* separación externa */
+}
+</code></pre>
+
+     <p>Importante: la propiedad <code>box-sizing</code> afecta si el <code>width</code> incluye o no el padding y el
+          border. Recomendación moderna:</p>
+     <pre><code>*, *::before, *::after { box-sizing: border-box; }</code></pre>
+     <p>Con <code>border-box</code>, el <code>width</code> incluye padding y border — facilita el diseño responsivo.</p>
+
+     <h2>8. Consejos de estilo y buenas prácticas</h2>
+     <ul>
+          <li>Organiza tu CSS: variables en <code>:root</code>, componentes (clases) por secciones, utilidades al final.
+          </li>
+          <li>Usa variables CSS para colores y tamaños: <code>--primary: #0ea5a5;</code> y
+               <code>color: var(--primary);</code>.</li>
+          <li>Prefiere nombres semánticos y consistentes (p. ej. BEM: <code>.card__title</code>,
+               <code>.card--large</code>).</li>
+          <li>Minimiza el uso de <code>!important</code> — suele indicar problemas de arquitectura.</li>
+          <li>Usa <strong>external CSS</strong> en producción para aprovechar caché y limpieza del HTML.</li>
+     </ul>
+
+     <h2>9. Errores comunes y cómo resolverlos</h2>
+     <ul>
+          <li><strong>Olvidar ; (punto y coma)</strong>: provoca que la siguiente propiedad sea ignorada. Revisa la
+               consola del inspector.</li>
+          <li><strong>Selector mal escrito</strong>: revisa espacios y caracteres especiales (<code>.btn-primary</code>
+               vs <code>.btn_primary</code>).</li>
+          <li><strong>Especificidad inesperada</strong>: si un estilo no se aplica, intenta inspeccionar el elemento
+               para ver qué regla lo sobrescribe.</li>
+          <li><strong>Rutas de archivo incorrectas</strong> al usar &lt;link href="styles.css"&gt; — la ruta es relativa
+               al HTML que carga el CSS.</li>
+     </ul>
+
+     <h2>10. Ejercicios recomendados y retos</h2>
+     <ol>
+          <li>Crear una tarjeta (.card) con imagen, título y descripción. Hacerla responsive.</li>
+          <li>Diseñar un botón con estados: normal, hover, active y disabled. Usar variables CSS para colores.</li>
+          <li>Recrear un header simple con logo a la izquierda y navegación a la derecha usando Flexbox (no lo cubrí
+               aquí en profundidad — es lo siguiente a estudiar).</li>
+          <li>Usar el inspector del navegador para modificar estilos y entender la cascada en tiempo real.</li>
+     </ol>
+
+     <h2>11. Recursos y lecturas recomendadas</h2>
+     <ul>
+          <li>MDN Web Docs — CSS (documentación oficial y ejemplos)</li>
+          <li>CSS-Tricks — artículos y guías prácticas</li>
+          <li>Playgrounds: CodePen, JSFiddle, y la consola del navegador para experimentar</li>
+     </ul>
+
+     <h2>Apéndice: Ejemplo final (lista para copiar)</h2>
+     <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Ejemplo CSS Básico&lt;/title&gt;
+  &lt;style&gt;
+    :root{
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --primary: #0b61ff;
+      --accent: #0ea5a5;
+      --muted: #334155;
+    }
+
+    * , *::before, *::after { box-sizing: border-box; }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      margin: 0; padding: 18px; color: var(--muted);
+    }
+
+    .card{
+      background: var(--card-bg);
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(11,17,34,0.04);
+      max-width: 420px;
+    }
+
+    .btn{
+      display:inline-block;padding:8px 12px;border-radius:6px;background:var(--accent);color:white;text-decoration:none;
+    }
+
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;Tarjeta de ejemplo&lt;/h1&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;Título de la tarjeta&lt;/h2&gt;
+    &lt;p&gt;Descripción breve para ilustrar cómo usar clases, propiedades y el box model.&lt;/p&gt;
+    &lt;a href="#" class="btn"&gt;Acción&lt;/a&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+     <footer>
+          ¿Te gustaría que convierta esto a un archivo descargable (.html) o que te genere un <code>styles.css</code>
+          externo con el mismo contenido? Puedo además añadir ejercicios resueltos paso a paso.
+     </footer>
+</body>
+
+</html>

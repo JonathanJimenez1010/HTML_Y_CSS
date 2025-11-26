@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width,initial-scale=1">
+     <title>CSS — Colores, fuentes y texto (Guía práctica)</title>
+     <style>
+          :root {
+               --demo-bg: #f7f7fb;
+               --card: #ffffff;
+               --accent: #0b76ff;
+               --muted: #667085;
+          }
+
+          body {
+               font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+               background: var(--demo-bg);
+               color: #0b1320;
+               margin: 24px;
+          }
+
+          .container {
+               max-width: 980px;
+               margin: 0 auto;
+          }
+
+          h1,
+          h2 {
+               color: #061126
+          }
+
+          .card {
+               background: var(--card);
+               border-radius: 12px;
+               padding: 18px;
+               margin: 18px 0;
+               box-shadow: 0 6px 18px rgba(9, 30, 66, 0.06);
+          }
+
+          .row {
+               display: grid;
+               grid-template-columns: 1fr 320px;
+               gap: 18px;
+               align-items: start
+          }
+
+          pre {
+               background: #0b1220;
+               color: #dbeafe;
+               padding: 12px;
+               border-radius: 8px;
+               overflow: auto
+          }
+
+          code {
+               font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+          }
+
+          .example {
+               padding: 12px;
+               border-radius: 8px;
+               border: 1px dashed rgba(11, 119, 255, 0.18)
+          }
+
+          .swatch {
+               height: 56px;
+               border-radius: 8px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               color: #fff;
+               font-weight: 600
+          }
+
+          .flex {
+               display: flex;
+               gap: 12px;
+               flex-wrap: wrap;
+          }
+
+          .tiny {
+               font-size: 13px;
+               color: var(--muted)
+          }
+
+          .preview-text {
+               padding: 16px;
+               border-radius: 8px
+          }
+     </style>
+</head>
+
+<body>
+     <div class="container">
+          <h1>CSS — Colores, fuentes y texto</h1>
+          <p class="tiny">Guía práctica con ejemplos y fragmentos listos para copiar. Contenido en español.</p>
+
+          <section class="card">
+               <h2>1. Tipos de colores (hex, rgb, hsl)</h2>
+               <div class="row">
+                    <div>
+                         <p>Principales formatos y cuándo usarlos:</p>
+                         <ul>
+                              <li><strong>Hexadecimal</strong> — ejemplo: <code>#ff6b6b</code>. Compacto y muy usado en
+                                   diseño.</li>
+                              <li><strong>RGB / RGBA</strong> — ejemplo: <code>rgb(255,107,107)</code> o con alfa
+                                   <code>rgba(255,107,107,0.6)</code>. Útil cuando quieres controlar opacidad sin
+                                   separar propiedad.</li>
+                              <li><strong>HSL / HSLA</strong> — ejemplo: <code>hsl(0,100%,64%)</code> o
+                                   <code>hsla(0,100%,64%,0.6)</code>. Excelente para ajustar tonalidad, saturación o
+                                   luminosidad de forma intuitiva.</li>
+                              <li><strong>Valores CSS modernos</strong> — <code>color-mix()</code>, <code>lab()</code>
+                                   (soporte variable), y <code>system color keywords</code>.</li>
+                         </ul>
+
+                         <p class="tiny">Consejos:</p>
+                         <ol>
+                              <li>Usa <strong>HSL</strong> para generar paletas y variantes (p. ej. cambiar sólo la
+                                   luminosidad para obtener tonos más oscuros/claro).</li>
+                              <li>Usa <strong>variables CSS</strong> para mantener consistencia:
+                                   <code>:root{--primary:#0b76ff}</code>.</li>
+                              <li>Para accesibilidad, comprueba contraste (ratio) entre texto y fondo.</li>
+                         </ol>
+
+                         <h3>Fragmentos</h3>
+                         <pre><code>&lt;!-- Hex --&gt;
+.element{ background:#ff6b6b; }
+
+&lt;!-- RGB/RGBA --&gt;
+.element{ color:rgb(20,20,20); background:rgba(11,118,255,0.12); }
+
+&lt;!-- HSL/HSLA --&gt;
+.element{ background:hsl(210,100%,56%); }
+
+&lt;!-- Variable CSS --&gt;
+:root{ --primary: hsl(210,100%,56%); }
+.btn{ background:var(--primary); }
+</code></pre>
+                    </div>
+
+                    <div>
+                         <div class="example">
+                              <div class="flex">
+                                   <div style="width:100%">
+                                        <div class="swatch" style="background:#ff6b6b;">#ff6b6b</div>
+                                   </div>
+                                   <div style="width:100%">
+                                        <div class="swatch" style="background:rgb(11,118,255);">rgb(11,118,255)</div>
+                                   </div>
+                                   <div style="width:100%">
+                                        <div class="swatch" style="background:hsl(210,100%,56%);">hsl(210,100%,56%)
+                                        </div>
+                                   </div>
+                              </div>
+                              <p class="tiny" style="margin-top:8px">Prueba ajustar alfa con <code>rgba()</code> o
+                                   <code>hsla()</code> para transparencias.</p>
+                         </div>
+                    </div>
+               </div>
+          </section>
+
+          <section class="card">
+               <h2>2. <code>font-family</code>, <code>font-size</code>, <code>font-weight</code></h2>
+               <div class="row">
+                    <div>
+                         <h3>font-family</h3>
+                         <p>Regla: siempre define una pila (stack). Ejemplo:</p>
+                         <pre><code>body{
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}</code></pre>
+                         <p>Opciones:</p>
+                         <ul>
+                              <li><strong>Genéricos</strong>: <code>serif</code>, <code>sans-serif</code>,
+                                   <code>monospace</code>, <code>cursive</code>, <code>fantasy</code>,
+                                   <code>system-ui</code></li>
+                              <li>Coloca fuentes locales o de web (Google Fonts) al inicio de la lista.</li>
+
+                         </ul>
+
+                         <h3>font-size</h3>
+                         <p>Unidades comunes y recomendaciones:</p>
+                         <ul>
+                              <li><code>px</code> — fijo, predecible. Bueno para elementos que no deben escalar.</li>
+                              <li><code>rem</code> — relativo al <code>font-size</code> raíz (<code>html</code>). Ideal
+                                   para escalabilidad y accesibilidad.</li>
+                              <li><code>em</code> — relativo al tamaño del elemento padre (útil en componentes).</li>
+                              <li><code>clamp()</code> — para tamaños fluidos:
+                                   <code>font-size: clamp(1rem, 2.5vw, 1.25rem);</code>.</li>
+                         </ul>
+
+                         <h3>font-weight</h3>
+                         <p>Valores:</p>
+                         <ul>
+                              <li>Palabras clave: <code>normal</code> (400), <code>bold</code> (700),
+                                   <code>bolder</code>, <code>lighter</code>.</li>
+                              <li>Números: <code>100</code> a <code>900</code> (si la familia las soporta).</li>
+                         </ul>
+
+                         <pre><code>h1{ font-family: 'Montserrat', sans-serif; font-size:clamp(1.6rem,4vw,2.2rem); font-weight:700; }
+small{ font-size:0.875rem; font-weight:400; }</code></pre>
+
+                    </div>
+                    <div>
+                         <div class="example">
+                              <div class="preview-text" style="background:#fff">
+                                   <h1
+                                        style="margin:0;font-family: 'Poppins', system-ui, sans-serif; font-size:28px; font-weight:700">
+                                        Ejemplo: Título — Poppins 700</h1>
+                                   <p
+                                        style="margin-top:10px;font-family: 'Inter', system-ui, sans-serif; font-size:16px; font-weight:400">
+                                        Párrafo demostrativo — Inter 400. Usa <code>rem</code> para accesibilidad: 1rem
+                                        = tamaño raíz.</p>
+                              </div>
+                              <p class="tiny" style="margin-top:8px">Recuerda incluir la fuente en el
+                                   <code>&lt;head&gt;</code> (Google Fonts) o guardarla localmente.</p>
+                         </div>
+                    </div>
+               </div>
+          </section>
+
+          <section class="card">
+               <h2>3. Google Fonts — cómo incluir y buenas prácticas</h2>
+               <div class="row">
+                    <div>
+                         <p>Pasos rápidos:</p>
+                         <ol>
+                              <li>En <a href="https://fonts.google.com" target="_blank">Google Fonts</a> selecciona la
+                                   familia y los pesos que usarás (no pidas todos los pesos: sólo los necesarios para
+                                   rendimiento).</li>
+                              <li>Incluye el <code>&lt;link&gt;</code> en el <code>&lt;head&gt;</code> o usa
+                                   <code>@import</code> en CSS (preferible el <code>&lt;link&gt;</code> por
+                                   rendimiento).</li>
+                              <li>Usa font-display: swap; para mejorar experiencia al cargar fuentes.
+                         </ol>
+
+                         <pre><code>&lt;!-- Head --&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"&gt;
+
+&lt;!-- CSS --&gt;
+body{ font-family:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+/* si usas @import: @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap'); */
+</code></pre>
+
+                         <p class="tiny">Consejos: elegir pocas familias (1–2) y sólo los pesos necesarios (p. ej.
+                              400,600,700). Para íconos usa icon fonts o SVGs en lugar de familias grandes.</p>
+                    </div>
+
+                    <div>
+                         <div class="example">
+                              <p style="margin:0">Fragmento que demuestra <code>font-display: swap</code> (aplica desde
+                                   Google Fonts cuando agregas <code>&display=swap</code> al enlace):</p>
+                              <pre><code>/* Google ya aplica display=swap si lo pides en la URL */
+@font-face{
+  font-family:'MiFuente';
+  src: url(...);
+  font-display: swap;
+}
+</code></pre>
+                         </div>
+                    </div>
+               </div>
+          </section>
+
+          <section class="card">
+               <h2>4. Espaciado: <code>line-height</code>, <code>letter-spacing</code></h2>
+               <div class="row">
+                    <div>
+                         <h3>line-height</h3>
+                         <p>Controla altura de línea (espacio vertical entre líneas de texto):</p>
+                         <ul>
+                              <li><strong>Unitless</strong> (recomendado): <code>line-height: 1.5;</code> — escala con
+                                   el tamaño de fuente y evita acumulación inesperada.</li>
+                              <li><strong>Unidades</strong>: <code>line-height: 24px;</code> — útil cuando quieres un
+                                   valor exacto.</li>
+                              <li>Valores típicos: 1 (compacto), 1.25–1.6 (texto de lectura), 2+ (captions o diseño
+                                   aireado).</li>
+                         </ul>
+
+                         <h3>letter-spacing</h3>
+                         <p>Espaciado entre caracteres:</p>
+                         <ul>
+                              <li>Valores en <code>em</code> o <code>px</code>: <code>letter-spacing: 0.02em;</code>
+                              </li>
+                              <li>Se usa en títulos, mayúsculas, o para ajustar kerning en tipografías web.</li>
+                              <li>Evitar espacios positivos grandes en texto de párrafo porque reduce legibilidad.</li>
+                         </ul>
+
+                         <pre><code>p{ line-height:1.6; letter-spacing:0.01em; }
+h1{ letter-spacing:0.02em; line-height:1.15; }</code></pre>
+                    </div>
+
+                    <div>
+                         <div class="example">
+                              <p style="margin:0">Vista previa — ajusta mentalmente:</p>
+                              <div style="margin-top:10px">
+                                   <div class="preview-text" style="background:#fff">
+                                        <h2 style="margin:0; font-size:20px; line-height:1.15; letter-spacing:0.02em">
+                                             Título con letter-spacing</h2>
+                                        <p
+                                             style="margin-top:10px; font-size:15px; line-height:1.6; letter-spacing:0.01em">
+                                             Este es un párrafo de ejemplo que usa <code>line-height: 1.6</code> y
+                                             <code>letter-spacing: 0.01em</code> para una lectura cómoda en bloques de
+                                             texto.</p>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </section>
+
+          <section class="card">
+               <h2>5. <code>text-align</code> (alineación de texto)</h2>
+               <p>Valores comunes:</p>
+               <ul>
+                    <li><code>left</code> — alineación a la izquierda (por defecto en lenguajes LTR)</li>
+                    <li><code>right</code> — alineación a la derecha</li>
+                    <li><code>center</code> — centrado horizontal</li>
+                    <li><code>justify</code> — justificado (ajusta espacios entre palabras para alinear ambos lados)
+                    </li>
+               </ul>
+
+               <pre><code>.card p{ text-align:left; }\.header{ text-align:center; }
+.article{ text-align:justify; }</code></pre>
+
+               <div class="example">
+                    <div class="preview-text" style="background:#fff">
+                         <h3 style="margin:0; text-align:center">Título centrado</h3>
+                         <p style="margin-top:8px; text-align:justify">Párrafo justificado de muestra. El texto
+                              justificado alinea ambos márgenes y crea un bloque limpio, pero puede generar espacios
+                              irregulares entre palabras en columnas estrechas.</p>
+                    </div>
+               </div>
+          </section>
+
+          <footer class="tiny" style="margin-top:18px">¿Quieres que te entregue este mismo contenido como archivo
+               descargable o convertirlo en un PDF/cheatsheet? Dime y lo preparo.</footer>
+
+     </div>
+</body>
+
+</html>

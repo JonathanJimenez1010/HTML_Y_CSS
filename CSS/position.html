@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width,initial-scale=1" />
+     <title>Positioning y Visual Flow — Guía completa (HTML)</title>
+     <style>
+          :root {
+               --bg: #0f1720;
+               --card: #0b1220;
+               --muted: #9aa4b2;
+               --accent: #6ee7b7;
+               --yellow: #f9c74f
+          }
+
+          html,
+          body {
+               height: 100%;
+               margin: 0;
+               font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+               background: linear-gradient(180deg, #071025 0%, #0b1220 100%);
+               color: #e6eef6
+          }
+
+          .wrap {
+               max-width: 1100px;
+               margin: 28px auto;
+               padding: 28px
+          }
+
+          header h1 {
+               margin: 0 0 6px;
+               font-size: 24px
+          }
+
+          header p {
+               margin: 0;
+               color: var(--muted)
+          }
+
+          .grid {
+               display: grid;
+               grid-template-columns: 1fr 360px;
+               gap: 20px;
+               margin-top: 20px
+          }
+
+          .card {
+               background: rgba(255, 255, 255, 0.03);
+               border-radius: 12px;
+               padding: 18px;
+               box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6)
+          }
+
+          .sidebar .card {
+               position: sticky;
+               top: 20px
+          }
+
+          h2 {
+               margin-top: 14px;
+               margin-bottom: 8px
+          }
+
+          pre {
+               background: #061122;
+               padding: 12px;
+               border-radius: 8px;
+               color: #cfe9dd;
+               overflow: auto
+          }
+
+          code {
+               font-family: SFMono-Regular, Menlo, Monaco, Roboto Mono, monospace;
+               font-size: 13px
+          }
+
+          /* Demo area styles */
+          .demo {
+               display: flex;
+               flex-direction: column;
+               gap: 14px
+          }
+
+          .demo-row {
+               background: #051226;
+               padding: 12px;
+               border-radius: 8px
+          }
+
+          .box {
+               width: 120px;
+               height: 80px;
+               background: linear-gradient(135deg, var(--accent), #2dd4bf);
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               border-radius: 6px;
+               color: #012;
+               font-weight: 700
+          }
+
+          .ghost {
+               opacity: 0.85
+          }
+
+          /* Layout for each positioning demo */
+          .stage {
+               background: linear-gradient(180deg, #071833 0%, #031426 100%);
+               border-radius: 8px;
+               padding: 18px;
+               min-height: 160px;
+               border: 1px solid rgba(255, 255, 255, 0.03);
+               position: relative
+          }
+
+          .stage .note {
+               color: var(--muted);
+               font-size: 13px;
+               margin-bottom: 10px
+          }
+
+          .stage .demo-area {
+               position: relative;
+               height: 180px;
+               border-radius: 6px;
+               background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+               display: flex;
+               align-items: center;
+               justify-content: center
+          }
+
+          /* examples used by the demo scripts */
+          .pos-example {
+               width: 90px;
+               height: 60px;
+               background: #fef3c7;
+               border: 3px solid #f59e0b;
+               color: #2b1f00;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               border-radius: 6px
+          }
+
+          .small {
+               width: 60px;
+               height: 38px
+          }
+
+          /* explanations list */
+          ul {
+               color: var(--muted);
+               line-height: 1.5
+          }
+
+          .tip {
+               background: #07172a;
+               padding: 10px;
+               border-radius: 8px;
+               color: var(--muted);
+               font-size: 14px
+          }
+
+          /* z-index demo */
+          .stack-stage {
+               height: 220px
+          }
+
+          .z-a {
+               position: absolute;
+               left: 36px;
+               top: 36px;
+               width: 160px;
+               height: 160px;
+               border-radius: 12px;
+               display: flex;
+               align-items: center;
+               justify-content: center
+          }
+
+          .z1 {
+               background: rgba(59, 130, 246, 0.9);
+               z-index: 5
+          }
+
+          .z2 {
+               background: rgba(236, 72, 153, 0.9);
+               left: 96px;
+               top: 6px;
+               z-index: 3
+          }
+
+          .z3 {
+               background: rgba(34, 197, 94, 0.9);
+               left: 156px;
+               top: 56px;
+               z-index: 7
+          }
+
+          footer {
+               margin-top: 26px;
+               color: var(--muted);
+               font-size: 13px;
+               text-align: center
+          }
+
+          /* responsive */
+          @media (max-width:980px) {
+               .grid {
+                    grid-template-columns: 1fr;
+               }
+
+               .sidebar {
+                    order: 999
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <div class="wrap">
+          <header>
+               <h1>Positioning y Visual Flow — Guía completa</h1>
+               <p>Explicación profunda, ejemplos y demos interactivos (código listo para copiar).</p>
+          </header>
+
+          <div class="grid">
+               <main class="card">
+                    <section>
+                         <h2>1) Flujo normal del documento (Normal flow)</h2>
+                         <p class="note" style="color:var(--muted)">El <strong>flujo normal</strong> es cómo el
+                              navegador posiciona elementos por defecto: los bloques se apilan verticalmente y los
+                              elementos inline fluyen horizontalmente dentro de su línea.</p>
+                         <ul>
+                              <li>Elementos <code>block</code> ocupan toda la anchura disponible y se apilan
+                                   verticalmente.</li>
+                              <li>Elementos <code>inline</code> ocupan sólo el ancho del contenido y comparten la línea
+                                   con otros inline.</li>
+                              <li>El flujo normal define el <em>containing block</em> para muchos cálculos de posición.
+                              </li>
+                         </ul>
+                         <pre><code>&lt;div&gt;Bloque 1&lt;/div&gt;
+&lt;div&gt;Bloque 2&lt;/div&gt;
+&lt;span&gt;texto 1&lt;/span&gt;&lt;span&gt;texto 2&lt;/span&gt;</code></pre>
+
+                         <h2>2) Display y formatting contexts</h2>
+                         <p class="note" style="color:var(--muted)">Las propiedades <code>display</code> (block, inline,
+                              inline-block, flex, grid, table...) determinan el flujo y el contexto de formato.</p>
+                         <ul>
+                              <li><strong>Block formatting context (BFC)</strong>: controla colapsos de margen,
+                                   contención de floats y más. Ej.: elementos con <code>overflow:auto</code>,
+                                   <code>display:flex</code>, o <code>position:relative</code> inician BFC.</li>
+                              <li><strong>Inline formatting context</strong>: cómo se colocan los elementos inline y
+                                   textos.</li>
+                         </ul>
+
+                         <h2>3) Propiedad <code>position</code> (detallada)</h2>
+                         <p class="note" style="color:var(--muted)">Valores: <code>static</code>, <code>relative</code>,
+                              <code>absolute</code>, <code>fixed</code>, <code>sticky</code>. Cada uno cambia cómo un
+                              elemento sale (o no) del flujo.</p>
+
+                         <h3><code>position: static</code></h3>
+                         <p>Valor por defecto. El elemento sigue el flujo normal, los offsets (<code>top/right</code>)
+                              se ignoran.</p>
+                         <pre><code>.el{position:static /* por defecto */}</code></pre>
+
+                         <h3><code>position: relative</code></h3>
+                         <p>El elemento permanece en el flujo —ocupa su espacio original— pero se pueden aplicar offsets
+                              para <em>visualmente moverlo</em> desde su posición normal. Sus hijos posicionados
+                              <code>absolute</code> toman este elemento como <em>containing block</em> si recibe un
+                              <code>position</code> distinto de <code>static</code>.</p>
+                         <pre><code>.el{position:relative;top:10px;left:20px}
+/* Ocupa el mismo espacio en el flujo pero se dibuja desplazado */</code></pre>
+
+                         <div class="demo-row">
+                              <div class="stage">
+                                   <div class="note">Ejemplo: relative mantiene el espacio pero se desplaza.</div>
+                                   <div class="demo-area">
+                                        <div
+                                             style="width:260px;height:120px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:space-around;padding:12px;border-radius:8px">
+                                             <div class="pos-example">estático</div>
+                                             <div class="pos-example" style="position:relative;left:20px;top:10px">
+                                                  relative</div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <h3><code>position: absolute</code></h3>
+                         <p>El elemento <strong>sale del flujo</strong>. Se posiciona relativamente a su <em>containing
+                                   block</em> (el ancestro posicionado más cercano —es decir, con <code>position</code>
+                              distinto de <code>static</code>). Si no existe tal ancestro, el contenedor es el
+                              <code>initial containing block</code> (usualmente el viewport).</p>
+                         <pre><code>.container{position:relative}
+.child{position:absolute;top:12px;right:12px}
+/* .child se posiciona respecto a .container */</code></pre>
+
+                         <div class="demo-row">
+                              <div class="stage">
+                                   <div class="note">Ejemplo: absolute respecto a un contenedor posicionado.</div>
+                                   <div class="demo-area" style="height:200px;">
+                                        <div
+                                             style="position:relative;width:280px;height:150px;background:rgba(255,255,255,0.02);border-radius:8px;display:flex;align-items:center;justify-content:center">
+                                             <div class="pos-example" style="position:absolute;top:12px;right:12px">
+                                                  absolute</div>
+                                             <div style="opacity:.6;position:relative">contenedor (position:relative)
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <h3><code>position: fixed</code></h3>
+                         <p>Similar a <code>absolute</code> pero siempre se posiciona respecto al
+                              <strong>viewport</strong> (la ventana). Útil para barras fijas, botones flotantes, etc. En
+                              móviles con barras de navegación puede comportarse distinto —usar con pruebas.</p>
+                         <pre><code>.fixed-btn{position:fixed;bottom:18px;right:18px}
+/* siempre visible aunque hagas scroll */</code></pre>
+
+                         <h3><code>position: sticky</code></h3>
+                         <p>Comportamiento híbrido: el elemento participa en el flujo hasta que el scroll lo alcanza,
+                              luego se comporta como fixed dentro de su contenedor. Necesita un threshold
+                              (top/right/bottom/left) y un contenedor que no oculte overflow.</p>
+                         <pre><code>.header{position:sticky;top:0}
+/* se pega al top cuando scrolleas y hasta que termina su contenedor */</code></pre>
+
+                         <h2>4) Offsets y containing blocks</h2>
+                         <p class="note" style="color:var(--muted)">Offsets (<code>top/right/bottom/left</code>) mueven
+                              elementos posicionados, pero su referencia depende del tipo de posición:</p>
+                         <ul>
+                              <li><strong>absolute</strong>: referencia = ancestro posicionado más cercano (no static).
+                              </li>
+                              <li><strong>fixed</strong>: referencia = viewport (a menos que esté en un
+                                   <code>transform</code> o en un contenedor con ciertas propiedades que creen un nuevo
+                                   contexto).</li>
+                              <li><strong>relative</strong>: offsets mueven el elemento visualmente desde su lugar
+                                   original.</li>
+                         </ul>
+
+                         <h2>5) Z-index y stacking contexts (contextos de apilamiento)</h2>
+                         <p class="note" style="color:var(--muted)"><code>z-index</code> controla el orden de
+                              apilamiento de elementos posicionados (y en algunos casos otros elementos). Pero ese orden
+                              está confinado a su <strong>stacking context</strong>.</p>
+                         <ul>
+                              <li>Un elemento crea un nuevo stacking context cuando tiene: <code>position</code> con
+                                   <code>z-index</code> distinto de <code>auto</code>, <code>opacity &lt; 1</code>,
+                                   <code>transform</code> distinto de <code>none</code>, <code>filter</code>,
+                                   <code>mix-blend-mode</code>, <code>isolation</code>, y más.</li>
+                              <li>Los elementos en un stacking context son apilados entre sí; elementos en un stacking
+                                   context hijo no pueden escapar por encima de su ancestro si el ancestro está por
+                                   debajo en el stacking order global.</li>
+                         </ul>
+
+                         <div class="demo-row">
+                              <div class="stage stack-stage" style="padding:12px">
+                                   <div class="note">Ejemplo: cajas con distintos <code>z-index</code> y stacking
+                                        contexts.</div>
+                                   <div style="position:relative;height:180px;">
+                                        <div class="z-a z1">z=5</div>
+                                        <div class="z-a z2">z=3</div>
+                                        <div class="z-a z3">z=7</div>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <pre><code>&lt;div style="position:relative"&gt;
+  &lt;div style="position:absolute;left:36px;top:36px;z-index:5"&gt;z=5&lt;/div&gt;
+  &lt;div style="position:absolute;left:96px;top:6px;z-index:3"&gt;z=3&lt;/div&gt;
+  &lt;div style="position:absolute;left:156px;top:56px;z-index:7"&gt;z=7&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+                         <h2>6) Floats y clears (históricos pero aún útiles)</h2>
+                         <p class="note" style="color:var(--muted)">Los floats sacan un elemento del flujo inline y
+                              permiten que el texto/flujos inline lo rodeen. Hoy se usan menos para layouts (Flex &
+                              Grid) pero siguen siendo importantes para imágenes y comportamientos concretos.</p>
+                         <pre><code>.img-left{float:left;margin:0 12px 8px 0}
+.clearfix::after{content:'';display:table;clear:both}</code></pre>
+
+                         <h2>7) Posicionamiento en contextos modernos: Flexbox y Grid</h2>
+                         <p class="note" style="color:var(--muted)">Flexbox y Grid cambian el flujo y la forma de
+                              posicionar elementos. Aunque los items flex/grid siguen las reglas de positioning, tener
+                              un contenedor <code>display:flex</code> o <code>display:grid</code> crea contextos que
+                              afectan cómo se comportan offsets y tamaños.</p>
+
+                         <h2>8) Trucos, errores comunes y mejores prácticas</h2>
+                         <ul>
+                              <li>Evita usar muchos <code>position:absolute</code> para layout completo; hace difícil
+                                   mantener responsiveidad.</li>
+                              <li>Recuerda que <code>position:relative</code> sin offsets solo crea un contenedor para
+                                   hijos posicionados—útil para contención.</li>
+                              <li>Los <code>transform</code> crean stacking contexts: un elemento transformado puede
+                                   aparecer por encima incluso si su <code>z-index</code> es menor en otro contexto.
+                              </li>
+                              <li>Prueba siempre en móviles: <code>position:fixed</code> puede comportarse distinto
+                                   (toolbars, safe areas).</li>
+                              <li>Usa herramientas de devtools para inspeccionar stacking contexts y contenedores
+                                   posicionados; muy útil para debugging.</li>
+                         </ul>
+
+                         <h2>9) Ejemplos prácticos rápidos (copiar/pegar)</h2>
+                         <pre><code>/* Sticky header */
+.header{position:sticky;top:0;z-index:100}
+
+/* Fixed floating action button */
+.fab{position:fixed;right:16px;bottom:16px}
+
+/* Modal centrado mediante absolute */
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%)}
+
+/* Tooltip absoluto dentro de un contenedor posicionado */
+.card{position:relative}
+.tooltip{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:8px}
+</code></pre>
+
+                         <h2>10) Referencias rápidas y checklist</h2>
+                         <ul>
+                              <li>¿Necesitas que el elemento salga del flujo? — Usa <code>absolute</code> o
+                                   <code>fixed</code>.</li>
+                              <li>¿Quieres que actúe como ancla para hijos posicionados? — Agrega
+                                   <code>position:relative</code>.</li>
+                              <li>¿Quieres que se "pegue" mientras haces scroll dentro de su contenedor? —
+                                   <code>position:sticky</code>.</li>
+                              <li>¿Problemas con superposición? — Revisa stacking contexts, <code>z-index</code>, y
+                                   transforms.</li>
+                         </ul>
+
+                    </section>
+               </main>
+
+               <aside class="sidebar">
+                    <div class="card">
+                         <h3>Índice rápido</h3>
+                         <ol style="color:var(--muted)">
+                              <li>Flujo normal</li>
+                              <li>Display & BFC</li>
+                              <li>position (todos los valores)</li>
+                              <li>Offsets & containing blocks</li>
+                              <li>z-index & stacking contexts</li>
+                              <li>Floats</li>
+                              <li>Flex & Grid</li>
+                              <li>Trucos y checklist</li>
+                         </ol>
+
+                         <div style="height:8px"></div>
+                         <div class="tip">
+                              <strong>Tip:</strong> para posicionar un <em>tooltip</em> o <em>dropdown</em> coloca el
+                              elemento padre con <code>position:relative</code> y el hijo con
+                              <code>position:absolute</code> — así el hijo se mantiene dentro del borde del padre.
+                         </div>
+
+                         <h3 style="margin-top:12px">Recursos</h3>
+                         <ul>
+                              <li>MDN — Position</li>
+                              <li>CSS-Tricks — Stacking Context</li>
+                              <li>Especificación CSS (containing block, stacking context)</li>
+                         </ul>
+                    </div>
+               </aside>
+          </div>
+
+          <footer class="card">
+               <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+                    <div>
+                         <strong>¿Quieres que incluya ejemplos interactivos con controles?</strong>
+                         <div style="color:var(--muted)">Puedo añadir controles para cambiar <code>z-index</code>,
+                              toggle <code>position</code>, etc.</div>
+                    </div>
+                    <div style="text-align:right;color:var(--muted)">Guía generada automáticamente — lista para
+                         copiar/pegar.</div>
+               </div>
+          </footer>
+     </div>
+</body>
+
+</html>

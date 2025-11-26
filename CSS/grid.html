@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Guía Completa de CSS Grid</title>
+     <style>
+          body {
+               font-family: 'Segoe UI', Tahoma, sans-serif;
+               line-height: 1.75;
+               padding: 40px;
+               max-width: 1000px;
+               margin: auto;
+               background: #0f0f0f;
+               color: #eaeaea;
+          }
+
+          h1,
+          h2,
+          h3 {
+               color: #76b9ff;
+          }
+
+          h1 {
+               font-size: 2.4rem;
+               margin-bottom: 20px;
+               text-align: center;
+          }
+
+          h2 {
+               margin-top: 40px;
+               border-left: 4px solid #76b9ff;
+               padding-left: 10px;
+               font-size: 1.8rem;
+          }
+
+          h3 {
+               margin-top: 25px;
+               color: #9cd3ff;
+          }
+
+          p,
+          li {
+               font-size: 1.05rem;
+               color: #d8d8d8;
+          }
+
+          ul {
+               padding-left: 20px;
+          }
+
+          code {
+               background: #1e1e1e;
+               padding: 4px 8px;
+               border-radius: 6px;
+               border: 1px solid #333;
+               font-size: 0.95rem;
+          }
+
+          pre {
+               background: #1a1a1a;
+               color: #e0e0e0;
+               padding: 18px;
+               border-radius: 10px;
+               border-left: 4px solid #76b9ff;
+               overflow-x: auto;
+               font-size: 0.95rem;
+               margin-top: 15px;
+          }
+
+          hr {
+               border: none;
+               height: 1px;
+               background: #333;
+               margin: 40px 0;
+          }
+     </style>
+</head>
+
+<body>
+     <h1>Guía Completa de CSS Grid</h1>
+     <p>CSS Grid es uno de los sistemas de diseño más potentes y modernos para crear layouts bidimensionales. Permite
+          controlar filas, columnas, áreas y alineación con gran facilidad.</p>
+
+     <hr>
+     <h2>1. <code>display: grid</code></h2>
+     <p>Para activar CSS Grid en un contenedor:</p>
+     <pre><code>.container {
+    display: grid;
+}</code></pre>
+     <p>Esto convierte todos los elementos internos en ítems de grid.</p>
+
+     <hr>
+     <h2>2. <code>grid-template-columns</code> y <code>grid-template-rows</code></h2>
+     <p>Definen el número y tamaño de columnas y filas.</p>
+
+     <h3>Columnas</h3>
+     <pre><code>.container {
+    display: grid;
+    grid-template-columns: 200px 200px auto;
+}</code></pre>
+     <p>Los valores más usados:</p>
+     <ul>
+          <li><code>px</code> – tamaño fijo</li>
+          <li><code>%</code> – relativo al contenedor</li>
+          <li><code>fr</code> – fracción del espacio disponible</li>
+     </ul>
+     <pre><code>grid-template-columns: 1fr 1fr 1fr; /* 3 columnas iguales */</code></pre>
+
+     <h3>Filas</h3>
+     <pre><code>.container {
+    grid-template-rows: 100px auto 50px;
+}</code></pre>
+
+     <hr>
+     <h2>3. Funciones avanzadas: <code>repeat()</code>, <code>minmax()</code>, <code>auto-fit</code> y
+          <code>auto-fill</code>
+     </h2>
+
+     <h3>a) <code>repeat()</code></h3>
+     <p>Sirve para repetir columnas o filas sin escribirlas una por una.</p>
+     <pre><code>grid-template-columns: repeat(3, 1fr);</code></pre>
+
+     <h3>b) <code>minmax()</code></h3>
+     <p>Permite definir un rango mínimo y máximo.</p>
+     <pre><code>grid-template-columns: repeat(3, minmax(150px, 1fr));</code></pre>
+
+     <h3>c) <code>auto-fill</code> y <code>auto-fit</code></h3>
+     <p>Se utilizan para crear grids responsivos automáticos.</p>
+
+     <h4>auto-fill</h4>
+     <p>Intenta meter la mayor cantidad de columnas posible aunque queden "huecos".</p>
+     <pre><code>grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));</code></pre>
+
+     <h4>auto-fit</h4>
+     <p>Las columnas sobrantes colapsan para ajustarse al espacio disponible.</p>
+     <pre><code>grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));</code></pre>
+
+     <hr>
+     <h2>4. Alineación en Grid</h2>
+     <p>Grid permite alinear filas, columnas y contenido completo:</p>
+
+     <h3>Alinear contenido dentro del grid:</h3>
+     <pre><code>.container {
+    justify-content: center; /* eje horizontal */
+    align-content: center;   /* eje vertical */
+}</code></pre>
+
+     <h3>Alinear celdas internas:</h3>
+     <pre><code>.container {
+    justify-items: center; /* horizontal */
+    align-items: center;   /* vertical */
+}</code></pre>
+
+     <h3>Alineación individual:</h3>
+     <pre><code>.item {
+    justify-self: end;
+    align-self: start;
+}</code></pre>
+
+     <hr>
+     <h2>5. Áreas en Grid</h2>
+     <p>Permiten crear layouts complejos nombrando zonas del grid.</p>
+
+     <h3>Definir áreas:</h3>
+     <pre><code>.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "header header header"
+        "sidebar content ads";
+}</code></pre>
+
+     <h3>Asignar cada área:</h3>
+     <pre><code>.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.content { grid-area: content; }
+.ads { grid-area: ads; }</code></pre>
+
+     <p>Esto produce un layout completo y estructurado fácilmente.</p>
+
+     <hr>
+     <h2>6. Otras propiedades importantes</h2>
+     <ul>
+          <li><code>gap</code> – separaciones entre celdas</li>
+          <li><code>row-gap</code> y <code>column-gap</code></li>
+          <li><code>grid-auto-rows</code> y <code>grid-auto-columns</code></li>
+          <li><code>grid-auto-flow</code> – controla cómo se colocan los ítems automáticamente</li>
+     </ul>
+
+     <pre><code>.container {
+    gap: 20px;
+    grid-auto-flow: dense; /* rellena huecos */
+}</code></pre>
+
+     <hr>
+     <h2>7. Ejemplo completo de Grid responsivo</h2>
+     <pre><code>.grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    padding: 20px;
+}</code></pre>
+
+     <p>Este layout crea tarjetas que se ajustan automáticamente al tamaño disponible.</p>
+
+     <hr>
+     <h2>Conclusión</h2>
+     <p>CSS Grid es una herramienta increíblemente poderosa para crear layouts flexibles, ordenados y responsivos. Con
+          estas propiedades y funciones puedes construir páginas profesionales de manera sencilla y limpia.</p>
+
+</body>
+
+</html>

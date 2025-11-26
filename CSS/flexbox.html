@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>Guía Completa de Flexbox (HTML)</title>
+     <style>
+          :root {
+               --bg: #0f1724;
+               --card: #0b1220;
+               --muted: #9aa4b2;
+               --accent: #7dd3fc;
+               --panel: #0b1220
+          }
+
+          body {
+               font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+               background: linear-gradient(180deg, #071023 0%, #0b1220 100%);
+               color: #e6eef6;
+               margin: 0;
+               padding: 32px;
+          }
+
+          .wrap {
+               max-width: 1100px;
+               margin: 0 auto
+          }
+
+          header h1 {
+               margin: 0 0 8px 0;
+               font-size: 28px
+          }
+
+          header p {
+               color: var(--muted);
+               margin: 0 0 24px
+          }
+
+          .card {
+               background: rgba(255, 255, 255, 0.03);
+               border-radius: 12px;
+               padding: 18px;
+               margin-bottom: 18px;
+               box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6)
+          }
+
+          h2 {
+               margin-top: 8px
+          }
+
+          pre {
+               background: #071224;
+               padding: 12px;
+               border-radius: 8px;
+               overflow: auto;
+               color: #cfefff
+          }
+
+          code {
+               font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace
+          }
+
+          /* Live demo area */
+          .demo {
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               gap: 12px;
+               align-items: start
+          }
+
+          .panel {
+               background: #061122;
+               padding: 12px;
+               border-radius: 8px
+          }
+
+          .container {
+               height: 180px;
+               padding: 10px;
+               border-radius: 8px;
+               border: 1px dashed rgba(255, 255, 255, 0.06);
+               display: flex;
+               align-items: flex-start;
+               overflow: auto
+          }
+
+          .item {
+               min-width: 60px;
+               padding: 10px;
+               border-radius: 8px;
+               background: linear-gradient(180deg, #06314a, #09526b);
+               text-align: center;
+               color: white;
+               margin: 6px;
+          }
+
+          .controls {
+               display: flex;
+               flex-wrap: wrap;
+               gap: 8px;
+               margin-top: 10px
+          }
+
+          .kbd {
+               background: #071324;
+               color: var(--muted);
+               padding: 6px;
+               border-radius: 6px;
+               font-size: 13px
+          }
+
+          /* helper visual */
+          .legend {
+               display: flex;
+               gap: 8px;
+               flex-wrap: wrap;
+               margin-top: 8px
+          }
+
+          .dot {
+               width: 10px;
+               height: 10px;
+               border-radius: 50%
+          }
+
+          .primary {
+               background: #7dd3fc
+          }
+
+          .accent {
+               background: #60a5fa
+          }
+
+          @media (max-width:900px) {
+               .demo {
+                    grid-template-columns: 1fr
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <div class="wrap">
+          <header class="card">
+               <h1>Guía Completa de <strong>Flexbox</strong></h1>
+               <p>Explicación detallada, ejemplos en vivo y snippets para: <em>display:flex</em>, ejes,
+                    <em>justify-content</em>, <em>align-items</em>, <em>flex-direction</em>, <em>flex-wrap</em>,
+                    <em>gap</em>, <em>flex-grow</em>, <em>flex-shrink</em> y <em>flex-basis</em>.</p>
+          </header>
+
+          <section class="card">
+               <h2>1) ¿Qué es Flexbox y por qué usarlo?</h2>
+               <p>Flexbox (Flexible Box Layout) es un modelo de distribución de elementos en 1 dimensión (fila
+                    <strong>o</strong> columna). Está pensado para gestionar alineación, distribución del espacio y
+                    orden de elementos dentro de un contenedor, incluso cuando la pantalla cambia de tamaño.</p>
+               <ul>
+                    <li>Perfecto para componentes, barras de herramientas, menús y layouts internos.</li>
+                    <li>Trabaja en <strong>un solo eje</strong> a la vez: eje principal y eje cruzado.</li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>2) Cómo activar Flexbox</h2>
+               <p>Convierte un contenedor en flex contenedor con <code>display: flex;</code> o
+                    <code>display: inline-flex;</code>.</p>
+               <pre><code>&lt;div class="contenedor"&gt;
+  &lt;div class="item"&gt;1&lt;/div&gt;
+  &lt;div class="item"&gt;2&lt;/div&gt;
+  &lt;div class="item"&gt;3&lt;/div&gt;
+&lt;/div&gt;
+
+.contenedor{
+  display:flex; /* o inline-flex */
+}
+</code></pre>
+          </section>
+
+          <section class="card">
+               <h2>3) Ejes: eje principal y eje cruzado</h2>
+               <p><strong>Eje principal</strong> (<em>main axis</em>) es la dirección en la que fluyen los items (por
+                    defecto <code>row</code>). <strong>Eje cruzado</strong> (<em>cross axis</em>) es perpendicular al
+                    principal.</p>
+               <div class="legend">
+                    <div class="dot primary"></div> eje principal — dirección del flujo; <div class="dot accent"></div>
+                    eje cruzado — alineación perpendicular.
+               </div>
+          </section>
+
+          <section class="card">
+               <h2>4) <code>flex-direction</code></h2>
+               <p>Controla la dirección del eje principal.</p>
+               <pre><code>flex-direction: row | row-reverse | column | column-reverse;</code></pre>
+               <ul>
+                    <li><code>row</code> — izquierda a derecha (por defecto).</li>
+                    <li><code>row-reverse</code> — derecha a izquierda.</li>
+                    <li><code>column</code> — arriba a abajo (eje principal vertical).</li>
+                    <li><code>column-reverse</code> — abajo a arriba.</li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>5) <code>flex-wrap</code></h2>
+               <p>Por defecto los items no se rompen de línea (nowrap). <code>flex-wrap</code> permite que los items
+                    pasen a la siguiente línea.</p>
+               <pre><code>flex-wrap: nowrap | wrap | wrap-reverse;</code></pre>
+               <ul>
+                    <li><code>nowrap</code> — todos en una sola línea (default).</li>
+                    <li><code>wrap</code> — permite que los items se envuelvan en varias filas/columnas.</li>
+                    <li><code>wrap-reverse</code> — envuelto en sentido inverso.</li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>6) <code>justify-content</code> (distribución en el eje principal)</h2>
+               <p>Controla cómo se distribuye el espacio a lo largo del eje principal.</p>
+               <pre><code>justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly;</code></pre>
+               <ul>
+                    <li><code>flex-start</code> — items al inicio.</li>
+                    <li><code>flex-end</code> — items al final.</li>
+                    <li><code>center</code> — centrados.</li>
+                    <li><code>space-between</code> — espacio igual entre items (extremos pegados a contenedor).</li>
+                    <li><code>space-around</code> — espacio alrededor (mitad en los extremos).
+                    </li>
+                    <li><code>space-evenly</code> — espacios iguales tanto entre items como en los bordes.</li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>7) <code>align-items</code> (alineación en el eje cruzado)</h2>
+               <p>Alinea los items en el eje cruzado (perpendicular al eje principal).</p>
+               <pre><code>align-items: stretch | flex-start | flex-end | center | baseline;</code></pre>
+               <ul>
+                    <li><code>stretch</code> — los items estiran para llenar (por defecto si no tienen altura fija).
+                    </li>
+                    <li><code>flex-start</code> — al inicio del eje cruzado.</li>
+                    <li><code>flex-end</code> — al final del eje cruzado.</li>
+                    <li><code>center</code> — centrados en el eje cruzado.</li>
+                    <li><code>baseline</code> — alineación por línea base del texto.</li>
+               </ul>
+               <p>Nota: para alinear individualmente un item usa <code>align-self</code>.</p>
+          </section>
+
+          <section class="card">
+               <h2>8) <code>gap</code> (espaciado entre items)</h2>
+               <p>Define separación entre los items sin usar márgenes individuales. Funciona en flex desde 2020+ en
+                    navegadores modernos.</p>
+               <pre><code>gap: 12px; /* también row-gap, column-gap */
+</code></pre>
+          </section>
+
+          <section class="card">
+               <h2>9) <code>flex</code>: shorthand para grow, shrink y basis</h2>
+               <p><code>flex</code> es la forma abreviada de: <code>flex-grow</code> <code>flex-shrink</code>
+                    <code>flex-basis</code>.</p>
+               <pre><code>/* Ejemplos */
+.item{ flex: 1; }         /* 1 1 0%  -> crecerá por igual */
+.item{ flex: 2; }         /* 2 1 0%  -> crecerá el doble que flex:1 */
+.item{ flex: 0 0 200px; } /* no crecer, no encoger, base 200px */
+</code></pre>
+
+               <h3>a) <code>flex-grow</code></h3>
+               <p>Controla cuánto espacio extra obtiene un item cuando hay espacio libre. Valor numérico (0 por
+                    defecto).</p>
+
+               <h3>b) <code>flex-shrink</code></h3>
+               <p>Controla cuánto encoge un item cuando falta espacio. Valor numérico (1 por defecto).</p>
+
+               <h3>c) <code>flex-basis</code></h3>
+               <p>Tamaño inicial del item antes de distribuir espacio libre. Puede ser <code>auto</code>,
+                    <code>px</code>, <code>%</code>. También suele usarse con <code>flex</code> shorthand.</p>
+
+               <p><strong>Regla práctica:</strong> usa <code>flex: 1</code> para items que deben compartir espacio
+                    igualmente; usa <code>flex: 0 0 auto</code> para items con tamaño fijo.</p>
+          </section>
+
+          <section class="card">
+               <h2>10) Propiedades útiles relacionadas</h2>
+               <ul>
+                    <li><code>order</code>: cambia el orden visual de los items (sin alterar DOM).</li>
+                    <li><code>align-self</code>: sobreescribe <code>align-items</code> para un item.</li>
+                    <li><code>align-content</code>: afecta el empaquetamiento en el eje cruzado cuando hay varias líneas
+                         (solo cuando hay wrap y espacio extra en el eje cruzado).</li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>11) Ejemplos prácticos (copia y pega)</h2>
+               <div class="demo">
+                    <div class="panel">
+                         <strong>Ejemplo 1 — barra centrada</strong>
+                         <div class="container"
+                              style="display:flex;justify-content:center;align-items:center;gap:10px;">
+                              <div class="item">A</div>
+                              <div class="item">B</div>
+                              <div class="item">C</div>
+                         </div>
+                         <pre><code>.container{display:flex;justify-content:center;align-items:center;gap:10px;}</code></pre>
+                    </div>
+
+                    <div class="panel">
+                         <strong>Ejemplo 2 — tarjetas con crecimiento</strong>
+                         <div class="container" style="display:flex;gap:8px;align-items:stretch;height:200px;">
+                              <div class="item" style="flex:1;">1 (flex:1)</div>
+                              <div class="item" style="flex:2;">2 (flex:2)</div>
+                              <div class="item" style="flex:1 1 120px;">3 (flex:1 1 120px)</div>
+                         </div>
+                         <pre><code>.item{flex:1} /* etc */</code></pre>
+                    </div>
+
+                    <div class="panel">
+                         <strong>Ejemplo 3 — wrap y gap</strong>
+                         <div class="container"
+                              style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;height:auto;">
+                              <div class="item">uno</div>
+                              <div class="item">dos</div>
+                              <div class="item">tres</div>
+                              <div class="item">cuatro</div>
+                              <div class="item">cinco</div>
+                              <div class="item">seis</div>
+                         </div>
+                         <pre><code>.container{display:flex;flex-wrap:wrap;gap:12px}</code></pre>
+                    </div>
+
+                    <div class="panel">
+                         <strong>Ejemplo 4 — column con align-items</strong>
+                         <div class="container"
+                              style="display:flex;flex-direction:column;align-items:flex-end;height:220px;">
+                              <div class="item" style="width:140px;">Largo</div>
+                              <div class="item" style="width:80px;">Medio</div>
+                              <div class="item" style="width:40px;">S</div>
+                         </div>
+                         <pre><code>.container{display:flex;flex-direction:column;align-items:flex-end}</code></pre>
+                    </div>
+               </div>
+          </section>
+
+          <section class="card">
+               <h2>12) Errores comunes y soluciones</h2>
+               <ul>
+                    <li>No funciona? Asegúrate de que <code>display:flex</code> está en el contenedor, no en los items.
+                    </li>
+                    <li>Si <code>align-items:stretch</code> no estira, el item puede tener una altura/anchura explícita.
+                    </li>
+                    <li>Usar <code>gap</code> evita márgenes colapsados entre items y es más limpio que aplicar margen a
+                         cada item.</li>
+                    <li>Recuerda que <code>justify-content</code> actúa en el eje principal y <code>align-items</code>
+                         en el eje cruzado.</li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>13) Consejos de rendimiento y accesibilidad</h2>
+               <ul>
+                    <li>Flexbox es rápido y nativo: evita over-optimizing con scripts para layout.</li>
+                    <li>No uses <code>order</code> si dependes del orden lógico para lectores de pantalla; altera sólo
+                         presentacionalmente.</li>
+                    <li>Prueba con lector de pantalla y navegación por teclado para componentes flexibles (focus
+                         visibles y orden lógico).</li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>14) Atajos y patrones comunes</h2>
+               <ul>
+                    <li><code>.row-center { display:flex; align-items:center; justify-content:center; }</code></li>
+                    <li><code>.space-between { display:flex; justify-content:space-between; align-items:center; }</code>
+                    </li>
+                    <li>Botones en barra: <code>gap</code> + <code>align-items:center</code> para espaciado consistente.
+                    </li>
+               </ul>
+          </section>
+
+          <section class="card">
+               <h2>15) Recursos y compatibilidad</h2>
+               <ul>
+                    <li>MDN Flexbox (documentación completa) — buscar MDN <em>Flexible Box Layout</em>.</li>
+                    <li>Guía "A Complete Guide to Flexbox" por CSS-Tricks — ejemplos visuales.</li>
+                    <li>Compatibilidad: Flexbox está soportado por prácticamente todos los navegadores modernos;
+                         Internet Explorer tiene algunos bugs (si debes soportarlo revisa vendor prefixes y hacks).</li>
+               </ul>
+          </section>
+
+          <footer class="card" style="text-align:center;color:var(--muted)">
+               <div>Hecho para ti — incluye ejemplos en vivo. Copia y pega los fragmentos en tus proyectos para
+                    experimentar.</div>
+               <div style="margin-top:8px;font-size:13px">¿Quieres que te lo entregue como archivo .html descargable o
+                    un PDF?</div>
+          </footer>
+     </div>
+</body>
+
+</html>

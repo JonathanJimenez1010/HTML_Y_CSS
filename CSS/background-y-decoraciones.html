@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>Guía: Backgrounds y decoraciones (CSS)</title>
+     <style>
+          :root {
+               --demo-bg: #0ea5a4;
+               --accent: #06b6d4;
+               --text: #111827;
+               --card: #ffffff;
+          }
+
+          body {
+               font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+               background: #f8fafc;
+               color: var(--text);
+               margin: 0;
+               padding: 24px;
+          }
+
+          header {
+               max-width: 1000px;
+               margin: 0 auto 24px;
+          }
+
+          h1 {
+               margin: 0 0 6px;
+               font-size: 28px;
+          }
+
+          p.lead {
+               margin: 0 0 18px;
+               color: #374151
+          }
+
+          .container {
+               max-width: 1000px;
+               margin: 0 auto;
+               display: grid;
+               gap: 20px;
+          }
+
+          /* layout for sections */
+          section.card {
+               background: var(--card);
+               border-radius: 12px;
+               padding: 18px;
+               box-shadow: 0 6px 20px rgba(2, 6, 23, 0.06);
+          }
+
+          h2 {
+               margin: 0 0 10px;
+               font-size: 20px;
+          }
+
+          .examples {
+               display: flex;
+               flex-wrap: wrap;
+               gap: 12px;
+          }
+
+          .example {
+               flex: 1 1 220px;
+               min-width: 200px;
+               padding: 12px;
+               border-radius: 10px;
+               background: #fff;
+               border: 1px solid #e6eef6;
+          }
+
+          .demo {
+               height: 120px;
+               border-radius: 8px;
+               margin: 8px 0;
+               display: grid;
+               place-items: center;
+               color: white;
+               font-weight: 600;
+          }
+
+          pre {
+               background: #0b1220;
+               color: #dbeafe;
+               padding: 12px;
+               border-radius: 8px;
+               overflow: auto;
+               font-size: 13px;
+          }
+
+          code {
+               font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+               font-size: 13px;
+          }
+
+          /* specific demo styles (used in examples) */
+          .demo.bg-color {
+               background-color: var(--demo-bg);
+          }
+
+          .demo.bg-hex {
+               background-color: #1f2937
+          }
+
+          .demo.bg-rgba {
+               background-color: rgba(14, 165, 164, 0.85);
+          }
+
+          .demo.gradient {
+               background-image: linear-gradient(135deg, #06b6d4, #3b82f6);
+          }
+
+          .demo.radial {
+               background-image: radial-gradient(circle at 20% 20%, #f97316, transparent 40%), linear-gradient(#fde68a, #fef3c7);
+               color: #111
+          }
+
+          .demo.multiple {
+               background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%2306b6d4"/><circle cx="40" cy="40" r="28" fill="%23ffffff" opacity="0.15"/></svg>'), linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%);
+               background-size: 80px 60px, cover;
+               background-position: left top, center;
+          }
+
+          .demo.bg-size-cover {
+               background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=60&auto=format&fit=crop');
+               background-size: cover;
+               background-position: center;
+          }
+
+          .demo.bg-size-contain {
+               background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=60&auto=format&fit=crop');
+               background-size: contain;
+               background-repeat: no-repeat;
+               background-position: center;
+               background-color: #e6f6f7;
+               color: #111
+          }
+
+          .demo.box-shadow-default {
+               background: linear-gradient(90deg, #06b6d4, #3b82f6);
+               box-shadow: 0 6px 18px rgba(2, 6, 23, 0.15);
+          }
+
+          .demo.box-shadow-multi {
+               background: #fff;
+               color: #111;
+               box-shadow: 0 2px 6px rgba(2, 6, 23, 0.08), 0 12px 30px rgba(3, 7, 18, 0.10);
+               border: 1px solid rgba(0, 0, 0, 0.04);
+          }
+
+          .demo.box-shadow-inset {
+               background: linear-gradient(180deg, #f1f5f9, #e2e8f0);
+               box-shadow: inset 0 2px 8px rgba(2, 6, 23, 0.06);
+               color: #111
+          }
+
+          .demo.radius-8 {
+               background: linear-gradient(90deg, #06b6d4, #3b82f6);
+               border-radius: 8px
+          }
+
+          .demo.radius-pill {
+               background: #06b6d4;
+               border-radius: 9999px
+          }
+
+          .demo.radius-individual {
+               background: #f97316;
+               border-radius: 10px 30px 10px 40px
+          }
+
+          .demo.radius-elliptical {
+               background: #06b6d4;
+               border-radius: 50% / 30%
+          }
+
+          .demo.filter-blur {
+               background-image: linear-gradient(90deg, #06b6d4, #3b82f6);
+               filter: blur(2px);
+          }
+
+          .demo.filter-bright {
+               background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=60&auto=format&fit=crop');
+               filter: brightness(0.7) contrast(1.05);
+          }
+
+          .demo.filter-grayscale {
+               background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=60&auto=format&fit=crop');
+               filter: grayscale(1) contrast(1.05);
+          }
+
+          .demo.filter-drop {
+               background: #fff;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+          }
+
+          .demo.filter-drop img {
+               width: 80px;
+               filter: drop-shadow(6px 8px 12px rgba(2, 6, 23, 0.25));
+          }
+
+          /* smaller helper text */
+          .note {
+               font-size: 13px;
+               color: #475569
+          }
+
+          .muted {
+               color: #6b7280
+          }
+
+          /* responsive */
+          @media (max-width:720px) {
+               .examples {
+                    flex-direction: column
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <header>
+          <h1>Guía completa: Backgrounds y decoraciones (CSS)</h1>
+          <p class="lead">Explicaciones, sintaxis y demos para <strong>background-color</strong>,
+               <strong>background-image</strong>, <strong>background-size</strong>,
+               <strong>background-position</strong>, <strong>box-shadow</strong>, <strong>border-radius</strong> y
+               <strong>filter</strong>.</p>
+     </header>
+
+     <main class="container">
+          <!-- BACKGROUND-COLOR -->
+          <section class="card">
+               <h2>1. <code>background-color</code></h2>
+               <p>Define el color de fondo de un elemento. Acepta colores en diferentes formatos:</p>
+               <ul>
+                    <li><code>named</code>: <code>red</code>, <code>blue</code></li>
+                    <li><code>hex</code>: <code>#fff</code>, <code>#1f2937</code></li>
+                    <li><code>rgb/rgba</code>: <code>rgb(255,0,0)</code>, <code>rgba(0,0,0,0.5)</code></li>
+                    <li><code>hsl/hsla</code>: <code>hsl(200, 80%, 50%)</code></li>
+                    <li><code>transparent</code> para sin color.</li>
+               </ul>
+
+               <div class="examples">
+                    <div class="example">
+                         <div class="demo bg-color">Hex / variable</div>
+                         <pre><code>/* usar variables: */
+:root{ --brand: #0ea5a4 }
+.box{ background-color:var(--brand); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo bg-hex">#1f2937</div>
+                         <pre><code>.box{ background-color:#1f2937; }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo bg-rgba">rgba()</div>
+                         <pre><code>.box{ background-color:rgba(14,165,164,0.85); }</code></pre>
+                    </div>
+               </div>
+
+               <p class="note">Consejo: evita usar colores semitransparentes sobre imágenes si no controlas la
+                    luminosidad — usa un <code>linear-gradient</code> encima para garantizar contraste legible.</p>
+          </section>
+
+          <!-- BACKGROUND-IMAGE -->
+          <section class="card">
+               <h2>2. <code>background-image</code> (imágenes y gradientes)</h2>
+               <p>Permite usar imágenes, gradientes o múltiples capas. Sintaxis básica:</p>
+               <pre><code>background-image: url('imagen.jpg');
+background-image: linear-gradient(90deg, #06b6d4, #3b82f6);
+background-image: radial-gradient(circle, #fff, #ddd);
+background-image: url(a.svg), linear-gradient(...); /* múltiples */</code></pre>
+
+               <div class="examples">
+                    <div class="example">
+                         <div class="demo gradient">linear-gradient</div>
+                         <pre><code>.hero{ background-image: linear-gradient(135deg, #06b6d4, #3b82f6); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo radial">radial + linear</div>
+                         <pre><code>.badge{ background-image: radial-gradient(circle at 20% 20%, #f97316, transparent 40%), linear-gradient(#fde68a,#fef3c7); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo multiple">múltiples capas</div>
+                         <pre><code>/* las capas se pintan de izquierda a derecha. */
+.header{ background-image: url('pattern.svg'), linear-gradient(...); }
+</code></pre>
+                    </div>
+               </div>
+
+               <p class="note">Orden de capas: la primera capa escrita queda sobre las siguientes (como si apilaras
+                    hojas). Para degradados y accesibilidad, coloca el degradado <em>encima</em> de la imagen si quieres
+                    oscurecerla o aclararla.</p>
+          </section>
+
+          <!-- BACKGROUND-SIZE & POSITION -->
+          <section class="card">
+               <h2>3. <code>background-size</code> y <code>background-position</code></h2>
+
+               <div class="examples">
+                    <div class="example">
+                         <h3 class="muted">background-size</h3>
+                         <div class="demo bg-size-cover">cover</div>
+                         <pre><code>background-size: cover; /* llena el contenedor recortando si es necesario */
+background-size: contain; /* escala para caber, sin recortar */
+background-size: 200px 120px; /* ancho alto */
+background-size: auto 50%; /* valores combinados */</code></pre>
+                    </div>
+
+                    <div class="example">
+                         <h3 class="muted">background-position</h3>
+                         <div class="demo bg-size-contain">center / contain</div>
+                         <pre><code>background-position: center center; /* keywords: top/right/bottom/left/center */
+background-position: 20% 30%; /* porcentajes */
+background-position: 10px 20px; /* offsets */
+background-position: right top; /* combinaciones */</code></pre>
+
+                         <p class="note">Para múltiples fondos puedes dar posiciones y tamaños separados por comas en el
+                              mismo orden que <code>background-image</code>.</p>
+                    </div>
+               </div>
+
+               <p class="note">Comportamientos comunes: <code>background-repeat</code> (repeat/no-repeat/round/space),
+                    <code>background-attachment</code> (scroll/fixed/local) y
+                    <code>background-origin</code>/<code>background-clip</code> (border-box, padding-box, content-box)
+                    son propiedades relacionadas que controlan repetición, fijación y recorte.</p>
+          </section>
+
+          <!-- BOX-SHADOW -->
+          <section class="card">
+               <h2>4. <code>box-shadow</code></h2>
+               <p>Genera sombras alrededor (o dentro) de elementos. Sintaxis:</p>
+               <pre><code>box-shadow: [inset?] offset-x offset-y blur-radius spread-radius color;</code></pre>
+               <ul>
+                    <li><code>offset-x</code> y <code>offset-y</code> obligatorios.</li>
+                    <li><code>blur-radius</code> (opcional, por defecto 0).</li>
+                    <li><code>spread-radius</code> (opcional) expande/contrae la sombra.</li>
+                    <li><code>inset</code> aplica sombra interior.</li>
+                    <li>Puedes especificar <strong>múltiples sombras</strong> separadas por comas.</li>
+               </ul>
+
+               <div class="examples">
+                    <div class="example">
+                         <div class="demo box-shadow-default">Sombra suave</div>
+                         <pre><code>.card{ box-shadow: 0 6px 18px rgba(2,6,23,0.12); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo box-shadow-multi">Múltiples sombras</div>
+                         <pre><code>.modal{ box-shadow: 0 2px 6px rgba(2,6,23,0.08), 0 12px 30px rgba(3,7,18,0.10); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo box-shadow-inset">Inset</div>
+                         <pre><code>.input{ box-shadow: inset 0 2px 8px rgba(2,6,23,0.06); }</code></pre>
+                    </div>
+               </div>
+
+               <p class="note">Consejo de rendimiento: tener muchas sombras con blur alto en muchos elementos puede
+                    afectar la renderización en dispositivos modestos. Si la sombra es decorativa y no dinámica,
+                    considera usar una imagen ligera o pseudo-elementos con transformaciones para simular la sombra.</p>
+          </section>
+
+          <!-- BORDER-RADIUS -->
+          <section class="card">
+               <h2>5. <code>border-radius</code></h2>
+               <p>Controla el redondeo de esquinas. Formas de uso:</p>
+               <pre><code>border-radius: 8px; /* todas las esquinas iguales */
+border-radius: 10px 30px 10px 40px; /* top-left | top-right | bottom-right | bottom-left */
+border-radius: 50% ; /* circulo si el elemento es cuadrado */
+border-radius: 50% / 30%; /* elíptico */
+border-top-left-radius: 12px; /* por esquina */</code></pre>
+
+               <div class="examples">
+                    <div class="example">
+                         <div class="demo radius-8">8px</div>
+                         <pre><code>.chip{ border-radius:8px }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo radius-pill">pill</div>
+                         <pre><code>.badge{ border-radius:9999px }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo radius-individual">asimétrico</div>
+                         <pre><code>.card{ border-radius: 10px 30px 10px 40px; }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo radius-elliptical">elíptico</div>
+                         <pre><code>.blob{ border-radius:50% / 30% }</code></pre>
+                    </div>
+               </div>
+
+               <p class="note">Recuerda que <code>overflow</code> afecta si el contenido respeta la esquina redondeada.
+                    Usa <code>overflow:hidden</code> si quieres recortar contenido que sale de las esquinas redondeadas.
+               </p>
+          </section>
+
+          <!-- FILTER -->
+          <section class="card">
+               <h2>6. <code>filter</code></h2>
+               <p><code>filter</code> aplica efectos visuales a elementos (no solo imágenes). Sintaxis y ejemplos:</p>
+               <pre><code>filter: blur(4px) brightness(0.8) contrast(1.1) saturate(1.2) grayscale(1) sepia(0.4) hue-rotate(90deg) drop-shadow(4px 6px 8px rgba(0,0,0,0.4));</code></pre>
+
+               <div class="examples">
+                    <div class="example">
+                         <div class="demo filter-blur">blur(2px)</div>
+                         <pre><code>.bg{ filter: blur(2px); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo filter-bright">brightness / contrast</div>
+                         <pre><code>.photo{ filter: brightness(0.7) contrast(1.05); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo filter-grayscale">grayscale(1)</div>
+                         <pre><code>.mono{ filter: grayscale(1); }</code></pre>
+                    </div>
+                    <div class="example">
+                         <div class="demo filter-drop"><img
+                                   src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=60&auto=format&fit=crop"
+                                   alt="avatar" /></div>
+                         <pre><code>.avatar img{ filter: drop-shadow(6px 8px 12px rgba(2,6,23,0.25)); }</code></pre>
+                    </div>
+               </div>
+
+               <p class="note">Importante: <code>filter</code> crea un nuevo stacking context y puede tener impacto en
+                    rendimiento si se aplica a grandes áreas o a muchos elementos. Para animaciones suaves de
+                    <code>transform</code> y <code>opacity</code> suelen ser más performantes. Evita animar filtros
+                    complejos en móviles si es posible.</p>
+          </section>
+
+          <!-- EJEMPLOS AVANZADOS: shorthand y combinaciones -->
+          <section class="card">
+               <h2>7. Combinando propiedades — ejemplos útiles</h2>
+               <p>Shorthand útil:</p>
+               <pre><code>/* shorthand de background (orden flexible):
+background: [background-color] [background-image] [background-position] / [background-size] [background-repeat] [background-origin] [background-clip] [background-attachment];
+
+/* ejemplo */
+.header{
+  background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('hero.jpg') center/cover no-repeat;
+}
+</code></pre>
+
+               <p class="note">Truco: para superponer un color semitransparente sobre una imagen, coloca un
+                    <code>linear-gradient</code> como primera capa y la <code>url()</code> como segunda capa. Ejemplo
+                    arriba.</p>
+
+               <h3>Accesibilidad y rendimiento</h3>
+               <ul>
+                    <li>Comprueba contraste de texto sobre fondos complejos (usa overlays o aumenta contraste).</li>
+                    <li>Optimiza imágenes (WEBP, tamaño apropiado, <code>srcset</code> en <code>&lt;img&gt;</code>
+                         cuando sea posible).</li>
+                    <li>Evita filtros/blur animados en masas; prerenderiza si es posible.</li>
+                    <li>Usa variables CSS para esquemas de color y temas.</li>
+               </ul>
+
+          </section>
+
+          <!-- SNIPPETS LIST -->
+          <section class="card">
+               <h2>8. Snippets rápidos (copia y pega)</h2>
+               <pre><code>/* overlay semitransparente + imagen */
+.hero{
+  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('hero.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* patrón repetido + tamaño */
+.pattern{
+  background-image: url('pattern.svg');
+  background-repeat: repeat;
+  background-size: 80px 80px;
+}
+
+/* sombra suave accesible */
+.card{
+  border-radius:12px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+}
+
+/* avatar circular con drop-shadow */
+.avatar{
+  width:72px; height:72px; border-radius:50%; overflow:hidden;
+}
+.avatar img{ width:100%; height:100%; object-fit:cover; filter: drop-shadow(0 6px 10px rgba(2,6,23,0.2)); }
+</code></pre>
+
+               <p class="muted">¿Quieres estos snippets también en un archivo CSS separado o en formato SCSS para usar
+                    variables y mixins?</p>
+          </section>
+
+          <footer class="card" style="text-align:center">
+               <p class="muted">Guía generada automáticamente — editar y reutilizar libremente. Si quieres que incluya
+                    explicaciones más técnicas (cómo funcionan compositing layers, painting order, o ejemplos animados),
+                    dímelo y los agrego.</p>
+          </footer>
+
+     </main>
+</body>
+
+</html>
