@@ -1,0 +1,185 @@
+/*
+     Propiedad Posittion:
+
+     - static
+     - relative
+     - absolute
+     - fixed
+     - sticky
+     - z-index
+*/
+
+/*
+     position: static;
+     Valor por defecto. El elemento sigue el flujo normal, los offsets (top/right/left/bottom) se ignoran.
+
+     .caja-1{
+          position: static;
+          top: ;
+          left: ;
+          bottom: ;
+          right: ;
+     }
+*/
+
+/*
+     position: relative;
+     El elemento permanece en el flujo —ocupa su espacio original— pero se pueden aplicar offsets (top/right/left/bottom) para visualmente moverlo desde su posición normal. Sus hijos posicionados absolute toman este elemento como containing block si recibe un position distinto de static.
+
+     .caja-1{
+          position: relative;
+          top: 100px;
+          left: 100px;
+          y
+          top: 100px;
+          right: 100px;
+
+          ó
+
+          bottom: 100px;
+          right: 100px;
+          y
+          bottom: 100px;
+          left: 100px;
+     }
+*/
+
+/*
+     Contexto de Apilamiento - (Stacking Context) z-index
+     z-index controla el orden de apilamiento de elementos posicionados (y en algunos casos otros elementos). Pero ese orden está confinado a su stacking context.
+
+     - Un elemento crea un nuevo stacking context cuando tiene: position con z-index distinto de auto, opacity < 1, transform distinto de none, filter, mix-blend-mode, isolation, y más.
+     - Los elementos en un stacking context son apilados entre sí; elementos en un stacking context hijo no pueden escapar por encima de su ancestro si el ancestro está por debajo en el stacking order global.
+
+     Orden de Apilamiento:
+     1. z-index => 1
+     2. Elementos con posición
+     3. Elementos sin posición
+
+     Recomendación: siempre se pone la posicion de 10 en en 10 o de 100 en 100 NO de 1 en 1 porque no queda espacio para los otros elementos que tengan que posicionarse hay
+
+     .caja-1 {
+          position: relative;
+          top: 50px;
+          left: 100px;
+          bottom: ;
+          right: ;
+     }
+
+     .caja-2 {
+          position: relative;
+          top: ;
+          left: 50px;
+          bottom: ;
+          right: ;
+     }
+
+     .caja-3 {
+          position: relative;
+          top: ;
+          left: ;
+          bottom: 50px;
+          right: ;
+     }
+
+     .caja-4 {
+          position: relative;
+          top: ;
+          left: ;
+          bottom: ;
+          right: ;
+          z-index: 10;
+     }
+
+     .caja-5 {
+          position: relative;
+          top: ;
+          left: 50px;
+          bottom: 50px;
+          right: ;
+          z-index: 20;
+     }
+
+     .caja-6 {
+          position: relative;
+          top: ;
+          left: 100px;
+          bottom: 100px;
+          right: ;
+          z-index: 30;
+     }
+
+     .contenedor{
+     display: flex;
+     flex-wrap: wrap;
+     }
+
+     .caja-1{
+          position: relative;
+          top: 50px;
+          left: 260px;
+          z-index: -1; se le pone -1 ya que e z es una dimensión 3D y va de adelanta y hacia atras en este caso queda atras de el contenedor
+     }
+
+     .caja-3{
+          position: relative;
+     }
+*/
+
+/*
+     propiedad: absolute;
+     El elemento sale del flujo. Se posiciona relativamente a su containing block (el ancestro posicionado más cercano —es decir, con position distinto de static). Si no existe tal ancestro, el contenedor es el initial containing block (usualmente el viewport).
+
+     position: absolute; hace que un elemento se comporte como si fuera una pegatina que puedes colocar libremente. Al activarlo, ese elemento deja de seguir el orden normal de la página y puedes moverlo exactamente donde quieras usando top, bottom, left o right. En lugar de ubicarse como un bloque más entre el resto, se desprende de ellos y se coloca según las coordenadas que tú le des, generalmente tomando como referencia el contenedor que tenga position: relative. Es como sacar una pieza del rompecabezas y ponerla justo en la posición que tú elijas.
+
+     .caja-1 {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          bottom: ;
+          right: ;
+     }
+*/
+
+/*
+     position: fixed;
+     Similar a absolute pero siempre se posiciona respecto al viewport (la ventana). Útil para barras fijas, botones flotantes, etc. En móviles con barras de navegación puede comportarse distinto —usar con pruebas.
+
+     position: fixed funciona parecido a absolute, pero con una diferencia muy importante: siempre se coloca tomando como referencia la ventana del navegador, no su contenedor. Es como si fuera un elemento pegado directamente a la pantalla; no importa si haces scroll, siempre se queda en el mismo lugar. Por eso es útil para menús que quedan arriba mientras bajas, botones flotantes o barras fijas. En algunos celulares puede moverse un poco diferente por las barras de navegación, así que conviene probarlo cuando se use.
+
+     .contenedor {
+          display: flex;
+          flex-wrap: wrap;
+          position: relative;
+          z-index: 10;
+     }
+
+     .cabecera{
+          position: fixed;
+          width: 100%;
+          top: 0;
+          z-index: 20;
+     }
+*/
+
+/*
+     position: sticky;
+     Comportamiento híbrido: el elemento participa en el flujo hasta que el scroll lo alcanza, luego se comporta como fixed dentro de su contenedor. Necesita un threshold (top/right/bottom/left) y un contenedor que no oculte overflow.
+
+     overflow -> significa desbordamiento, que puede referirse a diferentes conceptos dependiendo del contexto, como el contenido que excede los límites de un contenedor en diseño web (CSS) o un error en informática donde un resultado excede la capacidad de un campo de datos
+
+     position: sticky es una mezcla entre un elemento normal y uno fijo. Al principio se comporta como parte del flujo de la página, pero cuando haces scroll y llega al punto que le indiques (por ejemplo, top: 0), se queda pegado ahí como si fuera fixed. Esto solo ocurre dentro de su propio contenedor, y para que funcione bien ese contenedor no debe tener overflow: hidden o similar. Es ideal para títulos, menús o secciones que deben quedarse visibles mientras avanzas por un área específica.
+
+     .cabecera_1{
+          position: sticky;
+          En position: sticky; los valores de (top/right/bottom/left) indican el punto donde el elemento deja de moverse con el scroll y se queda fijo dentro de su contenedor. 
+          top: 120px;
+     }
+
+     .cabecera_2{
+          position: fixed;
+          top: 100px;
+          width: 100%;
+     }
+*/
+
