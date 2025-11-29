@@ -1,0 +1,834 @@
+body {
+     background-color: black;
+     font-family: sans-serif;
+     margin: 0;
+}
+
+a {
+     text-decoration: none;
+     color: inherit;
+}
+
+ul {
+     background-color: white;
+     list-style: none;
+     margin: 0;
+     padding: 0;
+}
+
+li {
+     background-color: chocolate;
+     color: white;
+     border: dashed black;
+     padding: .3rem .7rem;
+}
+
+/*
+     Conceptos principales
+     Ejes- siempre tener en cuenta el eje principal y cruzado
+
+     Espacio Disponible - Mirar bien como se distribuye el espacio una vez ya se le aplique flex-box
+
+     Quien es el padre y quienes son los hijos
+*/
+
+/* display: flex; */
+/* display: inline-flex; convertir el flex en inline-flex para que solo ocupe su espacio*/
+/* Columnas */
+/* flex-direction: column; */
+/* flex-direction: column-reverse; Columna Reversa*/
+/* Filas */
+/* flex-direction: row; */
+/* flex-direction: row-reverse; fila reversa*/
+
+/*Espacio  Disponible*/
+/* justify-content: space-between; */
+
+/* ========================================= */
+/* 1. flex-direction                          */
+/* Dirección principal del eje (main-axis)
+          El main-axis es el eje principal en Flexbox, es decir, la dirección en la que los elementos flexibles se organizan dentro de un contenedor. Este eje cambia según el valor de flex-direction: si usas row (por defecto), el main-axis será horizontal, y los elementos se colocarán de izquierda a derecha; si usas row-reverse, seguirá siendo horizontal pero en sentido inverso; si usas column, el main-axis será vertical, colocando los elementos de arriba hacia abajo; y con column-reverse será vertical pero de abajo hacia arriba. Todas las propiedades como justify-content trabajan alineando los elementos a lo largo de este eje principal.  
+     */
+/* ========================================= */
+
+/* COLUMNAS */
+/* flex-direction: column;         Coloca los hijos uno debajo del otro */
+/* flex-direction: column-reverse; Igual que column, pero invertido     */
+
+/* FILAS (valor por defecto) */
+/* flex-direction: row;            Coloca los hijos uno al lado del otro */
+/* flex-direction: row-reverse;    Mismos elementos pero invertidos      */
+
+
+
+/* ========================================= */
+/* 2. flex-wrap                               */
+/* Permite o no que los elementos salten de    */
+/* línea si no caben.                         */
+/* ========================================= */
+
+/* flex-wrap: nowrap;      No permite saltar de línea (valor por defecto) */
+/* flex-wrap: wrap;        Permite que los elementos bajen a otra línea   */
+/* flex-wrap: wrap-reverse; Igual que wrap, pero en sentido inverso       */
+
+
+
+/* ========================================= */
+/* 3. flex-flow                                */
+/* Es el shorthand o combinado de:             */
+/* flex-direction + flex-wrap                  */
+/* ========================================= */
+
+/* flex-flow: row wrap;      Dirección en fila + permite salto de línea */
+/* flex-flow: column nowrap;  Dirección en columna + sin salto         */
+
+
+
+/* ========================================= */
+/* 4. justify-content                           */
+/* Alinea los elementos en el eje principal      */
+/* (horizontal si flex-direction: row)           */
+/* ========================================= */
+
+/* justify-content: flex-start (inicio flexible);   Al inicio (por defecto) */
+/* justify-content: flex-end (extremo flexible);     Al final                */
+/* justify-content: center;       Centra                  */
+/* justify-content: space-between (espacio entre); Primer y último pegados a los extremos, el resto se distribuye */
+/* justify-content: space-around (espacio alrededor);  Espacios iguales alrededor de cada elemento */
+/* justify-content: space-evenly (uniformemente en el espacio);  Espaciado totalmente uniforme */
+
+
+
+/* ========================================= */
+/* 5. align-items                              */
+/* Alinea los elementos en el eje cruzado       */
+/* (vertical si flex-direction: row)             */
+/* ========================================= */
+
+/* align-items: stretch;    Estira los elementos (valor por defecto) */
+/* align-items: flex-start;  Empuja arriba (si el eje vertical)       */
+/* align-items: flex-end;    Empuja abajo                              */
+/* align-items: center;      Centra vertical                           */
+/* align-items: baseline;    Alinea según la línea base del texto      */
+
+
+
+/* ========================================= */
+/* 6. align-content                             */
+/* Alinea "las líneas" de elementos cuando hay   */
+/* varias filas (solo funciona con wrap)    
+          En Flexbox, una “línea de elementos” es simplemente una fila completa que se forma cuando los elementos dentro de un contenedor no caben todos en una sola fila y, gracias a flex-wrap: wrap, se acomodan bajando a otra fila. Es decir, si tus elementos no caben uno al lado del otro, Flexbox crea automáticamente una segunda fila, luego una tercera, etc., y cada una de esas filas es lo que llamamos “línea”. La propiedad align-content se encarga de organizar el espacio entre esas filas dentro del contenedor, pero solo afecta cuando existen dos o más líneas; si todo cabe en una sola fila, align-content no hace nada.
+     */
+/* ========================================= */
+
+/* align-content: flex-start;  Líneas pegadas arriba */
+/* align-content: flex-end;    Líneas pegadas abajo  */
+/* align-content: center;      Líneas centradas      */
+/* align-content: space-between; Espacio entre líneas */
+/* align-content: space-around;  Espacio alrededor   */
+/* align-content: space-evenly;  Espacio uniforme    */
+/* align-content: stretch;      Las líneas se expanden (valor por defecto) */
+
+/*MEJOR EXPLICACION*/
+/* ========================================= */
+/* 6. align-content                           */
+/* Alinea las LÍNEAS de elementos dentro del  */
+/* contenedor flex cuando existen varias filas */
+/* (solo funciona si flex-wrap: wrap)          */
+/* ========================================= */
+
+/* align-content: flex-start;    
+     Las filas se agrupan y quedan pegadas a la parte superior del contenedor desde donde comienza*/
+
+/* align-content: flex-end;      
+     Las filas se agrupan y quedan pegadas a la parte inferior */
+
+/* align-content: center;        
+     Todas las filas se juntan y quedan centradas en el contenedor */
+
+/* align-content: space-between;  
+     La primera fila va arriba, la última abajo,
+     y las filas del medio se distribuyen ocupando todo el espacio */
+
+/* align-content: space-around;   
+     Cada fila recibe espacio arriba y abajo, creando separación uniforme */
+
+/* align-content: space-evenly;   
+     Todas las filas tienen exactamente el mismo espacio entre sí y con los bordes */
+
+/* align-content: stretch;        
+     Las filas se estiran para llenar verticalmente todo el contenedor 
+     (este es el valor por defecto) */
+
+
+
+/* ========================================= */
+/* --- PROPIEDADES PARA LOS HIJOS FLEX ---   */
+/* ========================================= */
+
+
+/* ========================================= */
+/* 7. order                                     */
+/* Cambia el orden natural del elemento         */
+/* (por defecto todos tienen order: 0)          */
+/* ========================================= */
+
+/* order: 1;   Se coloca después de los que tengan 0 */
+/* order: -1;  Se coloca antes de todos              */
+
+
+
+/* ========================================= */
+/* 8. flex-grow                                  */
+/* Define cuánto crece un elemento si hay espacio   */
+/* disponible.                                     */
+/* ========================================= */
+
+/* flex-grow: 0;   No crece (valor por defecto) */
+/* flex-grow: 1;   Crece y ocupa el espacio sobrante */
+/* flex-grow: 2;   Crece el doble que un grow:1 */
+
+
+
+/* ========================================= */
+/* 9. flex-shrink                                */
+/* Define cuánto se encoge un elemento si falta     */
+/* espacio.                                       */
+/* ========================================= */
+
+/* flex-shrink: 1;   Se encoge (valor por defecto) */
+/* flex-shrink: 0;   NO se encoge nunca            */
+
+
+
+/* ========================================= */
+/* 10. flex-basis                                 */
+/* Define el tamaño base del elemento antes de     */
+/* crecer o encogerse.                             */
+/* ========================================= */
+
+/* flex-basis: auto;  Tamaño natural (por defecto) */
+/* flex-basis: 200px;  El elemento inicia midiendo 200px */
+/* flex-basis: 50%;    Toma la mitad del contenedor */
+
+
+
+/* ========================================= */
+/* 11. flex (shorthand)                          */
+/* Combina: grow / shrink / basis                */
+/* ========================================= */
+
+/* flex: 1;           Equivale a: flex: 1 1 0;  */
+/* flex: 0 1 auto;    No crece, se encoge, tamaño automático */
+/* flex: 1 0 100px;   Crece, NO se encoge, base de 100px */
+
+
+
+/* ========================================= */
+/* 12. align-self                                */
+/* Sobrescribe align-items SOLO para ese hijo      */
+/* ========================================= */
+
+/* align-self: auto;        Usa el valor de align-items */
+/* align-self: flex-start;  Se sube */
+/* align-self: flex-end;    Se baja */
+/* align-self: center;      Se centra */
+/* align-self: stretch;     Se estira */
+/* align-self: baseline;    Alinea con línea base */
+
+/*ul{
+     display: flex;
+     /*justify-content: center; Justify-Content para el eje principal*/
+/*align-items: center; Align-Items para el eje cruzado*/
+/* align-items: last baseline; 
+     align-items: last baseline;
+}
+
+/* li:nth-child(2){
+     font-size: 2rem;
+} */
+
+/*nth-child es un selector de CSS que permite seleccionar elementos según su posición exacta dentro de su padre, es decir, según el orden en que aparecen en el HTML; en vez de usar clases o IDs, este selector cuenta los hijos y aplica estilos al que coincida con el número o patrón indicado. Por ejemplo, li:nth-child(2) selecciona únicamente el segundo <li> dentro de una lista y le aplica el estilo definido, como en font-size: 2rem;. Este selector es útil porque permite aplicar estilos a elementos específicos o crear patrones sin modificar el HTML: puedes seleccionar pares (:nth-child(even)), impares (:nth-child(odd)), o patrones repetitivos como cada tres elementos (:nth-child(3n)). En resumen, nth-child sirve para estilizar elementos basándose en su posición dentro del contenedor, haciendo el diseño más flexible y limpio.*/
+
+/*ul{
+     display: flex;
+     flex-wrap: wrap;
+     align-content: stretch; /*Funciona igual que justify content paro para la propiedad wrap*/
+/*GAP*/
+/* 
+     valores por separado
+     row-gap: .3rem;
+     column-gap: .3rem; 
+     
+     ó
+     valores por general
+     gap: .3rem;
+     
+}*/
+
+/*
+     Perdida de datos
+     La pérdida de datos en los estilos se refiere a cuando un navegador no puede interpretar, aplicar o conservar un valor CSS porque ese valor no es válido, está mal escrito o no es compatible; cuando esto ocurre, el navegador simplemente descarta ese estilo y vuelve al valor por defecto o al último valor válido. Esto puede pasar por errores de sintaxis, propiedades inexistentes, valores mal escritos, unidades incorrectas o propiedades que no pueden aplicarse a ciertos elementos, y el resultado es que el estilo “se pierde” porque el navegador lo ignora para evitar errores. En pocas palabras, la pérdida de datos en los estilos significa que parte del CSS no se aplica porque contiene información que el navegador no puede usar.
+     En CSS, “safe” se refiere a un valor o comportamiento que evita la pérdida de datos o el comportamiento inesperado, especialmente cuando se trabaja con propiedades relacionadas con el tamaño, el overflow y la alineación. La palabra “safe” se usa para indicar que el navegador debe priorizar que nada quede oculto, cortado o perdido, incluso si eso significa modificar la alineación o el espacio disponible. Por ejemplo, en algunas propiedades modernas como overflow, inset-area, o en valores nuevos de alineación (safe center, unsafe center), “safe” indica que el navegador no debe colocar el contenido en un lugar que pueda causarle recorte, para evitar que el usuario pierda parte del contenido visible. En resumen, “safe” significa alinear o colocar un elemento de manera que no se pierdan datos ni se esconda contenido, garantizando un comportamiento seguro y accesible.
+*/
+
+/*
+     Propiedades que pueden tomar los hijos de un contenedor flexible
+
+
+*/
+/* ============================================================
+     PROPIEDADES QUE PUEDEN TOMAR LOS HIJOS DE UN CONTENEDOR FLEX
+     (Es decir, los elementos que están DENTRO de display: flex)
+   ============================================================ */
+
+/* ------------------------------------------------------------
+     1. order
+     ------------------------------------------------------------
+     - Sirve para cambiar el orden visual de los elementos flex.
+     - Por defecto todos tienen order: 0.
+     - Valores más pequeños aparecen primero, valores más grandes después.
+     - NO cambia el orden en el HTML, solo en la vista.
+------------------------------------------------------------ 
+.hijo {
+     order: 2;
+     /* Este hijo aparecerá después que los hijos con order 0 o 1 
+}
+
+/* ------------------------------------------------------------
+     2. flex-grow
+     ------------------------------------------------------------
+     - Controla qué tanto crece un elemento cuando sobra espacio.
+     - 0 = NO crece (valor por defecto).
+     - 1 o más = crece proporcionalmente respecto a los demás.
+------------------------------------------------------------ 
+.hijo {
+     flex-grow: 1;
+     /* Este hijo crecerá ocupando más espacio 
+}
+
+/* ------------------------------------------------------------
+     3. flex-shrink
+     ------------------------------------------------------------
+     - Controla cuánto se encoge el elemento si falta espacio.
+     - 1 = se encoge (valor por defecto).
+     - 0 = NO se encoge JAMÁS.
+     - Se usa para evitar que un elemento se deforme.
+------------------------------------------------------------ 
+.hijo {
+     flex-shrink: 0;
+     /* Este hijo no se encogerá aunque no haya espacio 
+}
+
+/* ------------------------------------------------------------
+     4. flex-basis
+     ------------------------------------------------------------
+     - Define el tamaño "base" del elemento ANTES de crecer o encogerse.
+     - Puede ser width, porcentaje o auto.
+     - Es la medida inicial que Flexbox usa para calcular el espacio.
+------------------------------------------------------------ 
+.hijo {
+     flex-basis: 200px;
+     /* Tamaño base del hijo antes de ajustarse 
+}
+
+/* ------------------------------------------------------------
+     5. flex (shorthand)
+     ------------------------------------------------------------
+     - Es un atajo para escribir: flex-grow flex-shrink flex-basis
+     - Muy usado porque es más corto y práctico.
+     Ejemplo:
+     flex: 1 0 150px;
+          -> grow = 1
+          -> shrink = 0
+          -> basis = 150px
+------------------------------------------------------------ 
+.hijo {
+     flex: 1 1 200px;
+     /* Crece, se encoge, y parte de 200px 
+}
+
+/* ------------------------------------------------------------
+     6. align-self
+     ------------------------------------------------------------
+     - Permite que un hijo se alinee DIFERENTE al resto.
+     - Sobrescribe el align-items del contenedor.
+     Valores:
+     - auto (valor por defecto)
+     - flex-start
+     - flex-end
+     - center
+     - baseline
+     - stretch
+------------------------------------------------------------
+.hijo {
+     align-self: center;
+     /* Este hijo se centra aunque los demás no 
+}
+*/
+
+/* ul{
+     display: flex;
+}
+
+li:nth-child(1){
+     order: 50;
+}
+
+li:nth-child(2){
+     order: 3;
+}
+
+li:nth-child(3){
+     order: 0;
+} */
+
+/*
+     Capacidad de los hijos de crecer segun el espcacion residual que tiene aún el padre
+     La capacidad de los hijos de crecer según el espacio residual del padre se controla con la propiedad flex-grow en un contenedor con display: flex. Esta propiedad indica cuánto puede crecer un hijo cuando el contenedor tiene espacio libre; si un hijo tiene flex-grow: 0, no crece, pero si tiene flex-grow: 1 o más, crecerá proporcionalmente al resto para ocupar el espacio sobrante. En pocas palabras: el padre calcula cuánta área queda sin usar y la reparte entre los hijos según el número asignado en flex-grow, haciendo que los elementos con valores más altos crezcan más y ocupen mayor espacio dentro del contenedor.
+*/
+
+/* =============================================== */
+/*                ¿QUÉ ES FLEX-GROW?               */
+/* =============================================== */
+/*   flex-grow es una propiedad que se aplica a los hijos
+     dentro de un contenedor con display: flex.
+     Esta propiedad controla la capacidad que tiene un hijo
+     de CRECER para ocupar el espacio libre disponible
+     dentro del contenedor padre.                     */
+
+/* En palabras simples:
+     flex-grow dice "si sobra espacio, ¿qué tanto crezco
+     comparado con mis hermanos?"                      */
+
+
+/* ================================================= */
+/*              ¿QUÉ HACE FLEX-GROW?                 */
+/* ================================================= */
+/* 1. Si el padre tiene espacio sobrante, flex-grow
+      decide cuánto de ese espacio recibe cada hijo. */
+
+/* 2. Si todos los hijos tienen flex-grow: 0,
+     entonces ninguno crecerá y quedarán con su
+      ancho o alto inicial. */
+
+/* 3. Si un hijo tiene flex-grow: 1, entonces puede
+     crecer; si un hijo tiene flex-grow: 2 crecerá
+      el doble que uno con flex-grow: 1.             */
+
+
+/* ================================================= */
+/*      VALORES QUE PUEDE TOMAR FLEX-GROW           */
+/* ================================================= */
+
+/* flex-grow: 0; 
+     --> El hijo NO crecerá aunque el padre tenga espacio.
+          (Este es el valor por defecto).               */
+
+/* flex-grow: 1;
+     --> El hijo crecerá para ocupar parte del espacio
+          sobrante. Si varios tienen 1, reparten igual. */
+
+/* flex-grow: 2;
+     --> El hijo crecerá el doble de lo que crece otro
+          que tenga flex-grow: 1. La proporción aumenta. */
+
+/* flex-grow: n;
+     --> n puede ser cualquier número positivo.
+          Entre más grande sea el número, más crecerá
+          el elemento respecto a los demás.              */
+
+
+/* ================================================= */
+/*             EJEMPLO VISUAL RÁPIDO                */
+/* ================================================= */
+
+/*
+     Padre con espacio libre:
+     .padre {
+          display: flex;
+     }
+
+     .hijo1 { flex-grow: 1; }
+     .hijo2 { flex-grow: 2; }
+
+     Resultado:
+     - hijo2 ocupará DOS VECES más espacio que hijo1.
+*/
+
+/* ======================================================= */
+/*                     ¿QUÉ ES FLEX-SHRINK?                */
+/* ======================================================= */
+/* flex-shrink es una propiedad que se aplica a los hijos
+     de un contenedor con display: flex.
+     Esta propiedad controla la CAPACIDAD que tienen los hijos
+     de REDUCIRSE cuando el contenedor NO tiene espacio
+   suficiente para mostrar todo su contenido.               */
+
+/* En palabras simples:
+   flex-shrink = "¿qué tanto me encojo cuando no cabemos?"  */
+
+
+/* ======================================================= */
+/*                ¿QUÉ HACE FLEX-SHRINK?                   */
+/* ======================================================= */
+/* 1. Cuando el contenedor se queda sin espacio, decide qué
+      tanto se reduce cada hijo para que todos quepan.      */
+
+/* 2. Si un hijo tiene flex-shrink: 0, NO se reduce y mantiene
+      su tamaño aunque obligue a los demás a encogerse más. */
+
+/* 3. Si un hijo tiene flex-shrink: 1, puede reducirse
+      proporcionalmente junto a los demás.                  */
+
+/* 4. Si un hijo tiene flex-shrink: 2, se reduce el doble
+      que un hijo con flex-shrink: 1.                       */
+
+/* 5. flex-shrink usa flex-basis como referencia para saber
+      cuánto puede encogerse cada elemento.                 */
+
+
+/* ======================================================= */
+/*         VALORES QUE PUEDE TOMAR FLEX-SHRINK            */
+/* ======================================================= */
+
+/* flex-shrink: 0;
+     --> El hijo NUNCA se encogerá.
+          Mantendrá su tamaño, aunque cause overflow.          */
+
+/* flex-shrink: 1; (Valor por defecto)
+     --> El hijo puede encogerse de forma normal para que
+          todos los elementos puedan caber.                    */
+
+/* flex-shrink: 2;
+     --> El hijo se encogerá el doble que uno con 1.          */
+
+/* flex-shrink: n;
+     --> Cualquier número positivo. Entre más grande el
+          número, más se reducirá respecto a los demás hijos.  */
+
+
+/* ======================================================= */
+/*                   EJEMPLO SIMPLE                        */
+/* ======================================================= */
+
+/*
+     .padre {
+          display: flex;
+          width: 300px;  <-- muy poco espacio
+     }
+
+     .hijo1 { flex-basis: 200px; flex-shrink: 1; }
+     .hijo2 { flex-basis: 200px; flex-shrink: 2; }
+
+     Resultado:
+     - Ambos hijos empiezan con 200px (total 400px).
+     - El padre solo tiene 300px → falta espacio.
+     - hijo2 se encoge el doble que hijo1 debido a su valor.
+*/
+
+
+/* ======================================================= */
+/*                     ¿QUÉ ES FLEX-BASIS?                 */
+/* ======================================================= */
+/* flex-basis es una propiedad que se aplica a los hijos
+     de un contenedor con display: flex.
+     Esta propiedad define el TAMAÑO INICIAL del hijo antes
+     de que actúen flex-grow (crecer) o flex-shrink (reducirse).
+     
+     En palabras simples:
+   flex-basis = "¿de qué tamaño quieres empezar?"           */
+
+/* Si el contenedor necesita ajustar tamaños por espacio,
+   flex-grow y flex-shrink usarán este valor como referencia. */
+
+
+/* ======================================================= */
+/*                ¿QUÉ HACE FLEX-BASIS?                    */
+/* ======================================================= */
+/* 1. Establece el tamaño base (ancho en un main-axis
+      horizontal o alto si flex-direction es column).      */
+
+/* 2. Puede reemplazar al width/height cuando se usa flex.
+      flex-basis tiene prioridad sobre width/height.        */
+
+/* 3. Si hay espacio sobrante, flex-grow se aplicará
+      desde el tamaño definido por flex-basis.              */
+
+/* 4. Si falta espacio, flex-shrink se encargará de reducir
+      el tamaño tomando flex-basis como referencia.         */
+
+
+/* ======================================================= */
+/*            VALORES QUE PUEDE TOMAR FLEX-BASIS           */
+/* ======================================================= */
+
+/* flex-basis: auto; (Valor por defecto)
+     --> El tamaño inicial será su width/height o su 
+          contenido si no se define un tamaño explícito.       */
+
+/* flex-basis: 0;
+     --> El tamaño inicial es 0. Esto hace que flex-grow
+          reparta el espacio de manera más equitativa, porque
+          todos parten desde "nada". Muy usado con flex-grow.  */
+
+/* flex-basis: 100px; 50%; 20rem; etc.
+     --> Establece un tamaño fijo inicial.
+       Luego flex-grow o flex-shrink pueden modificarlo.    */
+
+/* flex-basis: content;
+     --> El tamaño base será exactamente lo que mida su
+          contenido. (No todos los navegadores lo soportan
+       al 100%, pero es parte de la especificación).        */
+
+
+/* ======================================================= */
+/*                   EJEMPLO SIMPLE                        */
+/* ======================================================= */
+
+/*
+     .padre {
+          display: flex;
+     }
+
+     .hijo1 { flex-basis: 200px; }
+     .hijo2 { flex-basis: 100px; }
+
+     Resultado:
+     - hijo1 comienza midiendo 200px
+     - hijo2 comienza midiendo 100px
+     Luego, flex-grow y flex-shrink podrán ajustar estos valores.
+*/
+
+/* ul {
+     display: flex;
+}
+
+li { /*se le pone cero para igualar a todos los contenidos*
+     flex-grow: 0;
+     flex-basis: 0;
+}
+
+li:nth-child(1){
+     flex-grow: 1;
+}
+
+li:nth-child(2){
+     flex-grow: 2;
+} */
+
+/* ======================================================= */
+/*                ¿CÓMO COMBINAR LAS 3 PROPIEDADES?        */
+/*           (flex-grow, flex-shrink y flex-basis)          */
+/* ======================================================= */
+/* Las tres propiedades se pueden escribir juntas usando
+   la propiedad shorthand llamada simplemente: flex         */
+
+/* La sintaxis es:                                         */
+/*           flex: grow  shrink  basis;                    */
+
+/* grow  = cuánto crece el elemento si sobra espacio       */
+/* shrink = cuánto se encoge si falta espacio              */
+/* basis = tamaño inicial antes de crecer o encogerse       */
+
+
+/* ======================================================= */
+/*                  EJEMPLOS DEL SHORTHAND                 */
+/* ======================================================= */
+
+/* ---------------------------- */
+/* 1. flex: 1 1 200px           */
+/* ---------------------------- */
+/* grow: 1    → puede crecer para ocupar espacio libre      */
+/* shrink: 1  → puede encogerse si el padre no tiene espacio*/
+/* basis: 200px → su tamaño inicial será 200px              */
+/* .item {
+     flex: 1 1 200px;
+} */
+
+
+/* ---------------------------- */
+/* 2. flex: 1                   */
+/* ---------------------------- */
+/* grow: 1     → puede crecer                                 */
+/* shrink: 1   → puede encogerse                              */
+/* basis: 0    → parte desde 0px, útil para repartir espacio  */
+/* Este es el shorthand MÁS USADO para distribuir equitativo */
+/* .item {
+     flex: 1;   /* equivale a flex: 1 1 0 
+} */
+
+
+/* ---------------------------- */
+/* 3. flex: 0 0 auto            */
+/* ---------------------------- */
+/* grow: 0   → NO crece                                            */
+/* shrink: 0 → NO se encoge                                         */
+/* basis: auto → su tamaño depende del contenido                    */
+/* Se usa cuando quieres un hijo con tamaño FIJO                    */
+/* .item {
+     flex: 0 0 auto;
+} */
+
+
+/* ---------------------------- */
+/* 4. flex: 2 1 100px           */
+/* ---------------------------- */
+/* grow: 2   → crece el doble que uno con flex-grow: 1              */
+/* shrink: 1 → se encoge normalmente                                */
+/* basis: 100px → su tamaño base son 100px                          */
+/* Se usa cuando quieres un hijo con más prioridad para crecer      */
+/* .item {
+     flex: 2 1 100px;
+} */
+
+
+/* ---------------------------- */
+/* 5. flex: auto                */
+/* ---------------------------- */
+/* grow: 1   → puede crecer                                         */
+/* shrink: 1 → puede encogerse                                      */
+/* basis: auto → su tamaño inicial depende del contenido            
+.item {
+     flex: auto; /* equivale a flex: 1 1 auto 
+}
+
+
+/* ======================================================= 
+/*                  RESUMEN FÁCIL DE RECORDAR              */
+/* ======================================================= */
+/* flex: 1;             → repartir espacio igual entre hijos       */
+/* flex: 2;             → repartir con proporción doble            */
+/* flex: 0 0 auto;      → tamaño fijo (no crece, no se encoge)     */
+/* flex: 1 1 200px;     → tamaño inicial + comportamiento flexible */
+/* flex: auto;          → flexible basado en el contenido          */
+
+
+/* ======================================================= */
+/*                      ¿QUÉ ES ALIGN-SELF?                */
+/* align-self es una propiedad que se usa en los HIJOS de un 
+   contenedor flex (display: flex).                         */
+/* Esta propiedad permite que un elemento se alinee 
+     individualmente en el CROSS-AXIS (eje cruzado), 
+     es decir, verticalmente si el flex-direction es row, 
+   u horizontalmente si el flex-direction es column.       */
+/* Explicación simple:
+   align-self = "Me alineo diferente a mis hermanos".       */
+/* Sirve para sobrescribir el valor general del padre 
+   (align-items) SOLO para ese elemento en particular.      */
+/* ======================================================= */
+
+
+/* ======================================================= */
+/*                  ¿QUÉ HACE ALIGN-SELF?                  */
+/* 1. Controla cómo se posiciona un SOLO hijo en el 
+      cross-axis (arriba, centro, abajo, estirado, etc.).   */
+/* 2. Ignora el align-items del padre SOLO para ese hijo.    */
+/* 3. Permite que un elemento tenga una alineación distinta 
+      al resto del grupo sin necesidad de crear más clases.  */
+/* ======================================================= */
+
+
+/* ======================================================= */
+/*          VALORES QUE PUEDE TOMAR ALIGN-SELF             */
+/* align-self: auto; (por defecto)
+   → El hijo usa el align-items del padre.                   */
+/* align-self: flex-start;
+   → El hijo se pega al INICIO del cross-axis.               */
+/* align-self: flex-end;
+   → El hijo se pega al FINAL del cross-axis.                */
+/* align-self: center;
+   → El hijo queda CENTRADO en el cross-axis.                */
+/* align-self: baseline;
+   → Alinea al hijo según la línea base del texto.           */
+/* align-self: stretch;
+     → Hace que el hijo se estire para ocupar todo el espacio 
+      disponible en el cross-axis (si el tamaño lo permite). */
+/* ======================================================= */
+
+
+/* ======================================================= */
+/*                   EJEMPLO DE USO                        */
+/* En este ejemplo, todos los hijos están centrados porque 
+   el padre tiene align-items: center.                      */
+/* Pero align-self permite que algunos hijos cambien su 
+   alineación sin afectar a los demás.                      */
+/* ======================================================= 
+
+/* ======================================================= */
+/*                      ¿QUÉ ES ALIGN-SELF?                */
+/* ======================================================= */
+/* align-self es una propiedad que se usa en los HIJOS de un 
+   contenedor flex (display: flex).                         */
+
+/* Esta propiedad permite que un elemento se alinee 
+     individualmente en el CROSS-AXIS (eje cruzado), 
+     es decir, verticalmente si el flex-direction es row, 
+   u horizontalmente si el flex-direction es column.       */
+
+/* Explicación simple:
+   align-self = "Me alineo diferente a mis hermanos".       */
+
+/* Sirve para sobrescribir el valor general del padre 
+   (align-items) SOLO para ese elemento en particular.      */
+
+
+/* ======================================================= */
+/*                  ¿QUÉ HACE ALIGN-SELF?                  */
+/* ======================================================= */
+/* 1. Controla cómo se posiciona un SOLO hijo en el 
+      cross-axis (arriba, centro, abajo, estirado, etc.).   */
+
+/* 2. Ignora el align-items del padre SOLO para ese hijo.    */
+
+/* 3. Permite que un elemento tenga una alineación distinta 
+      al resto del grupo sin necesidad de crear más clases.  */
+
+
+/* ======================================================= */
+/*          VALORES QUE PUEDE TOMAR ALIGN-SELF             */
+/* ======================================================= */
+
+/* align-self: auto; (por defecto)
+   → El hijo usa el align-items del padre.                   */
+
+/* align-self: flex-start;
+   → El hijo se pega al INICIO del cross-axis.               */
+
+/* align-self: flex-end;
+   → El hijo se pega al FINAL del cross-axis.                */
+
+/* align-self: center;
+   → El hijo queda CENTRADO en el cross-axis.                */
+
+/* align-self: baseline;
+   → Alinea al hijo según la línea base del texto.           */
+
+/* align-self: stretch;
+     → Hace que el hijo se estire para ocupar todo el espacio 
+      disponible en el cross-axis (si el tamaño lo permite). */
+
+
+/* ======================================================= */
+/*                   EJEMPLO DE USO                        */
+/* ======================================================= 
+
+     .padre {
+     display: flex;
+     align-items: center;   /* Todos los hijos estarán centrados… 
+     }
+
+     .hijo1 {
+     align-self: flex-start; /* …excepto este, que se va arriba   
+     }
+
+     .hijo2 {
+     align-self: flex-end;   /* Este se va abajo                   
+     }
+
+     .hijo3 {
+     align-self: stretch;    /* Este se estira completamente       
+     }
+*/
+
+/**/
