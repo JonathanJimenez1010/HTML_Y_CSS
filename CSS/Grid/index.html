@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width,initial-scale=1" />
+     <title>Grid EXTREMO — Guía completa y definitiva de CSS Grid</title>
+     <style>
+          :root {
+               --bg: #0f1724;
+               --card: #0b1220;
+               --muted: #94a3b8;
+               --accent: #60a5fa;
+               --surface: #071028;
+               --gap: 18px
+          }
+
+          html,
+          body {
+               height: 100%;
+               margin: 0;
+               font-family: Inter, Segoe UI, system-ui, Arial, sans-serif;
+               background: linear-gradient(180deg, var(--bg), #071028);
+               color: #e6eef8
+          }
+
+          .wrap {
+               max-width: 1100px;
+               margin: 28px auto;
+               padding: 28px;
+               background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+               border-radius: 12px;
+               box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6)
+          }
+
+          h1 {
+               font-size: 28px;
+               margin: 0 0 10px
+          }
+
+          h2 {
+               color: var(--accent);
+               margin-top: 26px
+          }
+
+          p {
+               color: var(--muted);
+               line-height: 1.6
+          }
+
+          pre {
+               background: #061225;
+               padding: 14px;
+               border-radius: 8px;
+               overflow: auto;
+               color: #dbeafe;
+               margin: 12px 0
+          }
+
+          code {
+               background: #07172a;
+               padding: 2px 6px;
+               border-radius: 6px;
+               color: #bfe0ff
+          }
+
+          .example {
+               background: linear-gradient(180deg, #051427, #04121b);
+               padding: 14px;
+               border-radius: 10px;
+               margin: 12px 0;
+               border: 1px solid rgba(255, 255, 255, 0.03)
+          }
+
+          .grid-demo {
+               border-radius: 8px;
+               border: 1px solid rgba(255, 255, 255, 0.03);
+               padding: 12px;
+               background: linear-gradient(180deg, #062034, #04202a)
+          }
+
+          .demo {
+               display: grid;
+               gap: 8px;
+               padding: 10px
+          }
+
+          .box {
+               background: linear-gradient(180deg, #08315a, #05213a);
+               padding: 10px;
+               border-radius: 6px;
+               text-align: center;
+               font-weight: 600
+          }
+
+          details {
+               margin: 10px 0
+          }
+
+          summary {
+               cursor: pointer;
+               color: var(--accent)
+          }
+
+          table {
+               width: 100%;
+               border-collapse: collapse;
+               margin: 10px 0
+          }
+
+          th,
+          td {
+               padding: 8px;
+               border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+               text-align: left;
+               color: var(--muted)
+          }
+
+          .note {
+               background: #071833;
+               padding: 10px;
+               border-radius: 8px;
+               margin: 12px 0;
+               color: #cfe7ff
+          }
+     </style>
+</head>
+
+<body>
+     <div class="wrap">
+          <h1>Grid EXTREMO — Guía completa y definitiva de CSS Grid</h1>
+          <p>Esta página es un único archivo HTML pensado para estudiar y practicar <strong>todo</strong> lo importante
+               —y lo avanzado— sobre <strong>CSS Grid</strong>. Incluye teoría, ejemplos prácticos, patrones
+               responsivos, explicaciones del algoritmo del navegador, subgrid, sizing intrínseco, integración con
+               Flexbox, accesibilidad, y trucos útiles. Copia el archivo, ábrelo en tu navegador y prueba los ejemplos
+               en vivo.</p>
+
+          <h2>Índice</h2>
+          <ol>
+               <li>Conceptos básicos</li>
+               <li>Propiedades del contenedor</li>
+               <li>Unidades y sizing (fr, minmax, auto, min-content, max-content)</li>
+               <li>Posicionamiento de items (líneas, áreas, explicit/implicit)</li>
+               <li>Auto-placement y <code>grid-auto-flow</code></li>
+               <li>Subgrid y Grid Level 2</li>
+               <li>Algoritmo de sizing: cómo decide el navegador</li>
+               <li>Funciones modernas: <code>repeat()</code>, <code>clamp()</code>, <code>calc()</code>,
+                    <code>min()</code>/<code>max()</code></li>
+               <li>Patrones responsivos y <code>auto-fit</code>/<code>auto-fill</code></li>
+               <li>Integración con Flexbox</li>
+               <li>Accesibilidad y buenas prácticas</li>
+               <li>Ejemplos avanzados y casos reales</li>
+               <li>Recursos y notas finales</li>
+          </ol>
+
+          <h2>1. Conceptos básicos</h2>
+          <p>CSS Grid es un modelo bidimensional: trabaja con filas y columnas simultáneamente. Un elemento se convierte
+               en <strong>grid container</strong> con <code>display: grid</code> o <code>display: inline-grid</code>, y
+               sus hijos inmediatos son <strong>grid items</strong>. El grid está compuesto por <em>tracks</em> (tracks
+               = filas o columnas), <em>lines</em> (líneas entre tracks) y <em>cells</em> (intersección row × column).
+          </p>
+
+          <div class="example">
+               <strong>Ejemplo mínimo</strong>
+               <pre><code>/* HTML */
+&lt;div class="grid"&gt;
+  &lt;div&gt;A&lt;/div&gt;
+  &lt;div&gt;B&lt;/div&gt;
+  &lt;div&gt;C&lt;/div&gt;
+&lt;/div&gt;
+
+/* CSS */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+</code></pre>
+               <div class="grid-demo">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px">
+                         <div class="box">A</div>
+                         <div class="box">B</div>
+                         <div class="box">C</div>
+                    </div>
+               </div>
+          </div>
+
+          <h2>2. Propiedades del contenedor</h2>
+          <p>Las principales propiedades que aplicas al contenedor son:</p>
+          <table>
+               <tr>
+                    <th>Propiedad</th>
+                    <th>Qué hace</th>
+               </tr>
+               <tr>
+                    <td><code>display</code></td>
+                    <td>Activa grid: <code>grid</code> o <code>inline-grid</code></td>
+               </tr>
+               <tr>
+                    <td><code>grid-template-columns</code></td>
+                    <td>Define las columnas (tracks) explícitas</td>
+               </tr>
+               <tr>
+                    <td><code>grid-template-rows</code></td>
+                    <td>Define las filas explícitas</td>
+               </tr>
+               <tr>
+                    <td><code>grid-template-areas</code></td>
+                    <td>Asigna nombres de área para usar <code>grid-area</code></td>
+               </tr>
+               <tr>
+                    <td><code>gap</code>, <code>row-gap</code>, <code>column-gap</code></td>
+                    <td>Separación entre tracks</td>
+               </tr>
+               <tr>
+                    <td><code>grid-auto-rows</code>, <code>grid-auto-columns</code></td>
+                    <td>Altura/ancho de tracks implícitos</td>
+               </tr>
+               <tr>
+                    <td><code>grid-auto-flow</code></td>
+                    <td>Controla el auto-placement y densidad</td>
+               </tr>
+               <tr>
+                    <td><code>justify-items</code>, <code>align-items</code></td>
+                    <td>Alineación dentro de cada celda</td>
+               </tr>
+               <tr>
+                    <td><code>justify-content</code>, <code>align-content</code></td>
+                    <td>Alineación del grid entero dentro del contenedor</td>
+               </tr>
+               <tr>
+                    <td><code>place-items</code>, <code>place-content</code></td>
+                    <td>Atajos combinados</td>
+               </tr>
+          </table>
+
+          <h2>3. Unidades y sizing</h2>
+          <h3>fr — la unidad flexible</h3>
+          <p><code>fr</code> representa una fracción del <strong>espacio disponible</strong> después de reservar tamaños
+               fijos. Ejemplo clásico:</p>
+          <pre><code>grid-template-columns: 1fr 2fr 100px;</code></pre>
+          <p>Proceso para calcular:</p>
+          <ol>
+               <li>Reservar los tamaños fijos (100px en el ejemplo).</li>
+               <li>Restar del ancho total del contenedor; el resto es el espacio disponible.</li>
+               <li>Dividir ese espacio entre las fracciones (1 + 2 = 3 partes).</li>
+          </ol>
+
+          <h3>auto</h3>
+          <p><code>auto</code> permite que la track se mida según el tamaño intrínseco del contenido (o según
+               restricciones de min/max aplicadas).</p>
+
+          <h3>min-content y max-content</h3>
+          <p><strong>min-content</strong> es el tamaño mínimo que hace el contenido sin romper (por ejemplo, sin
+               envolver palabras si hay espacio para separar). <strong>max-content</strong> es el tamaño que tomaría si
+               no hubiera restricciones (el contenido en una sola línea si es texto largo).</p>
+
+          <h3>minmax(min, max)</h3>
+          <pre><code>grid-template-columns: minmax(200px, 1fr);</code></pre>
+          <p>Esta columna nunca será menor a 200px, pero podrá crecer hasta 1fr.</p>
+
+          <h3>fit-content()</h3>
+          <pre><code>grid-template-columns: fit-content(240px) 1fr;</code></pre>
+          <p><code>fit-content()</code> limita el tamaño a un máximo (a partir del contenido) y a la vez deja que el
+               track se adapte.</p>
+
+          <h2>4. Posicionamiento de items</h2>
+          <p>Hay varias formas de colocar items:</p>
+          <ul>
+               <li>Flujo natural (auto-placement)</li>
+               <li>Colocar por líneas: <code>grid-column: start / end</code></li>
+               <li>Colocar por área: <code>grid-area</code> y <code>grid-template-areas</code></li>
+               <li>Colocar por índice: <code>:nth-child()</code> combinado con reglas</li>
+          </ul>
+
+          <pre><code>.item{grid-column:2/4;grid-row:1/3}</code></pre>
+
+          <h3>Line-based placement y nombres de líneas</h3>
+          <pre><code>grid-template-columns: [left] 1fr [middle] 2fr [right];
+.item{grid-column: left / middle}</code></pre>
+          <p>Puedes usar números (1,2,..) o nombres de línea entre corchetes.</p>
+
+          <h3>grid-template-areas</h3>
+          <pre><code>grid-template-areas:
+  "header header header"
+  "sidebar content content"
+  "footer footer footer";
+.header{grid-area: header}</code></pre>
+
+          <h2>5. Auto-placement y <code>grid-auto-flow</code></h2>
+          <p>Cuando no colocas explícitamente los items, el grid los ubica automáticamente. <code>grid-auto-flow</code>
+               controla la dirección y si el layout debe intentar llenar huecos.</p>
+          <pre><code>grid-auto-flow: row | column | row dense | column dense;</code></pre>
+          <p><code>dense</code> fuerza al motor a reordenar elementos para rellenar huecos (similar a Tetris), pero
+               puede cambiar el orden visual respecto al DOM.</p>
+
+          <h2>6. Subgrid y Grid Level 2</h2>
+          <p><strong>Subgrid</strong> permite que un grid child reutilice las líneas de su grid padre en lugar de
+               generar su propio grid independiente. Es especialmente valioso para alineaciones complejas entre niveles
+               anidados.</p>
+          <pre><code>.parent{display:grid;grid-template-columns: 200px 1fr 1fr;}
+.child{display:grid;grid-template-columns: subgrid;}
+</code></pre>
+          <p>Soporte: subgrid está soportado en la mayoría de navegadores modernos (verificar versiones para
+               producción). Permite que los elementos hijos se alineen exactamente con las columnas del padre.</p>
+
+          <h2>7. Algoritmo de sizing (cómo decide el navegador)</h2>
+          <p>Este es el núcleo técnico: el navegador realiza múltiples pasos para calcular el tamaño final de cada
+               track. Resumido (simplificado):</p>
+          <ol>
+               <li>Identificar tracks explícitos e implícitos.</li>
+               <li>Determinar tamaños fijos y restricciones (px, %, minmax, etc.).</li>
+               <li>Calcular tamaños intrínsecos de contenido (<code>min-content</code>, <code>max-content</code>).</li>
+               <li>Asignar espacio a tracks flexibles (<code>fr</code>) con reglas de prioridad dependiendo de
+                    restricciones min/max.</li>
+               <li>Ajustar por overflow, scrollbars y cajas flex/baseline si aplica.</li>
+          </ol>
+          <p>Una regla práctica: <em>los <code>fr</code> reparten el espacio sobrante después de reservar fijos</em>.
+               Pero cuando tracks usan <code>min-content</code>/<code>max-content</code> o <code>auto</code>, el proceso
+               es más complejo: el motor puede elevar o reducir tracks antes de repartir fracciones.</p>
+
+          <h3>Intrinsic vs Extrinsic sizing</h3>
+          <p>Intrinsic sizing se basa en el contenido y sus necesidades internas; extrinsic sizing se basa en
+               restricciones externas (como el ancho del contenedor o tamaños fijos).</p>
+
+          <h2>8. Funciones modernas y combinaciones</h2>
+          <p>Combinar funciones permite diseños muy potentes y predecibles:</p>
+          <pre><code>/* Ejemplos */
+grid-template-columns: repeat(3, minmax(180px, 1fr));
+grid-template-columns: clamp(220px, 30vw, 420px) 1fr;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+</code></pre>
+
+          <h3><code>repeat()</code> con auto-fill/auto-fit</h3>
+          <ul>
+               <li><code>auto-fill</code> crea tantas columnas como quepan; las columnas vacías permanecen si no hay
+                    suficientes items.</li>
+               <li><code>auto-fit</code> colapsa columnas vacías (las hace colapsar y los items existentes ocupan el
+                    espacio).</li>
+          </ul>
+
+          <h2>9. Patrones responsivos</h2>
+          <p>Algunos patrones usados en producción:</p>
+          <details>
+               <summary>Tarjetas responsivas con <code>auto-fit</code></summary>
+               <pre><code>.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+</code></pre>
+               <p>Cada tarjeta tendrá al menos 220px y crecerá hasta ocupar 1fr; el número de columnas se adaptará al
+                    ancho available.</p>
+          </details>
+
+          <details>
+               <summary>Layout clásico: sidebar + content + header</summary>
+               <pre><code>.layout{display:grid;grid-template-columns:250px 1fr;grid-template-rows:auto 1fr auto;grid-template-areas:
+"header header"
+"sidebar main"
+"footer footer";gap:16px}
+</code></pre>
+          </details>
+
+          <h2>10. Integración con Flexbox</h2>
+          <p>Grid y Flexbox se complementan: usa Grid para layout de página (2D) y Flexbox para alinear elementos en una
+               sola dimensión dentro de una celda o componente.</p>
+          <pre><code>.card{display:grid;grid-template-columns:1fr 120px}
+.card .meta{display:flex;flex-direction:column;justify-content:center}
+</code></pre>
+
+          <h2>11. Accesibilidad y buenas prácticas</h2>
+          <p>Grid no cambia la semántica del DOM. Para accesibilidad:</p>
+          <ul>
+               <li>Usa etiquetas semánticas (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>,
+                    <code>&lt;nav&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;footer&gt;</code>).</li>
+               <li>No confíes en el orden visual para el orden del DOM si el orden semántico importa; si usas
+                    reordenamiento visual, asegúrate de que el DOM aun tenga sentido para lectores de pantalla.</li>
+               <li>Evita <code>grid-auto-flow:dense</code> si cambia el orden visual que rompe la lectura secuencial.
+               </li>
+               <li>Usa <code>focus</code> visible y controles keyboard-navigable dentro de celdas.</li>
+          </ul>
+
+          <h2>12. Ejemplos avanzados y explicados</h2>
+
+          <h3>12.1 Subgrid práctico</h3>
+          <pre><code>/* padre */
+.parent{display:grid;grid-template-columns: 120px 1fr 1fr;gap:12px}
+/* hijo usando subgrid */
+.child{display:grid;grid-template-columns: subgrid;grid-column:2/4}
+</code></pre>
+          <p>Con subgrid, las columnas del <code>.child</code> coinciden con las columnas del <code>.parent</code>. Es
+               ideal para formularios complejos donde etiquetas y campos deben alinear exactamente.</p>
+
+          <h3>12.2 Grid + minmax + clamp para cabeceras adaptativas</h3>
+          <pre><code>.masthead{display:grid;grid-template-columns: clamp(180px,20vw,320px) 1fr auto;align-items:center;gap:12px}
+</code></pre>
+          <p>El primer track será entre 180px y 320px pero preferirá 20vw; el centro ocupará el resto, y el tercero será
+               auto (por ejemplo, botones).</p>
+
+          <h3>12.3 Auto-placement complejo con dense</h3>
+          <pre><code>.puzzle{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:120px;grid-auto-flow:row dense}
+.item.big{grid-column:span 2;grid-row:span 2}
+</code></pre>
+          <p>Al usar <code>dense</code>, el grid intentará rellenar huecos con elementos menores; útil para mosaicos
+               pero con atención al orden semántico.</p>
+
+          <h3>12.4 Named lines y áreas mixtas</h3>
+          <pre><code>grid-template-columns: [gutter-left] 1fr [start] 2fr [col-2] 1fr [gutter-right];
+.item{grid-column:start / col-2}
+</code></pre>
+
+          <h3>12.5 Uso del sizing intrínseco</h3>
+          <pre><code>grid-template-columns: min-content 1fr max-content;
+/* min-content: ajusta a la mínima representación posible */
+/* max-content: permite que el contenido crezca sin envolver */
+</code></pre>
+
+          <h2>13. Reglas y trampas comunes</h2>
+          <ul>
+               <li>Si mezclas <code>%</code> con <code>fr</code>, recuerda que % se calcula respecto al contenedor y
+                    puede interactuar con padding/border.</li>
+               <li>Scrollbar aparece y reduce espacio disponible: el cálculo se hace considerando el contenedor, y en
+                    ocasiones cambia la distribución esperada.</li>
+               <li>Evita depender de <code>grid-auto-flow:dense</code> para accesibilidad si cambia orden.</li>
+               <li>Subgrid mejora alineación, pero revisar soporte si tu público usa navegadores antiguos.</li>
+          </ul>
+
+          <h2>14. Ejemplo completo: plantilla de dashboard (con comentarios)</h2>
+          <pre><code>/* HTML
+&lt;div class="dash"&gt;
+  &lt;header class="hd"&gt;Header&lt;/header&gt;
+  &lt;aside class="nav"&gt;Nav&lt;/aside&gt;
+  &lt;main class="main"&gt;Main&lt;/main&gt;
+  &lt;section class="widgets"&gt;Widgets&lt;/section&gt;
+  &lt;footer class="ft"&gt;Footer&lt;/footer&gt;
+&lt;/div&gt;
+
+/* CSS */
+.dash{display:grid;grid-template-columns:240px 1fr 320px;grid-template-rows:auto 1fr auto;grid-template-areas:
+  "hd hd hd"
+  "nav main widgets"
+  "ft ft ft";gap:16px;min-height:80vh}
+.hd{grid-area:hd}
+.nav{grid-area:nav}
+.main{grid-area:main}
+.widgets{grid-area:widgets}
+.ft{grid-area:ft}
+</code></pre>
+
+          <h2>15. Tests y experimentos (prácticos)</h2>
+          <p>Te recomiendo experimentar con los siguientes pasos:</p>
+          <ol>
+               <li>Prueba distintos anchos de viewport y observa cómo <code>fr</code> se recalcula.</li>
+               <li>Combina <code>minmax()</code> con <code>repeat(auto-fit,...)</code> para crear galerías.</li>
+               <li>Usa <code>grid-auto-flow: dense</code> para mosaicos y compara con/ sin dense respecto al DOM order.
+               </li>
+               <li>Usa subgrid para alinear formularios anidados (si tu navegador lo soporta).</li>
+          </ol>
+
+          <h2>16. Recursos y referencias</h2>
+          <ul>
+               <li>Especificación CSS Grid Layout — W3C</li>
+               <li>Guía CSS Grid — MDN Web Docs</li>
+               <li>Artículos de Rachel Andrew sobre Grid y subgrid</li>
+               <li>CSS-Tricks Complete Guide to Grid</li>
+          </ul>
+
+          <div class="note">
+               <strong>Nota técnica:</strong> esta guía intenta ser completa y práctica. La especificación del lenguaje
+               CSS y la implementación en navegadores evolucionan; para proyectos en producción revisa soporte de
+               <code>subgrid</code> o cualquier característica avanzada en <em>Can I Use</em> o MDN.
+          </div>
+
+          <p style="margin-top:20px">¿Quieres que convierta esto en un archivo descargable, una versión interactiva con
+               live-edit (playground) o que genere ejercicios paso a paso con soluciones? Dime cuál y lo creo.</p>
+
+     </div>
+</body>
+
+</html>

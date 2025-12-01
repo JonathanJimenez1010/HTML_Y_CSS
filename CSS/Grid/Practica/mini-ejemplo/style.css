@@ -1,0 +1,39 @@
+.container{
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
+     /*grid-template-rows: 35px 1fr 100px; repeat(3, minmax(100px, 1fr))
+     min-height: 100vh; /*esto significa el 100% del viewport tambien unciona con width*/
+     grid-template-rows: 35px 1fr 100px;
+     min-height: 100vh;
+
+     /*Definir plantilla de columnas y filas con grid template areas*/
+     grid-template-areas: 
+          "header header ."
+          "content . sidebar"
+          ". footer footer"
+     ; /*esto es un mini mapa como tu lo quieras editar para que puedas modificar donde esten posicionados cualquier area que tu queiras y si quieres que hay a un hueco solo pones un punto */
+}
+
+.container header{
+     background-color: #09f;
+     grid-area: header;
+}
+
+.container aside{
+     background-color: yellow;
+     grid-area: sidebar;
+}
+
+.container main{
+     background-color: red;
+     grid-area: content;
+}
+
+.container footer{
+     background-color: gray;
+     grid-area: footer;
+}
+
+body{
+     margin: 0;
+}

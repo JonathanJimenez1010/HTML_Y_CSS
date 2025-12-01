@@ -1,0 +1,403 @@
+/*
+     ¿Qué es Grid?
+
+     CSS Grid es un sistema de diseño bidimensional que te permite organizar elementos en filas y columnas de manera flexible y precisa. A diferencia de flexbox, que está pensado principalmente para una sola dimensión (fila o columna), Grid te permite controlar ambas al mismo tiempo, creando estructuras complejas como layouts completos de páginas, galerías y secciones con alineaciones avanzadas. Con Grid defines un contenedor y dentro de él especificas cuántas columnas y filas quieres, sus tamaños, cómo se distribuyen los espacios y cómo cada elemento ocupa una o varias celdas. Es una herramienta muy poderosa para crear diseños modernos, ordenados y totalmente adaptables.
+
+     CSS Grid es un sistema de diseño bidimensional que organiza contenido en filas y columnas, permitiendo crear layouts complejos y totalmente controlados. Para usarlo, se aplica display: grid al contenedor, donde puedes definir columnas y filas con grid-template-columns, grid-template-rows, repeat(), fr, minmax(), y agregar espacios con gap. Grid permite colocar elementos de forma exacta usando líneas (grid-column, grid-row), o por áreas nombradas con grid-template-areas. También maneja contenido extra mediante el grid implícito (grid-auto-rows, grid-auto-flow). Los ítems pueden alinearse dentro de sus celdas con align-self y justify-self, y el contenedor puede alinear todo el grid con align-content y justify-content. Funciones como auto-fit y auto-fill permiten hacer diseños responsivos sin media queries. En resumen, Grid es perfecto para estructuras completas de página, dashboards, y layouts donde necesitas controlar tanto las filas como las columnas con precisión.
+
+     CSS Grid es una forma de acomodar elementos en una página usando cuadritos, como si hicieras una tabla flexible. Cuando le pones display: grid a un contenedor, puedes decir cuántas columnas y filas quieres (grid-template-columns y grid-template-rows), cuánto espacio habrá entre ellas (gap), y cómo se acomodan los elementos. Cada elemento dentro del grid se puede colocar exactamente donde quieras usando grid-column y grid-row, o dejar que se acomoden solos automáticamente. También puedes crear áreas con nombres (como “header”, “main”, “footer”) usando grid-template-areas. Además, Grid permite hacer diseños responsivos fácilmente usando cosas como auto-fit, auto-fill y minmax(), que ajustan las columnas según el espacio de la pantalla. En pocas palabras: CSS Grid sirve para crear diseños ordenados, precisos y fáciles de controlar en filas y columnas.
+*/
+
+/*  
+================================================================================
+                          EXPLICACIÓN COMPLETA DE grid-template-columns
+================================================================================
+
+1. ¿QUÉ ES?
+-----------
+• Define el número de columnas del grid y el tamaño de cada una.
+• Cada valor representa una “pista” (track) = una columna.
+• El conjunto forma el “grid explícito” (las columnas que tú declaras).
+
+Sintaxis general:
+  grid-template-columns: <track-size> <track-size> ...;
+  grid-template-columns: repeat(...);
+  grid-template-columns: minmax(min, max);
+  grid-template-columns: [line-name] <track-size> [line-name];
+
+
+
+Cuando escribes "grid-template-columns", siempre estás definiendo CÓMO estarán
+distribuidas las columnas del grid.  
+La sintaxis tiene 4 formas principales, cada una sirve para un propósito
+distinto. Aquí van explicadas de forma PROFESIONAL y muy CLARA.
+
+--------------------------------------------------------------------------------
+1) grid-template-columns: <track-size> <track-size> ...;
+--------------------------------------------------------------------------------
+
+• Es la forma MÁS básica.
+• Cada <track-size> representa UNA columna.
+• Pueden ser tamaños fijos, flexibles o especiales.
+
+Ejemplos:
+  grid-template-columns: 200px 300px;
+    → 2 columnas: una de 200px y otra de 300px.
+
+  grid-template-columns: 1fr 2fr 1fr;
+    → 3 columnas: fr divide el espacio sobrante en proporciones.
+
+  grid-template-columns: auto auto 1fr;
+    → 3 columnas: dos ajustadas al contenido y una flexible.
+
+Este tipo de sintaxis es directa: lo que escribes es exactamente lo que obtienes.
+
+--------------------------------------------------------------------------------
+2) grid-template-columns: repeat(...);
+--------------------------------------------------------------------------------
+
+• Sirve cuando quieres repetir un patrón muchas veces sin escribirlo uno por uno.
+• Puede repetirse una cantidad fija o automática.
+
+Dos modos:
+
+A) repeat(n, tamaño)
+--------------------
+  grid-template-columns: repeat(4, 1fr);
+    → 1fr 1fr 1fr 1fr (4 columnas iguales)
+
+  grid-template-columns: repeat(3, 200px);
+    → 200px 200px 200px
+
+B) repeat(auto-fill, tamaño)
+----------------------------
+• "auto-fill" crea TANTAS columnas como QUEPAN en el contenedor, 
+  incluso si quedan huecos vacíos.
+
+Ej:
+  grid-template-columns: repeat(auto-fill, 200px);
+    → el navegador va metiendo columnas de 200px hasta que no quepan más.
+
+C) repeat(auto-fit, tamaño)
+---------------------------
+• Similar a auto-fill, PERO colapsa columnas vacías.
+• Hace que los elementos se estiren más (muy usado en grids responsivos).
+
+Ej:
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+--------------------------------------------------------------------------------
+3) grid-template-columns: minmax(min, max);
+--------------------------------------------------------------------------------
+
+• Crea una columna con un tamaño mínimo y máximo permitido.
+• Es clave para un grid responsivo inteligente SIN media queries.
+
+Ejemplos:
+  grid-template-columns: minmax(100px, 300px);
+    → nunca mide menos de 100px ni más de 300px.
+
+  grid-template-columns: 1fr minmax(200px, 1fr) 2fr;
+    → la columna central no baja de 200px pero comparte espacio con fr.
+
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    → patrón responsivo profesional (tarjetas que se acomodan solas).
+
+minmax() es la función mágica de Grid: permite control total del tamaño.
+
+--------------------------------------------------------------------------------
+4) grid-template-columns: [line-name] <track-size> [line-name];
+--------------------------------------------------------------------------------
+
+• Permite nombrar las líneas del grid.
+• Sirve para posicionar ítems con MUCHÍSIMA precisión.
+• Los nombres se usan con grid-column: nombre / otro-nombre;
+
+Ejemplo:
+  grid-template-columns:
+    [inicio] 150px [col1] 1fr [col2] 2fr [fin];
+
+Este grid tiene:
+  - Una línea llamada "inicio"
+  - Columna de 150px
+  - Línea "col1"
+  - Columna de 1fr
+  - Línea "col2"
+  - Columna de 2fr
+  - Línea "fin"
+
+Ahora podemos posicionar así:
+  .item {
+    grid-column: col1 / col2;
+  }
+
+Es como darle etiquetas a columnas invisibles para controlar dónde va cada elemento.
+
+--------------------------------------------------------------------------------
+RESUMEN DE PARA QUÉ SIRVE CADA SINTAXIS
+--------------------------------------------------------------------------------
+
+• <track-size> <track-size> ...
+     → Define columnas manuales, simples y directas.
+
+• repeat(...)
+     → Repetir patrones: ideal para muchas columnas o layouts responsivos.
+
+• minmax(min, max)
+     → Controlar límites de tamaño: ideal para grids fluidos adaptables.
+
+• [line-name] <track-size> [line-name]
+     → Posicionamiento profesional con nombres de líneas.
+
+Cada una cubre necesidades distintas, y todas pueden combinarse.
+
+================================================================================
+FIN DE LA EXPLICACIÓN DE LA SINTAXIS GENERAL
+================================================================================
+
+
+--------------------------------------------------------------------------------
+2. TIPOS DE TAMAÑOS (TRACK-SIZE)
+--------------------------------------------------------------------------------
+
+A) VALORES FIJOS:
+-----------------
+• px, em, rem → columnas que NO se adaptan.
+  Ej: grid-template-columns: 200px 350px;
+
+B) PORCENTAJES (%):
+-------------------
+• Relativos al ancho del GRID CONTAINER (no del viewport).
+  Ej: grid-template-columns: 30% 70%;
+
+C) fr (FRACTIONAL UNIT):
+-------------------------
+• Reparte el espacio restante después de los tamaños fijos y gap.
+• Ej: 1fr 1fr → divide equitativamente.
+• 1fr 2fr → segunda columna recibe el doble de espacio.
+
+Regla: “fr” toma solo el espacio SOBRANTE, no el total.
+
+D) auto:
+--------
+• La columna mide lo que necesite el contenido.
+  Ej: grid-template-columns: auto 1fr;
+
+E) min-content y max-content:
+------------------------------
+• min-content: el ancho mínimo antes de romper palabras.
+• max-content: ancho máximo según contenido sin romper.
+
+Ej:
+  grid-template-columns: min-content 1fr;
+  grid-template-columns: max-content 1fr;
+
+F) fit-content(tamaño):
+------------------------
+• Se comporta como “max-content” pero limitado a un máximo.
+  Ej: fit-content(200px) → no pasa de 200px pero puede encoger.
+
+G) minmax(min, max):
+---------------------
+• Fija límites mínimos y máximos muy útiles en resposive.
+  Ej: minmax(150px, 1fr);
+    → nunca será menos de 150px pero puede crecer como fr.
+
+--------------------------------------------------------------------------------
+3. repeat() — REPETIR PATRONES DE COLUMNAS
+--------------------------------------------------------------------------------
+
+A) repeat(n, tamaño):
+---------------------
+Ej: repeat(4, 1fr) → 4 columnas iguales.
+
+B) repeat(auto-fill, tamaño):
+-----------------------------
+• Crea TODAS las columnas que quepan aunque queden vacías.
+• Mantiene la estructura.
+Ideal para grids “rígidos”.
+
+C) repeat(auto-fit, tamaño):
+----------------------------
+• Similar a auto-fill, pero COLAPSA columnas vacías.
+• Permite que las tarjetas se centren o se expandan más.
+
+Ej responsivo famoso:
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+--------------------------------------------------------------------------------
+4. NOMBRES DE LÍNEA
+--------------------------------------------------------------------------------
+• Puedes nombrar líneas para posicionar elementos con más control.
+
+Ej:
+  grid-template-columns:
+    [inicio] 200px [col1] 1fr [col2] 2fr [final];
+
+Uso:
+  .item { grid-column: col1 / col2; }
+
+--------------------------------------------------------------------------------
+5. PATRONES PROFESIONALES EN PRODUCCIÓN
+--------------------------------------------------------------------------------
+
+A) Layout responsivo sin media queries:
+---------------------------------------
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+B) Tarjetas que no se descuadran por contenido largo:
+-----------------------------------------------------
+grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+(minmax(0,1fr) evita que el contenido empuje la columna)
+
+C) Sidebar + contenido flexible:
+--------------------------------
+grid-template-columns: 280px 1fr;
+
+D) Columnas con límites:
+------------------------
+grid-template-columns: minmax(200px, 300px) 1fr;
+
+E) Composición compleja:
+------------------------
+grid-template-columns: 150px repeat(2, 1fr) 200px;
+
+--------------------------------------------------------------------------------
+6. INTERACCIÓN CON OTRAS PROPIEDADES GRID
+--------------------------------------------------------------------------------
+
+• grid-template-rows → define filas.
+• grid-auto-columns → tamaño de columnas IMPLÍCITAS.
+• grid-auto-flow → orden de llenado (row, column, dense).
+• gap / column-gap / row-gap → afectan espacio disponible para fr.
+• justify-content y align-content → cómo se distribuye el grid dentro del contenedor.
+• justify-items y align-items → alineación interna de cada celda.
+
+--------------------------------------------------------------------------------
+7. ERRORES COMUNES (Y SOLUCIONES)
+--------------------------------------------------------------------------------
+
+❌ ERROR: usar solo 1fr cuando el contenido es grande.
+✔ SOLUCIÓN: minmax(0, 1fr)
+
+❌ ERROR: confundir auto-fill con auto-fit.
+✔ auto-fill  mantiene columnas vacías.
+✔ auto-fit   las colapsa para que el contenido se expanda.
+
+❌ ERROR: pensar que % depende del viewport.
+✔ Depende del ancho del grid container.
+
+❌ ERROR: no controlar columnas implícitas.
+✔ Usar grid-auto-columns cuando se colocan items fuera de la definición.
+
+--------------------------------------------------------------------------------
+8. RESUMEN PROFESIONAL
+--------------------------------------------------------------------------------
+
+• “grid-template-columns” define la estructura real del grid.
+• Es lo más importante para lograr layouts modernos.
+• Las unidades fr y minmax permiten diseños fluidos sin media queries.
+• repeat(auto-fit, minmax(x, 1fr)) es el patrón responsivo estándar.
+• Los nombres de línea permiten layouts avanzados de precisión.
+
+================================================================================
+FIN DEL COMENTARIO COMPLETO
+================================================================================
+*/
+
+/*Fracción - la unidad fr (fracción) sirve para repartir el espacio libre disponible dentro del contenedor en partes proporcionales. Cada fr representa una porción del espacio sobrante, no del total, por lo que si defines columnas como 1fr 1fr, ambas recibirán la misma cantidad de espacio, mientras que 1fr 2fr hará que la segunda sea el doble de ancha. Esta unidad convive con tamaños fijos como px o relativos como %, pero a diferencia de ellos, fr se adapta automáticamente según lo que quede de espacio después de asignar los tamaños fijos. Es ideal para crear diseños flexibles donde las columnas se distribuyen de manera equilibrada sin necesidad de cálculos manuales.*/
+  /* grid-template-columns: 1fr 1fr; */
+  /* grid-template-rows: 200px; */
+  /*Se pueden hacer varias combinaciones de medidas pero las mas proporcionarl es fr(fraccion) 1fr -> 100%*/
+
+  /* grid-template-rows: 100px 50px 100px 50px; Lo mismo pero para las columnas*/
+
+/* 
+  Auto-placement es el mecanismo automático que usa CSS Grid para colocar los elementos en el grid sin que tú les indiques posición. Cuando no usas grid-row o grid-column, el navegador decide en qué celda va cada item siguiendo un orden lógico (normalmente de izquierda a derecha y luego hacia abajo). Este sistema revisa las filas y columnas disponibles, busca el primer espacio libre y ubica allí el siguiente item. Si no hay suficiente espacio en la estructura explícita que definiste con grid-template-rows o grid-template-columns, Grid crea nuevas filas o columnas implícitas utilizando los tamaños definidos por grid-auto-rows y grid-auto-columns.
+
+  grid-auto-flow controla cómo funciona ese auto-placement, definiendo la dirección en la que el navegador rellena el grid. Con el valor predeterminado row, Grid coloca elementos primero en filas; con column, los distribuye primero en columnas; y con dense, activa un comportamiento tipo “Tetris”, rellenando huecos para comprimir el contenido y evitar espacios vacíos. En conjunto, auto-placement y grid-auto-flow permiten que CSS Grid organice elementos automáticamente de manera inteligente, flexible y optimizada, incluso cuando la cantidad de items o el tamaño del contenido cambia dinámicamente.
+    
+  grid-auto-rows y grid-auto-columns controlan el tamaño de las filas y columnas que CSS Grid genera automáticamente cuando un item necesita más espacio del que definiste explícitamente. Si declaras pocas filas o columnas y un elemento cae fuera del rango previsto —por ejemplo, usando grid-row: 4 cuando solo existen dos filas— el navegador crea nuevas filas o columnas implícitas, y su tamaño será exactamente el que definas en grid-auto-rows o grid-auto-columns. Esto también ocurre cuando el auto-placement (grid-auto-flow) necesita más espacio para acomodar los elementos, ya sea rellenando filas (modo predeterminado) o columnas (cuando usas grid-auto-flow: column).
+
+  En la práctica, grid-auto-rows se usa para controlar la altura de filas no definidas en grid-template-rows, mientras que grid-auto-columns controla el ancho de columnas no declaradas en grid-template-columns. Ambos aceptan valores como px, fr, auto o minmax(), permitiendo decidir si las filas/columnas automáticas serán fijas, flexibles o dependientes del contenido. Gracias a estas propiedades, Grid puede expandirse dinámicamente manteniendo control total sobre el tamaño de cada nueva área creada sin romper la estructura del diseño. 
+
+  auto-fill y auto-fit son dos modos inteligentes de repetición en CSS Grid que permiten crear columnas o filas automáticas y responsivas, pero cada uno gestiona el espacio de forma distinta: auto-fill llena el contenedor con todas las columnas que quepan, incluso si algunas quedan vacías, manteniendo la estructura fija y dejando huecos cuando no hay suficiente contenido; en cambio, auto-fit también genera todas las columnas posibles, pero colapsa las vacías y permite que las columnas con contenido se expandan para ocupar todo el espacio sobrante, creando layouts más fluidos y adaptables. En resumen, auto-fill prioriza mantener la cantidad máxima de columnas, mientras que auto-fit prioriza usar eficientemente el ancho disponible.
+
+  La función repeat() en CSS Grid sirve para repetir patrones de tamaño de columnas o filas sin tener que escribirlos uno por uno, y es especialmente útil cuando trabajas con layouts grandes o dinámicos. Funciona tomando dos argumentos: la cantidad de repeticiones (un número o palabras clave como auto-fill y auto-fit) y el tamaño de cada repetición, que puede ser valores como px, fr, minmax(), porcentajes, etc. Cuando usas un número fijo, por ejemplo repeat(4, 1fr), Grid genera exactamente 4 columnas, cada una con 1fr; pero cuando usas auto-fill o auto-fit, Grid calcula cuántas columnas caben automáticamente dentro del contenedor, repitiendo el tamaño indicado sin desbordarse. Con auto-fill, Grid “rellena” el espacio disponible creando todas las columnas posibles aunque queden huecos; con auto-fit, Grid “colapsa” las columnas vacías y expande las que sí tienen contenido. Además, repeat() se combina perfectamente con funciones como minmax() para crear diseños fluidos, por ejemplo: grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));, donde cada columna tendrá un mínimo de 200px y, si sobra espacio, crecerá proporcionalmente. En resumen, repeat() es una herramienta esencial para simplificar, automatizar y hacer más flexible la definición de tracks en Grid, permitiendo estructuras limpias, escalables y altamente responsivas sin tener que escribir valores repetitivos manualmente.  
+
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 100px);
+
+  tambien se puede hacer por independiente y crear mas columnas tambien independientemente, tambien se pueden hacer secuencias si unas coambian el valor intercalado
+  grid-template-colums: 25px repeat(3, 1fr) 25px;
+  grid-template-colums: repeat(3, 25px 50px) qudaria así 25px 50px 25px 50px 25px 50px;
+
+  En CSS Grid, un track es simplemente una franja de la cuadrícula, es decir, una columna o una fila individual. Cada track es un espacio delimitado entre dos líneas de la cuadrícula (grid lines) y tiene un tamaño definido, ya sea fijo (200px), flexible (1fr), automático (auto) o combinado mediante funciones como minmax(). Cuando defines algo como grid-template-columns: 1fr 200px 1fr;, estás creando tres tracks de columna: el primero de 1fr, el segundo de 200px y el tercero de 1fr. Lo mismo ocurre con las filas usando grid-template-rows. Los tracks son, en esencia, las “bandas” horizontales o verticales sobre las que se colocan los elementos del grid, y forman la estructura fundamental del layout. Sin tracks, no existiría la cuadrícula.
+
+  La función minmax() en CSS Grid se usa para definir un tamaño mínimo y un tamaño máximo para una columna o fila, permitiendo que un track sea flexible dentro de un rango controlado. Funciona así: minmax(valorMin, valorMax). El primer valor garantiza que el track nunca sea más pequeño que el mínimo indicado (como 150px o 20%), y el segundo valor indica hasta dónde puede crecer, ya sea un tamaño fijo, una fracción (fr), o incluso auto. Esto hace que minmax() sea ideal para layouts responsivos donde un elemento necesita tener un tamaño mínimo legible pero también debe expandirse cuando hay espacio. Por ejemplo, en grid-template-columns: minmax(200px, 1fr);, la columna jamás bajará de 200px, pero podrá crecer proporcionalmente con el resto del espacio disponible. Además, cuando se combina con auto-fill o auto-fit, como en repeat(auto-fit, minmax(250px, 1fr)), se logran grids dinámicos en los que las columnas se ajustan automáticamente según el ancho del viewport, manteniendo un tamaño mínimo útil y aprovechando al máximo el espacio sobrante.
+
+  min-content y max-content son valores intrínsecos que CSS usa para calcular el tamaño natural de un elemento según su contenido, sin depender del espacio externo. min-content representa el tamaño más pequeño posible que un elemento puede tomar sin que su contenido se desborde de forma incorrecta: por ejemplo, en textos, las palabras no se rompen, así que el elemento se encoge hasta el ancho mínimo permitido por la palabra más larga. Es decir, el navegador calcula cuál es el tamaño más estrecho que sigue siendo válido sin causar desbordes forzados. Esto es especialmente útil en CSS Grid, donde puedes permitir que un track se reduzca automáticamente hasta ese mínimo natural y no más.
+
+  Por otro lado, max-content representa el tamaño más grande posible del contenido sin restricciones, dejando que las líneas de texto no se dividan y que los elementos ocupen todo el espacio que necesiten. En otras palabras, el navegador expande el elemento hasta ese ancho ideal donde nada se rompe ni se ajusta. En CSS Grid, usar max-content permite que una columna o fila utilice exactamente el espacio que el contenido requiere, sin recortar ni limitar de manera artificial. En conjunto, estos valores le permiten al navegador decidir tamaños basados en la naturaleza del contenido mismo, creando layouts más orgánicos, adaptables y precisos.
+
+  gap para separar columnas y filas segun lo necesitado
+  con column-gap y row-gap tambien se pueden utilizar por general que seria gap: (row) (column);
+
+  tambien para ajustar lo la cantidad de columnas que se utlizan segun la medida del contenedor es con media querys (Metodo mas largo y no recomendable para grid) en ese caso se utiliza el minmax y auto-fill para que ponga las columnas automaticmente segun el tamaño minimo o maximo, tambien en caso de que no haya mas elemento y que despues se agregue uno ya se utiliza el auto-fit ya que si hay pocos elementos el obliga a los elemento a cuadrar su tamaño el contenedor mientras que llega otro elemento
+
+  grid-column-start y grid-column-end son propiedades de CSS Grid que controlan en qué línea de columna inicia un elemento y en qué línea termina. En otras palabras, te permiten decidir exactamente cuántas columnas abarca un ítem dentro de la cuadrícula. Cada Grid tiene líneas numeradas (1, 2, 3, 4…), y estas propiedades usan esos números para colocar el elemento. Por ejemplo, grid-column-start: 1; grid-column-end: 4; hará que el ítem ocupe desde la línea 1 hasta la 4, lo que significa que abarca tres columnas completas. También puedes usar la palabra clave span para indicar cuántas columnas debe ocupar, como grid-column-end: span 2;, lo que hace que el elemento se expanda a lo largo de dos columnas desde el punto donde se ubique. Estas propiedades también aceptan nombres de líneas personalizados y valores automáticos como auto para dejar la colocación en manos del navegador.
+
+  Y sí, el mismo concepto se aplica a las filas. Para filas existen las propiedades equivalentes grid-row-start y grid-row-end, que funcionan exactamente igual pero verticalmente. Te permiten definir en qué línea de fila empieza un elemento y dónde termina, pudiendo abarcar varias filas de la cuadrícula. También puedes usar span para expandirte verticalmente, como grid-row-end: span 3; para cubrir tres filas. En resumen, column-start/end controlan la colocación horizontal y row-start/end controlan la colocación vertical, todos usando el mismo sistema de líneas para posicionar elementos con precisión dentro del Grid.
+
+  En CSS Grid, span se usa para indicar cuántas columnas o filas debe abarcar un elemento, pero no determina dónde empieza, sino que simplemente le dice al navegador: “ocupa esta cantidad de tracks a partir del punto donde estés colocado”. Por ejemplo, grid-column-end: span 3 hace que el ítem se extienda a través de tres columnas desde su posición inicial, la cual puede ser definida manualmente con grid-column-start o decidida automáticamente por el navegador mediante auto-placement. Es importante entender que span no arranca automáticamente desde la línea 1, ni implica un valor oculto de “1”; más bien, solo define la cantidad de columnas o filas que ocupa el elemento, y si usas algo como span 1, simplemente significa que el elemento ocupa una sola columna o fila, que es el comportamiento por defecto.
+
+  El spam se utiliza para simplificar lo que es start y end o tambien con el signo de /
+
+  En CSS Grid, las propiedades grid-column-start, grid-column-end, grid-row-start y grid-row-end pueden escribirse de forma abreviada utilizando un slash /, lo cual permite definir en una sola línea desde qué línea de inicio hasta qué línea final se extiende un elemento dentro del grid. Esta notación funciona porque Grid organiza el contenedor en líneas numeradas (o nombradas) que actúan como puntos de referencia; así, al escribir algo como grid-column: 2 / 5, se indica que el ítem empieza en la línea vertical 2 y termina en la 5, abarcando todo el espacio entre ellas. El mismo sistema aplica a las filas con grid-row: inicio / fin. Además, puede combinarse con span, como en grid-column: 1 / span 3, donde el elemento inicia en la línea 1 y se expande automáticamente a través de tres columnas sin necesidad de calcular manualmente la línea final. Esta notación también permite mezclar números, nombres de líneas e incluso usar la forma más completa con grid-area, pero siempre manteniendo el principio básico: el valor antes del / define el inicio y el valor después del / define el final del área que ocupará el elemento dentro de la cuadrícula.
+
+  El sobreposicionamiento en CSS Grid ocurre cuando dos o más elementos ocupan la misma área del grid, es decir, cuando sus rangos de grid-column y grid-row se superponen. Grid permite esto sin problema porque cada ítem está posicionado de manera independiente, y cuando dos coinciden en el mismo espacio, uno queda encima del otro según el orden de apilamiento (stacking order): por defecto, el que aparece más abajo en el HTML queda arriba, aunque esto se puede cambiar con z-index. Para provocar el sobreposicionamiento, simplemente asignas a dos elementos la misma área, ya sea usando líneas (grid-column: 1 / 3; grid-row: 1 / 3;), usando span, o usando áreas nombradas (grid-area: header). Cuando ambos cubren la misma región, Grid no los redistribuye ni evita la superposición: los coloca uno sobre otro como si fueran capas. Este comportamiento es útil para crear efectos como banners superpuestos, tarjetas encima de imágenes, overlays, paneles flotantes o diseños avanzados donde un bloque debe cubrir parcialmente a otro. En resumen, el sobreposicionamiento ocurre cuando varios elementos comparten la misma posición definida por sus líneas o áreas, y su visibilidad final depende del orden en el documento o del z-index aplicado.
+
+  grid-area es una propiedad abreviada de CSS Grid que permite definir en una sola línea la posición y el tamaño completo de un elemento dentro de la cuadrícula, indicando desde qué fila y columna inicia y en qué fila y columna termina, usando la sintaxis grid-area: row-start / column-start / row-end / column-end. Esto significa que grid-area controla todo el rectángulo que ocupará el elemento, combinando las funciones de grid-row-start, grid-row-end, grid-column-start y grid-column-end. Por ejemplo, grid-area: 1 / 2 / 4 / 5 ubica un ítem desde la fila 1 a la 4 y desde la columna 2 a la 5. Además, grid-area también sirve para asignar áreas nombradas, permitiendo colocar elementos simplemente escribiendo grid-area: header; si en el contenedor existe un grid-template-areas que define regiones como “header”, “main”, “sidebar” o “footer”. Esto convierte a grid-area en una herramienta poderosa y flexible para layouts complejos, ya que permite posicionar elementos usando líneas numéricas, spans o nombres semánticos en una sola instrucción clara y compacta.
+
+  grid-template-areas es una propiedad de CSS Grid que permite dibujar el diseño del grid usando palabras, creando un mapa visual donde cada celda del grid recibe un nombre que representa el área a la que pertenece. Funciona como un “plano” del layout: tú escribes filas entre comillas y dentro pones nombres como header, main, sidebar o footer. Todas las celdas que compartan el mismo nombre se unirán automáticamente para formar un área completa y continua. Por ejemplo, si defines:
+
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+
+
+  estás creando una cuadrícula de 3 filas y 2 columnas donde el header ocupa toda la fila superior, la sidebar la primera columna de la segunda fila, el main la segunda columna, y el footer toda la fila inferior. Luego, cada elemento se posiciona simplemente asignando grid-area: nombre;. Este sistema evita usar números de líneas y hace que el layout sea fácil de leer, modificar y entender visualmente, ya que literalmente describes la estructura como si fuera un dibujo hecho con texto. En resumen, grid-template-areas organiza el diseño declarando regiones nombradas dentro del grid, y permite posicionar elementos de forma muy clara, semántica y visual.
+
+  La alineación en línea de los elementos en CSS Grid se refiere a cómo se acomodan dentro del espacio asignado a cada celda o área del grid, es decir, cómo se alinean horizontalmente y verticalmente dentro de su propio cuadro, no en todo el contenedor. Cada ítem de Grid tiene su propio “mini-espacio”, y la alineación en línea permite controlar cómo se posiciona ahí el contenido. Para esto existen propiedades como justify-items y align-items (para todos los elementos), y sus equivalentes individuales justify-self y align-self (para un solo ítem). justify-items controla la alineación horizontal dentro de cada celda (inicio, centro, fin o stretch), mientras que align-items controla la alineación vertical dentro de ellas. Por ejemplo, si una celda es más grande que su contenido, justify-items: center; hace que el elemento se centre horizontalmente dentro de su espacio. Estas propiedades funcionan igual a la alineación interna de Flexbox, pero aplicadas por celda, no por todo el contenedor. En resumen, la alineación en línea en Grid sirve para decidir cómo se comporta cada elemento dentro del espacio que le corresponde en la cuadrícula, permitiendo colocar su contenido al inicio, centro, final o estirarlo para que llene totalmente el área asignada.
+
+  La diferencia entre justify-items y justify-self está en a qué elementos afectan y qué nivel de control ofrecen, aunque ambas propiedades alinean horizontalmente el contenido dentro de cada celda de Grid.
+
+  justify-items es una propiedad global del contenedor que aplica la alineación horizontal a todos los elementos del grid por igual. Es como decir: “todos los ítems dentro de sus celdas se alinearán a la izquierda, centro, derecha o se estirarán”. En cambio, justify-self es una propiedad individual para un solo ítem, permitiendo sobrescribir el valor general de justify-items. Es decir, aunque el contenedor tenga justify-items: center;, un elemento específico puede tener justify-self: end; y alinearse a la derecha sin afectar a los demás. Por lo tanto, justify-items establece la alineación horizontal por defecto para todos, mientras que justify-self te permite controlar o personalizar la alineación de un ítem en particular, dándote un nivel de precisión mucho mayor en el diseño.
+
+  Cuando hablamos de alinear “como un todo” en Grid, nos referimos a mover toda la cuadrícula completa dentro del espacio disponible del contenedor. Esto no afecta a los elementos individuales, sino a toda la estructura del grid como si fuera un solo bloque. Para lograrlo, se usan las propiedades justify-content y align-content, que únicamente funcionan cuando sobra espacio dentro del contenedor. En otras palabras, estas propiedades determinan si la cuadrícula completa se va hacia la izquierda, al centro, a la derecha, hacia arriba o hacia abajo dentro de su contenedor. Aquí no se están acomodando los ítems, sino la cuadrícula en su totalidad.
+
+  Por otro lado, cuando lo que se quiere es alinear los elementos dentro de sus celdas, entran en juego justify-items y align-items. Estas propiedades se aplican en el contenedor, pero su efecto actúa sobre todos los ítems por igual, controlando cómo se posiciona cada uno dentro de su propia celda, ya sea hacia la izquierda, al centro, a la derecha, arriba, abajo o centrado. A diferencia de las propiedades de “content”, estas no mueven la cuadrícula, sino el contenido de cada celda.
+
+  Finalmente, si la intención es alinear únicamente un elemento en particular sin afectar a los demás, se usan justify-self y align-self, que se aplican directamente en ese ítem específico. Estas propiedades permiten que un solo elemento tenga un comportamiento de alineación diferente al del resto. Así, mientras “items” controla el comportamiento colectivo de los hijos y “content” controla la posición del grid completo, “self” modifica únicamente a un hijo puntual dentro de su celda.
+*/
+
+body {
+  background-color: #ddd;
+}
+
+.container {
+  background-color: lightsalmon;
+  border: 3px solid black;
+  border-radius: 10px;
+  display: grid; /*Activa grid*/
+  /* grid-template-columns: 25px repeat(5, 1fr) 50px;
+  grid-template-rows: repeat(3, 100px); */
+  /* grid-template-columns: minmax(100px, 1fr) 1fr 1fr; */
+}
+
+.container div {
+  background-color: lightblue;
+  border: 2px solid #09f;
+  border-radius: 6px;
+}

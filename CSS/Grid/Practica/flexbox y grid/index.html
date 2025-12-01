@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Flexbox y Grid - Guía Completa</title>
+     <style>
+          body {
+               font-family: Arial, sans-serif;
+               line-height: 1.6;
+               padding: 20px;
+               background: #f5f5f5;
+          }
+
+          h1,
+          h2,
+          h3 {
+               color: #333;
+          }
+
+          pre {
+               background: #222;
+               color: #0f0;
+               padding: 10px;
+               border-radius: 5px;
+               overflow-x: auto;
+          }
+     </style>
+</head>
+
+<body>
+     <h1>Cómo usar Flexbox y Grid juntos — Guía Completa y Enriquecida</h1>
+
+     <p>
+          Flexbox y CSS Grid son los dos sistemas modernos más poderosos para construir layouts en la web. Aunque ambos
+          pueden organizar elementos en una página, cada uno está optimizado para un propósito distinto. Flexbox se
+          enfoca en distribuir elementos en una sola dimensión, ya sea horizontal o vertical, mientras que Grid está
+          diseñado para trabajar con dos dimensiones al mismo tiempo, es decir, filas y columnas. Cuando se combinan,
+          permiten crear diseños flexibles, completos, escalables, responsivos y extremadamente controlados. Esta guía
+          te explica qué hace cada uno, cómo se complementan, sus usos principales y cómo integrarlos en un mismo
+          proyecto.
+     </p>
+
+     <h2>¿Qué es Flexbox y para qué sirve?</h2>
+     <p>
+          Flexbox (o Flexible Box Layout) es un sistema unidimensional que se utiliza para alinear y distribuir
+          elementos en un eje principal. Esto quiere decir que Flexbox se especializa en ordenar elementos uno al lado
+          del otro (en filas) o uno debajo del otro (en columnas). Su gran fortaleza está en su capacidad para manejar
+          espacios dinámicos, alinear elementos vertical y horizontalmente, crear cajas que crecen y se contraen
+          automáticamente, ordenar elementos sin cambiar el HTML y distribuir proporciones fácilmente.
+     </p>
+
+     <p>Usos ideales de Flexbox:</p>
+     <ul>
+          <li>Barras de navegación</li>
+          <li>Botones alineados entre sí</li>
+          <li>Cards colocadas en fila</li>
+          <li>Componentes de UI como headers y footers</li>
+          <li>Alineación perfecta vertical y horizontal</li>
+     </ul>
+
+     <pre><code>/* Ejemplo simple de Flexbox */
+.container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+</code></pre>
+
+     <h2>¿Qué es Grid y para qué sirve?</h2>
+     <p>
+          CSS Grid es un sistema bidimensional que permite crear estructuras completas con filas y columnas. Es ideal
+          para layouts grandes como páginas enteras, dashboards, galerías, plantillas complejas y diseños que requieren
+          control preciso de tracks, líneas, áreas y espacios. Grid te permite crear plantillas completas, definir
+          patrones repetidos, crear áreas nombradas, usar funciones como <code>repeat()</code>, <code>minmax()</code>,
+          <code>auto-fit</code>, <code>auto-fill</code> y manejar el auto-placement.
+     </p>
+
+     <p>Usos ideales de Grid:</p>
+     <ul>
+          <li>Layouts completos de páginas</li>
+          <li>Galerías de imágenes</li>
+          <li>Dashboards con múltiples bloques ordenados</li>
+          <li>Plantillas con áreas definidas</li>
+          <li>Distribuciones complejas que combinan filas y columnas</li>
+     </ul>
+
+     <pre><code>/* Ejemplo simple de Grid */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+</code></pre>
+
+     <h2>¿Por qué usar Flexbox y Grid juntos?</h2>
+     <p>
+          Aunque muchos piensan que Flexbox o Grid debería reemplazar al otro, la realidad es que ambos se complementan
+          perfectamente. Grid organiza la estructura global: el layout general, el esqueleto de la página. Flexbox se
+          utiliza dentro de cada uno de esos bloques para organizar contenido interno de forma más detallada. Grid te
+          permite dividir una página en regiones; Flexbox organiza los elementos dentro de esas regiones.
+     </p>
+
+     <p>
+          Por ejemplo, puedes usar Grid para crear una página con header, sidebar, contenido principal y footer. Dentro
+          del header puedes usar Flexbox para alinear el logo a la izquierda y los botones a la derecha. Dentro de una
+          card del Grid puedes usar Flexbox para centrar texto o distribuir iconos. En otras palabras: Grid define la
+          macroestructura; Flexbox define la microestructura.
+     </p>
+
+     <h2>Ejemplo práctico combinando Flexbox + Grid</h2>
+
+     <pre><code>&lt;style&gt;
+.layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 80px 1fr 60px;
+  grid-template-areas:
+    "header header"
+    "sidebar content"
+    "footer footer";
+  height: 100vh;
+}
+
+.header { grid-area: header; background: #222; color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+.sidebar { grid-area: sidebar; background: #ddd; padding: 20px; }
+.content { grid-area: content; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.footer { grid-area: footer; background: #444; color: white; display: flex; justify-content: center; align-items: center; }
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+&lt;/style&gt;
+
+&lt;div class="layout"&gt;
+  &lt;div class="header"&gt;
+    &lt;h2&gt;Mi Sitio&lt;/h2&gt;
+    &lt;nav&gt;
+      &lt;button&gt;Inicio&lt;/button&gt;
+      &lt;button&gt;Perfil&lt;/button&gt;
+      &lt;button&gt;Salir&lt;/button&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+
+  &lt;aside class="sidebar"&gt;
+    &lt;p&gt;Sidebar con contenido&lt;/p&gt;
+  &lt;/aside&gt;
+
+  &lt;main class="content"&gt;
+    &lt;div class="card"&gt;
+      &lt;h3&gt;Card 1&lt;/h3&gt;
+      &lt;p&gt;Contenido dentro de una card organizada con Flexbox.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="card"&gt;
+      &lt;h3&gt;Card 2&lt;/h3&gt;
+      &lt;p&gt;Más contenido organizado con Flexbox.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="card"&gt;
+      &lt;h3&gt;Card 3&lt;/h3&gt;
+      &lt;p&gt;La combinación de sistemas permite layouts poderosos.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;footer class="footer"&gt;
+    &lt;p&gt;Footer creado con Flexbox&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+
+     <h2>Conclusión</h2>
+     <p>
+          Flexbox y Grid no compiten; se complementan. Grid controla la estructura global y organiza grandes áreas del
+          layout, mientras que Flexbox se encarga del detalle y de la alineación interna dentro de cada sección. Usarlos
+          juntos te da control total sobre cualquier tipo de diseño, desde los más simples hasta los más avanzados,
+          responsivos y dinámicos.
+     </p>
+
+     <h2>Más información avanzada sobre Flexbox</h2>
+     <p>
+          Flexbox tiene múltiples propiedades que controlan a profundidad el comportamiento de los elementos dentro de
+          un contenedor flexible. Propiedades como <code>flex-direction</code> permiten definir el eje principal, ya sea
+          en fila, columna o en sentido inverso. La propiedad <code>flex-wrap</code> define si los elementos pueden
+          saltar a la siguiente línea cuando no caben, lo que permite crear layouts fluidos sin necesidad de Grid.
+          Combinando ambas surge <code>flex-flow</code>, que resume ambas instrucciones. Otra propiedad fundamental es
+          <code>justify-content</code>, que distribuye los elementos sobre el eje principal, centrando, expandiendo o
+          separando los ítems. Por su parte, <code>align-items</code> controla la alineación en el eje secundario, y
+          <code>align-content</code> gestiona cómo se distribuyen múltiples líneas flexibles cuando existen varias filas
+          o columnas debido al uso de wrap.
+     </p>
+
+     <p>
+          Cada ítem flexible también puede controlar su crecimiento individual utilizando <code>flex-grow</code>,
+          <code>flex-shrink</code> y <code>flex-basis</code>. <code>flex-grow</code> define cuánto crece un ítem
+          respecto a los demás cuando existe espacio disponible; <code>flex-shrink</code> define cuánto se contrae
+          cuando hay poco espacio; y <code>flex-basis</code> establece el tamaño base inicial antes de aplicar las otras
+          reglas. Además, la propiedad abreviada <code>flex</code> permite definir los tres valores en una sola línea.
+          Flexbox también incorpora control de orden mediante <code>order</code>, que permite mover visualmente
+          elementos sin cambiar su posición en el HTML. Esta potencia convierte a Flexbox en una herramienta
+          extraordinaria para manejar la micro-distribución de elementos.
+     </p>
+
+     <h2>Más información avanzada sobre CSS Grid</h2>
+     <p>
+          Grid posee un sistema más profundo y robusto que Flexbox, permitiendo crear layouts exactos basados en dos
+          dimensiones. Entre sus capacidades más destacadas se encuentran las líneas nombradas, que permiten asignar
+          nombres a columnas y filas para ubicar elementos de forma más semántica. Por ejemplo, puedes definir
+          <code>[inicio] 1fr [medio] 1fr [fin]</code>, y luego ubicar elementos usando
+          <code>grid-column: inicio / fin;</code>. Grid también introduce la función <code>minmax()</code>, que permite
+          controlar el crecimiento de los tracks entre un mínimo y un máximo, y valores como <code>min-content</code> y
+          <code>max-content</code> que se basan en el tamaño intrínseco del contenido.
+     </p>
+
+     <p>
+          Otra gran fortaleza de Grid es la colocación automática de elementos mediante <code>grid-auto-flow</code>, que
+          define si los elementos se completan por filas, por columnas o incluso en "modo denso" usando
+          <code>grid-auto-flow: dense</code>, lo cual rellena huecos con elementos que puedan caber. Grid también
+          soporta el concepto de <strong>subgrid</strong>, que permite que un elemento hijo herede la estructura de
+          columnas o filas del grid principal, lo cual es muy útil para alinear contenido interno en layouts complejos
+          sin redefinir tracks. Además, Grid permite crear <strong>áreas de cuadrícula</strong> con nombres que forman
+          patrones completos que un elemento puede ocupar fácilmente, como <code>grid-area: header;</code>.
+     </p>
+
+     <h2>Cómo Flexbox y Grid se ayudan mutuamente en layouts modernos</h2>
+     <p>
+          Cuando se diseñan interfaces modernas, Flexbox y Grid se utilizan de forma conjunta para aprovechar sus
+          fortalezas. Grid se encarga de la distribución general, definiendo la estructura principal de la página:
+          encabezado, menú lateral, contenido principal, tarjetas, pie de página o cualquier otro bloque mayor. Luego,
+          dentro de cada bloque, Flexbox se utiliza para alinear botones, textos, grupos de elementos, imágenes o
+          cualquier contenido que requiera adaptación unidimensional precisa. Esta combinación crea layouts
+          extremadamente flexibles y muy controlados, permitiendo que la interfaz se adapte naturalmente a pantallas
+          pequeñas, medianas y grandes.
+     </p>
+
+     <p>
+          La razón por la que ambos sistemas se integran tan bien es porque Flexbox se enfoca en la microdistribución
+          mientras Grid domina la macrodistribución. Grid define cuántas columnas ocupa una sección completa, mientras
+          que Flexbox define cómo se alinean los elementos dentro de esa sección. Grid distribuye espacios amplios;
+          Flexbox organiza contenido específico. Y, aunque ambos pueden ser usados para hacer prácticamente cualquier
+          layout, al combinarlos obtienes eficiencia, claridad en el código y resultados más profesionales.
+     </p>
+
+</body>
+
+</html>
